@@ -1,0 +1,56 @@
+.container {
+   margin-bottom: 10px 
+}
+.container .banner {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    width: 100%;
+}
+@media (max-width: 1139px) {
+    .container .banner {
+        display: block;
+   }
+}
+@media (max-width: 1139px) {
+    .container .banner .storyContainer {
+        max-width: 100%;
+        margin-bottom: 24px;
+   }
+}
+.container .banner .storyContainer .shimmerContainer {
+    display: flex;
+    column-gap: 30px;
+}
+.container .banner .storyContainer .shimmerContainer .shimmer {
+    flex: 1 0 auto;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+@media (max-width: 576px) {
+    .container .banner .storyContainer .shimmerContainer {
+        column-gap: 12px;
+   }
+}
+@media (max-width: 1139px) {
+    .container .banner .bannerContainer {
+        max-width: 100%;
+   }
+}
+.container .banner .bannerContainer .shimmerContainer {
+    display: flex;
+    column-gap: 30px;
+    padding: 0 1rem;
+}
+.container .banner .bannerContainer .shimmerContainer .shimmer {
+    flex: 1 0 auto;
+    height: auto;
+    aspect-ratio: 1.8404907975;
+    border-radius: 10px;
+}
+@media (max-width: 576px) {
+    .container .banner .bannerContainer .shimmerContainer .shimmer {
+        aspect-ratio: 2.5641025641;
+   }
+}

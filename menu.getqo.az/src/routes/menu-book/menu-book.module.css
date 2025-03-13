@@ -1,0 +1,7 @@
+.book {
+  padding-bottom: 0;
+}
+
+.book > .stf__wrapper {
+  padding-bottom: 0 !important;
+}

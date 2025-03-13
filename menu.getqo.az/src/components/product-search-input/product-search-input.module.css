@@ -1,0 +1,70 @@
+.search {
+    position: sticky;
+    top: 70px;
+    z-index: 10;
+    width: 100%;
+    /*padding: 15px 30px;*/
+}
+
+@media (max-width: 1140px) {
+    .search {
+        /*padding: 15px;*/
+        top: 0;
+    }
+}
+
+.search .wrapper {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    /*border: 1px solid #999;*/
+    /*border-radius: 5px;*/
+    /*padding: 0 15px;*/
+}
+
+.search .wrapper label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.search .wrapper label svg {
+    width: 22px;
+    height: 22px;
+    fill: #000;
+}
+
+.search .wrapper input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    line-height: 19px;
+    color: #000;
+    background-color: transparent;
+}
+
+.search .wrapper input::placeholder {
+    color: #000;
+}
+
+.search .wrapper .closeBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    cursor: pointer;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.search .wrapper .closeBtn svg {
+    width: 22px;
+    height: 22px;
+    fill: #000;
+}

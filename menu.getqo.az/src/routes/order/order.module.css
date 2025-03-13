@@ -1,0 +1,13 @@
+.noteInput {
+    padding: 12px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: none;
+    color: var(--color-black);
+    background-color: transparent;
+    border: 1px solid var(--color-black)
+  }
+  
+  .noteInput::placeholder {
+    color: var(--color-text)
+  }

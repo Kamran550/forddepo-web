@@ -1,0 +1,14 @@
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 16px 16px 16px;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    gap: 22px;
+    border-radius: 10px;
+}

@@ -1,0 +1,24 @@
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    /*padding: 1.5rem;*/
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: calc(100% - 2rem);
+    width: 500px;
+}
+
+.header {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    gap: .5rem;
+}
+
+.body {
+    padding: 1rem;
+}

@@ -1,0 +1,27 @@
+.wrapper {
+    border-radius: 0px 0px 16px 16px;
+    background-color: #fff;
+  }
+  
+  .container {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .fieldWrapper {
+    padding: 24px 12px;
+    display: flex;
+
+  }
+  
+.field {
+  flex: 1;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 12px;
+  background-color: var(--color-gray-hover);
+  outline: none;
+  border: none;
+  color: var(--color-black)
+}

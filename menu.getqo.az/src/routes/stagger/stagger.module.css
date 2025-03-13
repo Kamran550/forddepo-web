@@ -1,0 +1,13 @@
+.image {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.expandedImage {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  object-fit: contain;
+}

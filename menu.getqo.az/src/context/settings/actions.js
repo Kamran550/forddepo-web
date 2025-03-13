@@ -1,0 +1,5 @@
+export const UPDATE = "UPDATE_SETTINGS"
+export const RESET = "RESET_SETTINGS"
+export const SET_ADDRESS = "SET_ADDRESS"
+export const SET_LOCATION = "SET_LOCATION"
+export const SET_LOCATION_ID = "SET_LOCATION_ID"

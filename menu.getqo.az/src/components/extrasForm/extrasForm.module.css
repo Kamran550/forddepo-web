@@ -1,0 +1,84 @@
+.extrasWrapper {
+  margin-bottom: 10px
+}
+
+.w2 {
+  background-color: #fff;
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.extrasWrapper .extraTitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 14px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  text-transform: capitalize;
+}
+
+.extrasWrapper .extraGroup .radioGroup, .extrasWrapper .extraGroup .checkboxGroup {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  transition: all 0.2s;
+}
+.extrasWrapper .extraGroup .radioGroup .label, .extrasWrapper .extraGroup .checkboxGroup .label {
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+.extrasWrapper .extraGroup .radioGroup .label .text, .extrasWrapper .extraGroup .checkboxGroup .label .text {
+  color: var(--black);
+}
+.extrasWrapper .extraGroup .radioGroup .label .mute, .extrasWrapper .extraGroup .checkboxGroup .label .mute, .extrasWrapper .extraGroup .radioGroup .label .mute span, .extrasWrapper .extraGroup .checkboxGroup .label .mute span {
+  margin-left: 4px;
+  color: var(--secondary-text);
+}
+
+.checkboxGroup:hover .btn {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  opacity: 1;
+}
+.checkboxGroup:hover .symbol {
+  opacity: 0;
+  width: 0;
+}
+.counter {
+  display: flex;
+  align-items: center;
+}
+.counter .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--color-gray-stroke);
+  opacity: 0;
+  transition: opacity 0.2s;
+  border: none;
+}
+.counter .btn svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--dark-blue);
+}
+.counter .text {
+  margin: 0 6px;
+  font-weight: 500;
+  cursor: default;
+}
+.counter .symbol {
+  font-weight: 500;
+  opacity: 1;
+  cursor: default;
+  transition: opacity 0.2s;
+}
+

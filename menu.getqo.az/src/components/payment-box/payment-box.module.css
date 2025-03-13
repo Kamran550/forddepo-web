@@ -1,0 +1,29 @@
+.card {
+    padding: 14px 20px;
+    background: var(--color-white);
+    border-radius: 10px;
+    margin: 0 !important;
+}
+
+.container {
+    position: relative;
+}
+
+.loadingBox {
+    position: absolute;
+    inset: 0 -20px 0 0;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.flexbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btnWrapper {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    gap: 1rem;
+}

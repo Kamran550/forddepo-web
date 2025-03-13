@@ -1,0 +1,65 @@
+.wrapper {
+	 position: relative;
+	 display: block;
+	 width: 100%;
+	 padding-top: 100%;
+	 border-radius: 10px;
+	 overflow: hidden;
+	 transition: all 0.2s;
+}
+ .wrapper:hover {
+	 opacity: 0.7;
+}
+ .wrapper .header {
+	 position: absolute;
+	 top: 20px;
+	 left: 20px;
+	 display: flex;
+	 align-items: center;
+	 column-gap: 10px;
+	 width: 80%;
+	 z-index: 1;
+}
+ .wrapper .header .shopTitle {
+	 margin: 0;
+	 font-size: 14px;
+	 line-height: 17px;
+	 font-weight: 500;
+	 letter-spacing: -0.03px;
+	 color: #000;
+}
+ @media (max-width: 576px) {
+	 .wrapper .header {
+		 top: 12px;
+		 left: 12px;
+	}
+	 .wrapper .header .shopTitle {
+		 font-size: 12px;
+	}
+}
+ .wrapper .badge {
+	 position: absolute;
+	 bottom: 20px;
+	 left: 20px;
+	 width: fit-content;
+	 padding: 4px 12px;
+	 background-color: rgba(0, 0, 0, 0.5);
+	 border-radius: 100px;
+}
+ .wrapper .badge .text {
+	 font-size: 14px;
+	 line-height: 16px;
+	 letter-spacing: -0.5px;
+	 font-weight: 500;
+	 color: #fff;
+}
+ @media (max-width: 576px) {
+	 .wrapper .badge {
+		 bottom: 12px;
+		 left: 12px;
+	}
+	 .wrapper .badge .text {
+		 font-size: 12px;
+	}
+}
+ 

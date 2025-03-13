@@ -1,0 +1,47 @@
+.cardImage {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  position: relative;
+  margin-bottom: 10px;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 1.61/1;
+  border-radius: 1.5rem;
+}
+
+.cardImage span {
+  width: 100%;
+}
+
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center;
+  object-position: center;
+  box-shadow: var(--shadow-0);
+}
+
+.closeBtnContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.closeBtn {
+  background-color: var(--color-white) !important;
+
+  transform: rotate(45deg)
+}
+
+.btn {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    border-radius: 0.5rem !important;
+}
+
+.addIcon {
+  margin-left: 0.4rem !important;
+}

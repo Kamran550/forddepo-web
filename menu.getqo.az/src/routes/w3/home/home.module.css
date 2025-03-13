@@ -1,0 +1,78 @@
+.container {
+
+    padding: 0 1rem;
+}
+
+.title {
+    font-size: 55px;
+    line-height: 66px;
+    font-weight: 400;
+}
+
+.highlight {
+
+    font-weight: 600;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 20px 20px 0px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+
+.square {
+    aspect-ratio: 1;
+}
+
+.yellow {
+    background-color: #FED03F;
+}
+
+.blue {
+    background-color: #131560;
+}
+
+.green {
+    background-color: #3BAD8C;
+}
+
+.arrow {
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-black);
+    border: none;
+    width: 36px;
+    height: 36px;
+}
+
+.iconWrapper {
+    background-color: #fff;
+    opacity: 0.5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    aspect-ratio: 1;
+}
+
+.miniCardIcon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.buttonContainer {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    padding: 0 1rem;
+}

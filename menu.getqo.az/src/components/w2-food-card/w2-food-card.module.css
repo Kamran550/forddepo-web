@@ -1,0 +1,149 @@
+.wrapper {
+    position: relative;
+    display: block;
+    padding: 14px 12px 24px 12px;
+    background-color: var(--color-white);
+    border-radius: 10px;
+    margin-bottom: 10px
+}
+@media (max-width: 576px) {
+    .wrapper {
+        padding: 14px 12px;
+   }
+}
+.wrapper.shadow {
+    box-shadow: 0px 4px 8px rgba(137, 137, 137, 0.2);
+}
+.wrapper.active {
+    border-radius: 0px 10px 10px 0px;
+}
+.wrapper.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background-color: var(--color-w2primary);
+}
+.wrapper .header {
+    position: relative;
+    width: 100%;
+}
+.wrapper .header img {
+    border-radius: 10px;
+    transition: all 0.2s;
+    width: 100%;
+    aspect-ratio: 345 / 168;
+    object-fit: cover
+}
+.wrapper .two img {
+    aspect-ratio: 120/100;
+}
+.wrapper .header img:hover {
+    filter: brightness(110%);
+}
+.wrapper .body {
+    padding-top: 26px;
+}
+@media (max-width: 576px) {
+    .wrapper .body {
+        padding-top: 20px;
+   }
+}
+.wrapper .body .title {
+    margin: 0;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--black);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+@media (max-width: 576px) {
+    .wrapper .body .title {
+        font-size: 14px;
+        line-height: 17px;
+   }
+}
+.wrapper .body .text {
+    margin: 8px 0;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--secondary-text);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+@media (max-width: 576px) {
+    .wrapper .body .text {
+        margin-top: 5px;
+        margin-bottom: 10px;
+   }
+}
+.wrapper .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wrapper .footer span.oldPrice {
+    color: var(--red);
+    font-size: 14px;
+    text-decoration: line-through;
+}
+.wrapper .footer .price {
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 700;
+    color: var(--black);
+}
+@media (max-width: 576px) {
+    .wrapper .footer .price {
+        font-size: 16px;
+        line-height: 19px;
+   }
+}
+.wrapper .footer .bonus {
+    display: flex;
+    column-gap: 8px;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1;
+}
+.wrapper .footer .counter {
+     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 5px;
+    border: 1px solid var(--color-secondary-text);
+    border-radius: 5px;
+}
+
+.wrapper .footer .counter .counterBtn {
+    height: 38px;
+    padding: 0 10px;
+    border: none;
+    background: transparent
+}
+.wrapper .footer .counter .counterBtn svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--dark-blue);
+}
+.wrapper .footer .counter .disabled.counterBtn {
+    cursor: default;
+}
+.wrapper .footer .counter .disabled.counterBtn svg {
+    fill: var(--color-secondary-text);
+}
+.wrapper .footer .counter .count {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 600;
+    color: var(--dark-blue);
+}
