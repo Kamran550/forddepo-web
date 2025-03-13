@@ -11,27 +11,23 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.NEXT_PUBLIC_PROTOCOL,
-        hostname: process.env.NEXT_PUBLIC_API_HOSTNAME,
+        protocol: 'https',
+        hostname: 'demo-api.foodyman.org',
+        port: '',
+        pathname: '/**'
       },
       {
-        protocol: process.env.NEXT_PUBLIC_PROTOCOL,
-        hostname: process.env.NEXT_PUBLIC_STORAGE_HOSTNAME,
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**'
       },
       {
-        protocol: process.env.NEXT_PUBLIC_PROTOCOL,
-        hostname: "demo-api.foodyman.org",
-      },
-      {
-        protocol: process.env.NEXT_PUBLIC_PROTOCOL,
-        hostname: "lh3.googleusercontent.com",
-      },
-	    {
-        protocol: process.env.NEXT_PUBLIC_PROTOCOL,
-        hostname: "imageproxy.wolt.com", // Wolt'un image proxy servisi
-	pathname: "/**", // Tüm resim yollarını kapsar
-
-      },
+        protocol: 'https',
+        hostname: 'imageproxy.wolt.com',
+        port: '',
+        pathname: '/**'
+      }
     ],
     minimumCacheTTL: 3600,
     dangerouslyAllowSVG: true,
