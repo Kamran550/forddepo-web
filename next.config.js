@@ -13,31 +13,26 @@ const nextConfig = {
       {
         protocol: process.env.NEXT_PUBLIC_PROTOCOL,
         hostname: process.env.NEXT_PUBLIC_API_HOSTNAME,
-        port: '',
         pathname: '/**'
       },
       {
         protocol: process.env.NEXT_PUBLIC_PROTOCOL,
         hostname: process.env.NEXT_PUBLIC_STORAGE_HOSTNAME,
-        port: '',
         pathname: '/**'
       },
       {
         protocol: 'https',
         hostname: 'demo-api.foodyman.org',
-        port: '',
         pathname: '/**'
       },
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
-        port: '',
         pathname: '/**'
       },
       {
         protocol: 'https',
         hostname: 'imageproxy.wolt.com',
-        port: '',
         pathname: '/**'
       }
     ],
