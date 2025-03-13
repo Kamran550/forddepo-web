@@ -1,3 +1,6 @@
 [submodule "admin.getqo.az"]
 	path = admin.getqo.az
 	url = https://github.com/Getqo/getqo-admin.git
+[submodule "backend.getqo.az"]
+	path = backend.getqo.az
+	url = https://github.com/Getqo/getqo-backend.git
