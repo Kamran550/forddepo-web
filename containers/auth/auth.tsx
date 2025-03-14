@@ -60,7 +60,7 @@ export default function AuthContainer({ children }: Props) {
       </div>
       <div className={cls.hero}>
         <div className={cls.imgWrapper}>
-          <Image fill src="/images/welcome.jpg" alt="Welcome to foodyman" />
+          <Image fill src="/images/welcome.jpg" alt="Welcome to getqo" />
         </div>
       </div>
     </div>
