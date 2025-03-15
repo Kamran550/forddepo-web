@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import ModalContainer from "containers/modal/modal";
 import { DialogProps, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -13,12 +13,7 @@ import { useFormik } from "formik";
 import CompassDiscoverLineIcon from "remixicon-react/CompassDiscoverLineIcon";
 import { getAddressFromLocation } from "utils/getAddressFromLocation";
 import shopService from "services/shop";
-import {
-  InfiniteData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useAuth } from "contexts/auth/auth.context";
 import { AddressCreateData, IAddress } from "interfaces/address.interface";
 import addressService from "services/address";
@@ -49,17 +44,16 @@ export default function AddressModal({
 }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { updateAddress, updateLocation, location_id, updateLocationId } =
-    useSettings();
+  const { updateAddress, updateLocation, location_id, updateLocationId } = useSettings();
   const [location, setLocation] = useState({
     lat: Number(latlng.split(",")[0]),
     lng: Number(latlng.split(",")[1]),
   });
-  const inputRef = useRef<any>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const { isSuccess } = useQuery(["shopZones", location], () =>
     shopService.checkZone({
       address: { latitude: location.lat, longitude: location.lng },
-    }),
+    })
   );
 
   const queryClient = useQueryClient();
@@ -74,11 +68,9 @@ export default function AddressModal({
 
   const { mutate: deleteAddress, isLoading: isDeleting } = useMutation({
     mutationFn: (id: number) => addressService.delete(id),
-
     onMutate: async (id) => {
       await queryClient.cancelQueries("addresses");
       const prevAddresses = queryClient.getQueryData<IAddress[]>("addresses");
-
       queryClient.setQueryData<IAddress[] | undefined>("addresses", (old) => {
         if (!old) return prevAddresses;
         return old
@@ -94,6 +86,42 @@ export default function AddressModal({
       if (rest.onClose) rest.onClose({}, "backdropClick");
     },
   });
+
+  // Google Maps Places Autocomplete Entegrasyonu
+  useEffect(() => {
+    const initAutocomplete = () => {
+      if (!window.google || !inputRef.current) return;
+
+      const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+        types: ["address"], // Sadece adres türlerini al
+        componentRestrictions: { country: "az" }, // Azerbaycan ile sınırla
+        fields: ["formatted_address", "geometry"], // Adres ve koordinatları al
+        language: "az", // Azerbaycan Türkçesi
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place.formatted_address && place.geometry) {
+          const newLocation = {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+          };
+          setLocation(newLocation); // Haritayı güncelle
+          if (inputRef.current) inputRef.current.value = place.formatted_address;
+        }
+      });
+    };
+
+    if (window.google) {
+      initAutocomplete();
+    } else {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.async = true;
+      script.onload = initAutocomplete;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   function submitAddress(values: formValues) {
     if (!!editedAddress) {
@@ -125,7 +153,7 @@ export default function AddressModal({
             }
             if (rest.onClose) rest.onClose({}, "backdropClick");
           },
-        },
+        }
       );
       return;
     }
@@ -157,7 +185,7 @@ export default function AddressModal({
             updateLocation(`${location.lat},${location.lng}`);
             if (rest.onClose) rest.onClose({}, "backdropClick");
           },
-        },
+        }
       );
     } else {
       updateAddress(inputRef.current?.value);
@@ -174,7 +202,7 @@ export default function AddressModal({
       comment: editedAddress?.address?.comment,
       title: editedAddress?.title,
     },
-    onSubmit: (values: formValues, { setSubmitting }) => {
+    onSubmit: (values: formValues) => {
       submitAddress(values);
     },
     validate: (values: formValues) => {
@@ -184,10 +212,7 @@ export default function AddressModal({
   });
 
   function defineAddress() {
-    window.navigator.geolocation.getCurrentPosition(
-      defineLocation,
-      console.log,
-    );
+    window.navigator.geolocation.getCurrentPosition(defineLocation, console.log);
   }
 
   async function defineLocation(position: any) {
