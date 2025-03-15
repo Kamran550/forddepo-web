@@ -20,6 +20,22 @@ import addressService from "services/address";
 import { error, success, warning } from "components/alert/toast";
 import SecondaryButton from "components/button/secondaryButton";
 
+// Google Maps için manuel tür tanımı
+interface GoogleWindow extends Window {
+  google: {
+    maps: {
+      places: {
+        Autocomplete: new (
+          input: HTMLInputElement,
+          options?: { [key: string]: any }
+        ) => google.maps.places.Autocomplete;
+      };
+    };
+  };
+}
+
+declare let window: GoogleWindow;
+
 interface Props extends DialogProps {
   address?: string;
   latlng: string;
@@ -92,11 +108,11 @@ export default function AddressModal({
     const initAutocomplete = () => {
       if (!window.google || !inputRef.current) return;
 
-      const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
-        types: ["address"], // Sadece adres türlerini al
-        componentRestrictions: { country: "az" }, // Azerbaycan ile sınırla
-        fields: ["formatted_address", "geometry"], // Adres ve koordinatları al
-        language: "az", // Azerbaycan Türkçesi
+      const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
+        types: ["address"],
+        componentRestrictions: { country: "az" },
+        fields: ["formatted_address", "geometry"],
+        language: "az",
       });
 
       autocomplete.addListener("place_changed", () => {
@@ -106,7 +122,7 @@ export default function AddressModal({
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
           };
-          setLocation(newLocation); // Haritayı güncelle
+          setLocation(newLocation);
           if (inputRef.current) inputRef.current.value = place.formatted_address;
         }
       });
