@@ -21,6 +21,25 @@ import { error, success, warning } from "components/alert/toast";
 import SecondaryButton from "components/button/secondaryButton";
 
 // Google Maps için manuel tür tanımı
+declare namespace google {
+  namespace maps {
+    namespace places {
+      interface Autocomplete {
+        addListener(event: string, callback: () => void): void;
+        getPlace(): {
+          formatted_address?: string;
+          geometry?: {
+            location: {
+              lat: () => number;
+              lng: () => number;
+            };
+          };
+        };
+      }
+    }
+  }
+}
+
 interface GoogleWindow extends Window {
   google: {
     maps: {
