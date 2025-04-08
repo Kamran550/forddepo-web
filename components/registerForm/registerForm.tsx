@@ -8,6 +8,9 @@ import { useFormik } from "formik";
 import authService from "services/auth";
 import { error } from "components/alert/toast";
 import { useAuth } from "contexts/auth/auth.context";
+import { FormLabel } from "@mui/material";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 type RegisterViews = "REGISTER" | "VERIFY" | "COMPLETE";
 type Props = {
@@ -17,6 +20,7 @@ type Props = {
 
 interface formValues {
   email: string;
+  phone: string;
 }
 
 export default function RegisterForm({ onSuccess, changeView }: Props) {
@@ -30,6 +34,7 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
   const formik = useFormik({
     initialValues: {
       email: "",
+      phone: ""
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
       if (values.email?.includes("@")) {
@@ -109,7 +114,24 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
         </p>
       </div>
       <div className={cls.space} />
-      <TextInput
+      <FormLabel
+        sx={{
+          fontSize: "15px",
+          color: "var(--black)",
+          marginBottom: "15px"
+        }}
+      >
+        {t("phone")}
+      </FormLabel>
+      <PhoneInput
+        className={cls.phoneInputCustom}
+        name="phone"
+        international
+        defaultCountry="AZ"
+        value={formik.values.phone}
+        onChange={(value) => formik.setFieldValue("phone", value)}
+      />
+      {/* <TextInput
         name="email"
         label={isDemo ? t("email") : t("email.or.phone")}
         placeholder={t("type.here")}
@@ -117,7 +139,7 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
         onChange={formik.handleChange}
         error={!!formik.errors.email}
         helperText={formik.errors.email}
-      />
+      /> */}
       <div className={cls.space} />
       <div className={cls.action}>
         <PrimaryButton
