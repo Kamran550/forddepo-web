@@ -14,12 +14,12 @@ import { setCookie } from "utils/session";
 import { RegisterCredentials } from "interfaces/user.interface";
 
 type Props = {
-  email?: string;
+  phone?: string;
 };
 
 interface formValues {
   email?: string;
-  phone?: number;
+  phone?: string;
   firstname: string;
   lastname: string;
   password: string;
@@ -29,7 +29,7 @@ interface formValues {
   type?: string;
 }
 
-export default function RegisterDetailsForm({ email }: Props) {
+export default function RegisterDetailsForm({ phone }: Props) {
   const { t } = useTranslation();
   const { push, query } = useRouter();
   const { setUserData } = useAuth();
@@ -37,7 +37,8 @@ export default function RegisterDetailsForm({ email }: Props) {
 
   const formik = useFormik({
     initialValues: {
-      email,
+      email: "",
+      phone,
       gender: "male",
       firstname: "",
       lastname: "",
@@ -46,6 +47,8 @@ export default function RegisterDetailsForm({ email }: Props) {
       referral: referralCode,
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
+      console.log({ values });
+
       const body: RegisterCredentials = {
         ...values,
         referral: values.referral || undefined,
@@ -153,7 +156,11 @@ export default function RegisterDetailsForm({ email }: Props) {
             value={formik.values.gender}
             onChange={(e) => formik.setFieldValue("gender", e.target.value)}
           >
-            <FormControlLabel value="male" control={<Radio />} label={t("male")} />
+            <FormControlLabel
+              value="male"
+              control={<Radio />}
+              label={t("male")}
+            />
             <FormControlLabel
               value="female"
               control={<Radio />}

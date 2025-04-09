@@ -12,7 +12,7 @@ type RegisterViews = "REGISTER" | "VERIFY" | "COMPLETE";
 export default function Register({}: Props) {
   const [currentView, setCurrentView] = useState<RegisterViews>("REGISTER");
   const [verifyId, setVerifyId] = useState();
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [callback, setCallback] = useState(undefined);
   const handleChangeView = (view: RegisterViews) => setCurrentView(view);
   const renderView = () => {
@@ -21,8 +21,8 @@ export default function Register({}: Props) {
         return (
           <RegisterForm
             changeView={handleChangeView}
-            onSuccess={({ email, callback, verifyId }) => {
-              setEmail(email);
+            onSuccess={({ phone, callback, verifyId }) => {
+              setPhone(phone);
               setCallback(callback);
               setVerifyId(verifyId);
             }}
@@ -32,19 +32,19 @@ export default function Register({}: Props) {
         return (
           <OTPVerify
             changeView={handleChangeView}
-            email={email}
+            email={phone}
             callback={callback}
             setCallback={setCallback}
             verifyId={verifyId}
-            onSuccess={({ email, callback, verifyId }) => {
-              setEmail(email);
+            onSuccess={({ phone, callback, verifyId }) => {
+              setPhone(phone);
               setCallback(callback);
               setVerifyId(verifyId);
             }}
           />
         );
       case "COMPLETE":
-        return <RegisterDetailsForm email={email} />;
+        return <RegisterDetailsForm phone={phone} />;
       default:
         return (
           <RegisterForm

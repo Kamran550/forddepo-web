@@ -54,6 +54,8 @@ export default function OTPVerify({
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values: formValues, { setSubmitting }) => {
+      console.log({ values }, { email });
+
       if (email.includes("@")) {
         authService
           .verifyEmail(values)
@@ -145,7 +147,7 @@ export default function OTPVerify({
     <form className={cls.wrapper} onSubmit={formik.handleSubmit}>
       <div className={cls.header}>
         <h1 className={cls.title}>
-          {email.includes("@") ? t("verify.email") : t("verify.phone")}
+          {email?.includes("@") ? t("verify.email") : t("verify.phone")}
         </h1>
         <p className={cls.text}>
           {t("verify.text")} <i>{email}</i>

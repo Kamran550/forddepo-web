@@ -30,7 +30,7 @@ export interface IUser {
 
 export interface LoginCredentials {
   email?: string;
-  phone?: number;
+  phone?: number | string;
   password: string;
 }
 

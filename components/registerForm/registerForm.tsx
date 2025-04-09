@@ -39,7 +39,7 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
           .then((res) => {
             onSuccess({
               ...res,
-              email: values.phone,
+              phone: values.phone,
               verifyId: res.data?.verifyId,
             });
             changeView("VERIFY");
