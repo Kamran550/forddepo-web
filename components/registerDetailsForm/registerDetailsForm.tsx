@@ -12,7 +12,6 @@ import authService from "services/auth";
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { setCookie } from "utils/session";
 import { RegisterCredentials } from "interfaces/user.interface";
-import profileService from "../../services/profile";
 
 type Props = {
   email?: string;
@@ -35,9 +34,6 @@ export default function RegisterDetailsForm({ email }: Props) {
   const { push, query } = useRouter();
   const { setUserData } = useAuth();
   const referralCode: any = query.referral_code;
-
-  const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
 
   const formik = useFormik({
     initialValues: {
@@ -65,31 +61,6 @@ export default function RegisterDetailsForm({ email }: Props) {
           })
           .catch((err) => error(t(err.data.message)))
           .finally(() => setSubmitting(false));
-      } else {
-        const trimmedPhone = values.email?.replace(/[^0-9]/g, "");
-        body.email = undefined;
-        body.phone = Number(trimmedPhone);
-        if (isUsingCustomPhoneSignIn) {
-          profileService
-            .update(body)
-            .then(() => {
-              push("/");
-            })
-            .catch((err) => error(t(err.data.message)))
-            .finally(() => setSubmitting(false));
-        } else {
-          body.type = "firebase";
-          authService
-            .phoneRegisterComplete(body)
-            .then(({ data }) => {
-              const token = "Bearer" + " " + data.token;
-              setCookie("access_token", token);
-              setUserData(data.user);
-              push("/");
-            })
-            .catch((err) => error(t(err.data.message)))
-            .finally(() => setSubmitting(false));
-        }
       }
     },
     validate: (values: formValues) => {
@@ -99,6 +70,9 @@ export default function RegisterDetailsForm({ email }: Props) {
       }
       if (!values.lastname) {
         errors.lastname = t("required");
+      }
+      if (!values.email) {
+        errors.email = t("required");
       }
       if (!values.password) {
         errors.password = t("required");
@@ -149,30 +123,45 @@ export default function RegisterDetailsForm({ email }: Props) {
         </div>
       </div>
       <div className={cls.space} />
-      <FormLabel
-        sx={{
-          fontSize: "9px",
-          color: "var(--black)",
-          textTransform: "uppercase",
-        }}
-        id="demo-radio-buttons-group-label"
-      >
-        {t("gender")}
-      </FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        name="radio-buttons-group"
-        row
-        value={formik.values.gender}
-        onChange={(e) => formik.setFieldValue("gender", e.target.value)}
-      >
-        <FormControlLabel value="male" control={<Radio />} label={t("male")} />
-        <FormControlLabel
-          value="female"
-          control={<Radio />}
-          label={t("female")}
-        />
-      </RadioGroup>
+      <div className={cls.flex}>
+        <div className={cls.item}>
+          <TextInput
+            name="email"
+            label={t("email")}
+            placeholder={t("type.here")}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={!!formik.errors.email}
+            helperText={formik.errors.email}
+          />
+        </div>
+        <div className={cls.item}>
+          <FormLabel
+            sx={{
+              fontSize: "9px",
+              color: "var(--black)",
+              textTransform: "uppercase",
+            }}
+            id="demo-radio-buttons-group-label"
+          >
+            {t("gender")}
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            name="radio-buttons-group"
+            row
+            value={formik.values.gender}
+            onChange={(e) => formik.setFieldValue("gender", e.target.value)}
+          >
+            <FormControlLabel value="male" control={<Radio />} label={t("male")} />
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label={t("female")}
+            />
+          </RadioGroup>
+        </div>
+      </div>
       <div className={cls.space} />
       <TextInput
         name="referral"

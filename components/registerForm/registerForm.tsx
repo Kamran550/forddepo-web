@@ -2,7 +2,6 @@ import React from "react";
 import cls from "./registerForm.module.scss";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import TextInput from "components/inputs/textInput";
 import PrimaryButton from "components/button/primaryButton";
 import { useFormik } from "formik";
 import authService from "services/auth";
@@ -19,7 +18,6 @@ type Props = {
 };
 
 interface formValues {
-  email: string;
   phone: string;
 }
 
@@ -28,78 +26,52 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
   const { phoneNumberSignIn } = useAuth();
 
   const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
-  const isDemo = process.env.NEXT_PUBLIC_IS_DEMO_APP === "true";
+    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      phone: ""
+      phone: "",
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
-      if (values.email?.includes("@")) {
+      if (isUsingCustomPhoneSignIn) {
         authService
-          .register(values)
+          .register({ phone: values.phone })
           .then((res) => {
-            onSuccess({ ...res, email: values.email });
+            onSuccess({
+              ...res,
+              email: values.phone,
+              verifyId: res.data?.verifyId,
+            });
             changeView("VERIFY");
           })
           .catch(() => {
-            error(t("email.inuse"));
+            error(t("phone.number.inuse"));
           })
           .finally(() => {
             setSubmitting(false);
           });
       } else {
-        if (isUsingCustomPhoneSignIn) {
-          authService
-            .register({ phone: values.email })
-            .then((res) => {
-              onSuccess({
-                ...res,
-                email: values.email,
-                verifyId: res.data?.verifyId,
-              });
-              changeView("VERIFY");
-            })
-            .catch(() => {
-              error(t("phone.number.inuse"));
-            })
-            .finally(() => {
-              setSubmitting(false);
+        phoneNumberSignIn(values.phone)
+          .then((confirmationResult) => {
+            onSuccess({
+              phone: values.phone,
+              callback: confirmationResult,
             });
-        } else {
-          phoneNumberSignIn(values.email)
-            .then((confirmationResult) => {
-              onSuccess({
-                email: values.email,
-                callback: confirmationResult,
-              });
-              changeView("VERIFY");
-            })
-            .catch((err) => {
-              error(t("sms.not.sent"));
-            })
-            .finally(() => {
-              setSubmitting(false);
-            });
-        }
+            changeView("VERIFY");
+          })
+          .catch((err) => {
+            error(t("sms.not.sent"));
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       }
     },
 
     validate: (values: formValues) => {
       const errors = {} as formValues;
-      if (!values.email) {
-        errors.email = t("required");
-      }
-      if (
-        values.email.includes("@") &&
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-      ) {
-        errors.email = t("must.be.valid");
-      }
-      if (values.email?.includes(" ")) {
-        errors.email = t("should.not.includes.empty.space");
+      if (!values.phone) {
+        errors.phone = t("required");
       }
       return errors;
     },
@@ -115,10 +87,11 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
       </div>
       <div className={cls.space} />
       <FormLabel
+        id="phone"
         sx={{
           fontSize: "15px",
           color: "var(--black)",
-          marginBottom: "15px"
+          marginBottom: "15px",
         }}
       >
         {t("phone")}
@@ -131,15 +104,6 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
         value={formik.values.phone}
         onChange={(value) => formik.setFieldValue("phone", value)}
       />
-      {/* <TextInput
-        name="email"
-        label={isDemo ? t("email") : t("email.or.phone")}
-        placeholder={t("type.here")}
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        error={!!formik.errors.email}
-        helperText={formik.errors.email}
-      /> */}
       <div className={cls.space} />
       <div className={cls.action}>
         <PrimaryButton

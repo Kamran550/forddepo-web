@@ -49,7 +49,7 @@ export default function OTPVerify({
   const { phoneNumberSignIn } = useAuth();
 
   const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
+    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
   const formik = useFormik({
     initialValues: {},
