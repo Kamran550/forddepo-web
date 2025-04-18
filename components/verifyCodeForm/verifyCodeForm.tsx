@@ -46,7 +46,11 @@ export default function VerifyCodeForm({}: Props) {
           setUserData(data.user);
           push("/update-password");
         })
-        .catch((err) => error(t(err.statusCode)))
+        .catch((err) => {
+          console.log("error geldi:", err);
+
+          error(err?.data?.message || t("unknown.error"));
+        })
         .finally(() => setSubmitting(false));
       console.log("values => ", values);
     },
@@ -71,7 +75,7 @@ export default function VerifyCodeForm({}: Props) {
         onError: (err: any) => {
           error(err.message);
         },
-      }
+      },
     );
   };
 

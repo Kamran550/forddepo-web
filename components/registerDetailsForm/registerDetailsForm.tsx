@@ -62,7 +62,12 @@ export default function RegisterDetailsForm({ phone }: Props) {
             setUserData(data.user);
             push("/");
           })
-          .catch((err) => error(t(err.data.message)))
+          // .catch((err) => error(t(err.data.params?.email[0])))
+          .catch((err) => {
+            console.log({ err });
+
+            error(t(err.data.params?.email[0]));
+          })
           .finally(() => setSubmitting(false));
       }
     },

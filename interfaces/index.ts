@@ -1,3 +1,4 @@
+import { Address } from "cluster";
 import { IUser } from "./user.interface";
 
 export interface Product {
@@ -341,6 +342,12 @@ export interface Currency {
   title: string;
   position: "after" | "before";
 }
+
+export type AddressFields = {
+  office: string;
+  house: string;
+};
+
 
 export interface OrderFormValues {
   coupon?: string;

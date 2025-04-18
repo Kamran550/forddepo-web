@@ -8,6 +8,7 @@ export const MAP_API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY;
 export const G_TAG = process.env.NEXT_PUBLIC_GOOGLE_MEASUREMENT_ID;
 export const UNPAID_STATUSES = ["progress", "canceled", "rejected"];
 export const EXTERNAL_PAYMENTS = [
+  "odero",
   "stripe",
   "razorpay",
   "paystack",

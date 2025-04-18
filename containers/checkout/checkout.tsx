@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import cls from "./checkout.module.scss";
-import { IShop, OrderFormValues, Payment } from "interfaces";
+import { IAddress, IShop, OrderFormValues, Payment } from "interfaces";
 import CheckoutPayment from "containers/checkoutPayment/checkoutPayment";
 import ShopLogoBackground from "components/shopLogoBackground/shopLogoBackground";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import { useSettings } from "contexts/settings/settings.context";
 import orderService from "services/order";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -97,6 +97,8 @@ export default function CheckoutContainer({
     },
     // enableReinitialize: true,
     onSubmit: (values: OrderFormValues) => {
+      console.log({ values });
+
       const trimmedPhone = values.phone?.replace(/[^0-9]/g, "");
       if (!values.payment_type) {
         warning(t("choose.payment.method"));
@@ -153,17 +155,35 @@ export default function CheckoutContainer({
         tips: values?.tips,
       };
       if (EXTERNAL_PAYMENTS.includes(formik.values.payment_type?.tag || "")) {
+        console.log("metod:", formik.values.payment_type);
+
+        console.log("ife dusdu");
+
         externalPay({
           name: formik.values.payment_type?.tag,
           data: payload,
         });
       } else {
+        console.log("else dusdu odero olanda");
+
         payload.payment_id = values.payment_type?.id;
         createOrder(payload);
       }
     },
-    validate: () => {
-      return {} as OrderFormValues;
+    validate: (values) => {
+      console.log("validate yoxlanilir");
+      const errors: any = {};
+
+      if (
+        (!values.address?.office || values.address.office.trim() === "") &&
+        (!values.address?.house || values.address.house.trim() === "")
+      ) {
+        errors.address = {
+          office: t("validation.required"),
+          house: t("validation.required"),
+        };
+      }
+      return errors;
     },
   });
 
@@ -183,17 +203,26 @@ export default function CheckoutContainer({
     mutationFn: (payload: any) =>
       paymentService.payExternal(payload.name, payload.data),
     onSuccess: (data, payload) => {
+      console.log({ payload });
+      console.log({ data });
+
       if (payload.name === "pay-fast") {
         if (data?.data?.data?.sandbox) {
+          console.log("if one");
+
           setPayFastUrl(
             `https://sandbox.payfast.co.za/onsite/engine.js/?uuid=${data?.data?.data?.uuid}`,
           );
         } else {
+          console.log("else two");
+
           setPayFastUrl(
             `https://www.payfast.co.za/onsite/engine.js/?uuid=${data?.data?.data?.uuid}`,
           );
         }
       } else {
+        console.log("else three");
+
         window.location.replace(data.data.data.url);
       }
     },

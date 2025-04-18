@@ -16,6 +16,8 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const { payload } = action;
+      console.log("salam");
+
       const existingIndex = state.cartItems.findIndex(
         (item) =>
           item?.stock?.id === payload?.stock?.id &&
