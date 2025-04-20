@@ -39,7 +39,7 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
     onSubmit: (values: formValues, { setSubmitting }) => {
       if (isUsingCustomPhoneSignIn) {
         const formattedPhone = formatPhoneNumber(values.phone);
-        
+
         authService
           .register({ phone: formattedPhone })
           .then((res) => {
@@ -53,7 +53,7 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
           .catch((e) => {
             console.log({ e });
 
-            error(t(e.data?.params?.phone[0]));
+            error(t("error occured"));
           })
           .finally(() => {
             setSubmitting(false);
