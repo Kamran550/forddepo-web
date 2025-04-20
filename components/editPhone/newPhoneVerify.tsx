@@ -40,9 +40,14 @@ export default function NewPhoneVerify({
   const currency = useAppSelector(selectCurrency);
   const queryClient = useQueryClient();
 
+  const isUsingCustomPhoneSignIn =
+    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
+
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values: formValues, { setSubmitting }) => {
+      console.log({ values });
+
       const payload = {
         firstname: user.firstname,
         lastname: user.lastname,
@@ -50,27 +55,61 @@ export default function NewPhoneVerify({
         gender: user.gender,
         phone: parseInt(phone),
       };
-      callback
-        .confirm(values.verifyId || "")
-        .then(() => {
-          profileService
-            .updatePhone(payload)
-            .then((res) => {
-              setUserData(res.data);
-              success(t("verified"));
-              handleClose();
-              queryClient.invalidateQueries(["profile", currency?.id]);
-            })
-            .catch((err) => {
-              if (err?.data?.params?.phone) {
-                error(err?.data?.params?.phone.at(0));
-                return;
-              }
-              error(t('some.thing.went.wrong'))
-            })
-            .finally(() => setSubmitting(false));
-        })
-        .catch(() => error(t("verify.error")));
+      console.log("Confirming OTP...");
+
+      if (isUsingCustomPhoneSignIn) {
+
+        
+
+        profileService
+          .updatePhone(payload)
+          .then((res) => {
+            setUserData(res.data);
+            success(t("verified"));
+            handleClose();
+            queryClient.invalidateQueries(["profile", currency?.id]);
+          })
+          .catch((err) => {
+            console.log("error occured");
+
+            if (err?.data?.params?.phone) {
+              error(err?.data?.params?.phone.at(0));
+              return;
+            }
+            error(t("some.thing.went.wrong"));
+          })
+          .finally(() => setSubmitting(false));
+      }
+
+      // callback
+      //   .confirm(values.verifyId || "")
+      //   .then(() => {
+      //     console.log("OTP confirmed");
+
+      //     profileService
+      //       .updatePhone(payload)
+      //       .then((res) => {
+      //         setUserData(res.data);
+      //         success(t("verified"));
+      //         handleClose();
+      //         queryClient.invalidateQueries(["profile", currency?.id]);
+      //       })
+      //       .catch((err) => {
+      //         console.log("error occured");
+
+      //         if (err?.data?.params?.phone) {
+      //           error(err?.data?.params?.phone.at(0));
+      //           return;
+      //         }
+      //         error(t("some.thing.went.wrong"));
+      //       })
+      //       .finally(() => setSubmitting(false));
+      //   })
+      //   .catch(() => {
+      //     console.log("error 2 occured");
+
+      //     error(t("verify.error"));
+      //   });
     },
     validate: (values: formValues) => {
       const errors: formValues = {};
@@ -100,6 +139,7 @@ export default function NewPhoneVerify({
     <form className={cls.wrapper} onSubmit={formik.handleSubmit}>
       <div className={cls.header}>
         <h1 className={cls.title}>{t("verify.phone")}</h1>
+        <p>verify et</p>
         <p className={cls.text}>
           {t("verify.text")} <i>{phone}</i>
         </p>

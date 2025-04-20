@@ -7,6 +7,8 @@ import { useFormik } from "formik";
 import { error } from "components/alert/toast";
 import { useAuth } from "contexts/auth/auth.context";
 import authService from "../../services/auth";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 type EditPhoneViews = "EDIT" | "VERIFY";
 type Props = {
@@ -20,10 +22,10 @@ interface formValues {
 
 export default function InsertNewPhone({ onSuccess, changeView }: Props) {
   const { t } = useTranslation();
-  const { phoneNumberSignIn } = useAuth();
+  const { phoneNumberSignIn, user } = useAuth();
 
   const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
+    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +33,25 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
       const trimmedPhone = values.phone.replace(/[^0-9]/g, "");
+
       if (isUsingCustomPhoneSignIn) {
+        authService
+          .resendPhone({ phone: trimmedPhone })
+          .then((res) => {
+            onSuccess({
+              ...res,
+              phone: values.phone,
+              verifyId: res.data?.verifyId,
+            });
+            changeView("VERIFY");
+          })
+          .catch((e) => {
+            console.log("error bash verdi", { e });
+            error(t(e.data?.params?.phone[0]));
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       } else {
         phoneNumberSignIn(values.phone)
           .then((confirmationResult) => {
@@ -68,7 +88,7 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
         <h1 className={cls.title}>{t("edit.phone")}</h1>
       </div>
       <div className={cls.space} />
-      <TextInput
+      {/* <TextInput
         name="phone"
         label={t("phone")}
         placeholder={t("type.here")}
@@ -77,7 +97,16 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
         error={!!formik.errors.phone}
         helperText={formik.errors.phone}
         required
+      /> */}
+      <PhoneInput
+        className={cls.phoneInputCustom}
+        name="phone"
+        international
+        defaultCountry="AZ"
+        value={formik.values.phone}
+        onChange={(value) => formik.setFieldValue("phone", value)}
       />
+
       <div className={cls.space} />
       <div className={cls.action}>
         <PrimaryButton

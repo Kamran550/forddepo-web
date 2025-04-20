@@ -28,14 +28,20 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
   const isUsingCustomPhoneSignIn =
     process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
+  const formatPhoneNumber = (phone: string) => {
+    return phone.replace(/^\+994/, "994"); // +994 ilə başlayan hissəni 994 ilə əvəz edir
+  };
+
   const formik = useFormik({
     initialValues: {
       phone: "",
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
       if (isUsingCustomPhoneSignIn) {
+        const formattedPhone = formatPhoneNumber(values.phone);
+        
         authService
-          .register({ phone: values.phone })
+          .register({ phone: formattedPhone })
           .then((res) => {
             onSuccess({
               ...res,
@@ -44,8 +50,10 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
             });
             changeView("VERIFY");
           })
-          .catch(() => {
-            error(t("phone.number.inuse"));
+          .catch((e) => {
+            console.log({ e });
+
+            error(t(e.data?.params?.phone[0]));
           })
           .finally(() => {
             setSubmitting(false);

@@ -23,6 +23,8 @@ import dayjs from "dayjs";
 import { useAuth } from "contexts/auth/auth.context";
 import FallbackImage from "components/fallbackImage/fallbackImage";
 import PhoneInputWithVerification from "components/inputs/phoneInputWithVerification";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const ModalContainer = dynamic(() => import("containers/modal/modal"));
 const MobileDrawer = dynamic(() => import("containers/drawer/mobileDrawer"));
@@ -51,7 +53,7 @@ export default function ProfileContainer({ data }: Props) {
   const { setUserData } = useAuth();
 
   const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
+    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
   const { mutate: upload, isLoading: isUploading } = useMutation({
     mutationFn: (data: any) => galleryService.upload(data),
@@ -117,6 +119,7 @@ export default function ProfileContainer({ data }: Props) {
     <div className={cls.root}>
       <div className={`container ${cls.container}`}>
         <div className={cls.header}>
+          <h1>Menim prof</h1>
           <h1 className={cls.title}>{t("profile")}</h1>
         </div>
         <form onSubmit={formik.handleSubmit}>
@@ -200,6 +203,15 @@ export default function ProfileContainer({ data }: Props) {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
+                  {/* <PhoneInput
+                    className={cls.phoneInputCustom}
+                    name="phone"
+                    international
+                    defaultCountry="AZ"
+                    value={formik.values.phone}
+                    onChange={(value) => formik.setFieldValue("phone", value)}
+                  /> */}
+
                   <PhoneInputWithVerification
                     name="phone"
                     label={t("phone")}

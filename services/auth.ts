@@ -37,6 +37,7 @@ const authService = {
     request.post("/auth/verify/phone", data),
   forgotPasswordPhone: (data: any) =>
     request.post(`auth/forgot/password/confirm`, data),
+  resendPhone: (data: any) => request.post("/auth/resend-phone", data),
 };
 
 export default authService;
