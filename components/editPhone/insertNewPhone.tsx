@@ -46,8 +46,7 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
             changeView("VERIFY");
           })
           .catch((e) => {
-            console.log("error bash verdi", { e });
-            error(t(e.data?.params?.phone[0]));
+            error(t("sms not sent"));
           })
           .finally(() => {
             setSubmitting(false);
