@@ -151,7 +151,7 @@ export default function CheckoutPayment({
             <BankCardLineIcon />
             <span className={cls.text}>
               {payment_type ? (
-                payment_type.tag === "cash" ? (
+                payment_type.tag === "cash" || payment_type.tag === "wallet" ? (
                   <span style={{ textTransform: "capitalize" }}>
                     {t(payment_type?.tag)}
                   </span>

@@ -45,7 +45,9 @@ export default function PaymentMethod({
             <label className={cls.label} htmlFor={item.tag}>
               <span className={cls.text}>
                 {" "}
-                {item.tag === "cash" ? t(item.tag) : t("card")}
+                {item.tag === "cash" || item.tag === "wallet"
+                  ? t(item.tag)
+                  : t("card")}
               </span>
             </label>
           </div>
