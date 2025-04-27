@@ -151,13 +151,19 @@ export default function CheckoutPayment({
             <BankCardLineIcon />
             <span className={cls.text}>
               {payment_type ? (
-                <span style={{ textTransform: "capitalize" }}>
-                  {t(payment_type?.tag)}
-                </span>
+                payment_type.tag === "cash" ? (
+                  <span style={{ textTransform: "capitalize" }}>
+                    {t(payment_type?.tag)}
+                  </span>
+                ) : (
+                  <span style={{ textTransform: "capitalize" }}>
+                    {t("card")}
+                  </span>
+                )
               ) : (
                 t("payment.method")
               )}
-            </span>
+            </span>{" "}
           </div>
           <button className={cls.action} onClick={handleOpenPaymentMethod}>
             {t("edit")}

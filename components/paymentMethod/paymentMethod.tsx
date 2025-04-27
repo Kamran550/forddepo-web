@@ -43,7 +43,10 @@ export default function PaymentMethod({
           <div key={item.id} className={cls.row}>
             <RadioInput {...controlProps(item.tag)} />
             <label className={cls.label} htmlFor={item.tag}>
-              <span className={cls.text}>{t(item.tag)}</span>
+              <span className={cls.text}>
+                {" "}
+                {item.tag === "cash" ? t(item.tag) : t("card")}
+              </span>
             </label>
           </div>
         ))}
