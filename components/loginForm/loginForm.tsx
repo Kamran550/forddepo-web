@@ -31,7 +31,7 @@ export default function LoginForm({}: Props) {
   const { t } = useTranslation();
   const { push } = useRouter();
   const { setUserData } = useAuth();
-  const [isPhoneInput, setIsPhoneInput] = useState(false); // Telefon inputu açmaq üçün state
+  const [isPhoneInput, setIsPhoneInput] = useState(true); // Telefon inputu açmaq üçün state
 
   const isDemo = process.env.NEXT_PUBLIC_IS_DEMO_APP === "true";
 
@@ -151,6 +151,7 @@ export default function LoginForm({}: Props) {
             className={cls.phoneInputCustom}
             name="phone"
             label={t("phone")}
+            id="selectOpt"
             international
             placeholder={t("type.here")}
             defaultCountry="AZ"
