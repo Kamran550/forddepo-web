@@ -1,9 +1,13 @@
+import FreeDeliveryModal from "components/freeDeliveryModal/freeDeliveryModal";
 import SEO from "components/seo";
 import FooterMenu from "containers/footerMenu/footerMenu";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import informationService from "services/information";
 import createSettings from "utils/createSettings";
+import { closeFreeDeliveryModal } from "redux/slices/modal";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "redux/store";
 
 const uiTypes = {
   "1": dynamic(() => import("containers/homev1/homev1")),
@@ -17,10 +21,28 @@ type HomeProps = {
 };
 
 export default function Home({ uiType = "1" }: HomeProps) {
+  const dispatch = useDispatch();
+
+  const showPopup = useSelector(
+    (state: RootState) => state.modal.showFreeDeliveryModal,
+  );
+  const freeCount = useSelector(
+    (state: RootState) => state.modal.freeDeliveryCount,
+  );
+
+
   const Ui = uiTypes[uiType];
   const Homev1 = uiTypes["1"];
   return (
     <>
+
+      {showPopup && freeCount !== null && (
+        <FreeDeliveryModal
+          count={freeCount}
+          onClose={() => dispatch(closeFreeDeliveryModal())}
+        />
+      )}
+
       <SEO />
       {!!Ui ? <Ui /> : <Homev1 />}
       <FooterMenu />

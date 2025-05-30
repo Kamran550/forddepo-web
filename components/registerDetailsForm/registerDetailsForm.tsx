@@ -12,6 +12,8 @@ import authService from "services/auth";
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { setCookie } from "utils/session";
 import { RegisterCredentials } from "interfaces/user.interface";
+import { showFreeDeliveryModal } from "redux/slices/modal";
+import { useDispatch } from "react-redux";
 
 type Props = {
   phone?: string;
@@ -34,6 +36,8 @@ export default function RegisterDetailsForm({ phone }: Props) {
   const { push, query } = useRouter();
   const { setUserData } = useAuth();
   const referralCode: any = query.referral_code;
+  const dispatch = useDispatch();
+
 
   const formik = useFormik({
     initialValues: {
@@ -60,13 +64,18 @@ export default function RegisterDetailsForm({ phone }: Props) {
             const token = "Bearer" + " " + data.token;
             setCookie("access_token", token);
             setUserData(data.user);
+
+            if (data?.user?.free_delivery_count > 0) {
+              dispatch(showFreeDeliveryModal(data.user.free_delivery_count));
+
+              setTimeout(() => {
+                push("/");
+              }, 100);
+            }
             push("/");
           })
-          // .catch((err) => error(t(err.data.params?.email[0])))
           .catch((err) => {
-            console.log({ err });
-
-            error(t(err.data.params?.email[0]));
+            error(t(err.data.message));
           })
           .finally(() => setSubmitting(false));
       }

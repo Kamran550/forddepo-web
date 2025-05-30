@@ -119,7 +119,6 @@ export default function ProfileContainer({ data }: Props) {
     <div className={cls.root}>
       <div className={`container ${cls.container}`}>
         <div className={cls.header}>
-          <h1>Menim prof</h1>
           <h1 className={cls.title}>{t("profile")}</h1>
         </div>
         <form onSubmit={formik.handleSubmit}>
