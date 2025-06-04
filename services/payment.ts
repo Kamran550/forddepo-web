@@ -10,6 +10,8 @@ const paymentService = {
     request.get(`/dashboard/user/order-${type}-process`, { params }),
   parcelTransaction: (id: number, data: any) =>
     request.post(`/payments/parcel-order/${id}/transactions`, data),
+  getPaymentsForUser: (params?: any): Promise<Paginate<Payment>> =>
+    request.get(`/rest/payments/user`, { params }),
 };
 
 export default paymentService;

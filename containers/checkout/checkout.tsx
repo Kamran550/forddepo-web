@@ -52,7 +52,7 @@ export default function CheckoutContainer({
     process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
 
   const { data: payments } = useQuery("payments", () =>
-    paymentService.getAll(),
+    paymentService.getPaymentsForUser(),
   );
 
   const { paymentType, paymentTypes } = useMemo(() => {

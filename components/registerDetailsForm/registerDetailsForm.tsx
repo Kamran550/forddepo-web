@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import cls from "./registerDetailsForm.module.scss";
 import { useTranslation } from "react-i18next";
 import TextInput from "components/inputs/textInput";
@@ -9,11 +9,23 @@ import { useAuth } from "contexts/auth/auth.context";
 import { useRouter } from "next/router";
 import { error } from "components/alert/toast";
 import authService from "services/auth";
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import { setCookie } from "utils/session";
 import { RegisterCredentials } from "interfaces/user.interface";
 import { showFreeDeliveryModal } from "redux/slices/modal";
 import { useDispatch } from "react-redux";
+import InfoIcon from "@mui/icons-material/Info";
 
 type Props = {
   phone?: string;
@@ -38,6 +50,10 @@ export default function RegisterDetailsForm({ phone }: Props) {
   const referralCode: any = query.referral_code;
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const formik = useFormik({
     initialValues: {
@@ -184,7 +200,75 @@ export default function RegisterDetailsForm({ phone }: Props) {
         </div>
       </div>
       <div className={cls.space} />
-      <TextInput
+      <div style={{ position: "relative", marginBottom: "2rem" }}>
+        {/* TextInput - normal input kimi */}
+        <TextInput
+          name="referral"
+          label={t("referral")}
+          placeholder={t("type.here")}
+          value={formik.values.referral}
+          onChange={formik.handleChange}
+          error={!!formik.errors.referral}
+          helperText={formik.errors.referral}
+          autoComplete="off"
+        />
+
+        {/* Info düyməsi */}
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            cursor: "pointer",
+            color: "#888",
+          }}
+          onClick={handleOpen}
+          title="Referal kod nədir?"
+        >
+          <InfoIcon fontSize="small" />
+        </div>
+
+        {/* Modal (Dialog) */}
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              padding: 2,
+              minWidth: 300,
+              boxShadow: 6,
+            },
+          }}
+        >
+          <DialogTitle sx={{ fontWeight: 600, fontSize: "1.25rem" }}>
+            Referal kod nədir?
+          </DialogTitle>
+
+          <DialogContent dividers>
+            <Typography variant="body1" gutterBottom>
+              Sizi GetQo-ya dəvət edən şəxsin kodudur.
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              📌 <strong>Nümunə:</strong>
+              <br />
+              Kod: <code>ABCD1234</code> → Sizə və dostunuza{" "}
+              <strong>1 AZN</strong> balans təqdim edir.
+              <br />
+              <br />
+              Kodunuz yoxdursa, bu sahəni boş buraxa bilərsiniz.
+            </Typography>
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleClose} variant="contained" size="small">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+
+      {/* <TextInput
         name="referral"
         label={t("referral")}
         placeholder={t("type.here")}
@@ -193,7 +277,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
         error={!!formik.errors.referral}
         helperText={formik.errors.referral}
         autoComplete="off"
-      />
+      /> */}
       <div className={cls.space} />
       <PasswordInput
         name="password"
