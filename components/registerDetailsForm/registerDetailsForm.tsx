@@ -82,8 +82,6 @@ export default function RegisterDetailsForm({ phone }: Props) {
             setUserData(data.user);
 
             if (data?.user?.free_delivery_count > 0) {
-              console.log("free delivery ucun ife girdi");
-
               dispatch(showFreeDeliveryModal(data.user.free_delivery_count));
 
               setTimeout(() => {
@@ -244,27 +242,26 @@ export default function RegisterDetailsForm({ phone }: Props) {
           }}
         >
           <DialogTitle sx={{ fontWeight: 600, fontSize: "1.25rem" }}>
-            Referal kod nədir?
+            {t("referral.title")}
           </DialogTitle>
 
           <DialogContent dividers>
             <Typography variant="body1" gutterBottom>
-              Sizi GetQo-ya dəvət edən şəxsin kodudur.
+              {t("referral.description")}.
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              📌 <strong>Nümunə:</strong>
+              📌 <strong>{t("referral.example_label")}:</strong>
               <br />
-              Kod: <code>ABCD1234</code> → Sizə və dostunuza{" "}
-              <strong>1 AZN</strong> balans təqdim edir.
+                {t("referral.example_text")}
               <br />
               <br />
-              Kodunuz yoxdursa, bu sahəni boş buraxa bilərsiniz.
+              {t("referral.optional_note")}
             </Typography>
           </DialogContent>
 
           <DialogActions>
             <Button onClick={handleClose} variant="contained" size="small">
-              OK
+              {t("referral.ok_button")}
             </Button>
           </DialogActions>
         </Dialog>

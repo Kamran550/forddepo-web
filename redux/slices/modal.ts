@@ -18,8 +18,8 @@ const modalSlice = createSlice({
       console.log("my actions:", action);
 
       state.showFreeDeliveryModal = true;
-      // state.freeDeliveryCount = action.payload;
-      state.freeDeliveryCount = 2;
+      state.freeDeliveryCount = action.payload;
+      // state.freeDeliveryCount = 2;
     },
     closeFreeDeliveryModal(state) {
       state.showFreeDeliveryModal = false;
