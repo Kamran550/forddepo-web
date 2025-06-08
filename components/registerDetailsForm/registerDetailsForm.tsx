@@ -82,6 +82,8 @@ export default function RegisterDetailsForm({ phone }: Props) {
             setUserData(data.user);
 
             if (data?.user?.free_delivery_count > 0) {
+              console.log("free delivery ucun ife girdi");
+
               dispatch(showFreeDeliveryModal(data.user.free_delivery_count));
 
               setTimeout(() => {
