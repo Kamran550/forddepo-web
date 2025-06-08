@@ -242,7 +242,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
           }}
         >
           <DialogTitle sx={{ fontWeight: 600, fontSize: "1.25rem" }}>
-            {t("referral.title")}
+            {t("referral.titleeeee")}
           </DialogTitle>
 
           <DialogContent dividers>
