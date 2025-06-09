@@ -45,8 +45,7 @@
     width: 100%;
   }
 }
-
-[data-theme="dark"] {
+:global([data-theme="dark"]) {
   .infoBtn {
     color: #bbb;
 
