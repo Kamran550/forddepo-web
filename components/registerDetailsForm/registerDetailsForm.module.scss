@@ -46,36 +46,36 @@
   }
 }
 
-// [data-theme="dark"] {
-//   .infoBtn {
-//     color: #bbb;
+[data-theme="dark"] {
+  .infoBtn {
+    color: #bbb;
 
-//     &:hover {
-//       color: #ddd;
-//     }
-//   }
+    &:hover {
+      color: #ddd;
+    }
+  }
 
-//   .referalDialog {
-//     background-color: #1e1e1e;
-//     color: #e0e0e0;
+  .referalDialog {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
 
-//     .MuiDialogTitle-root {
-//       color: #ffffff;
-//     }
+    .MuiDialogTitle-root {
+      color: #ffffff;
+    }
 
-//     .MuiDialogContent-root {
-//       color: #cccccc;
-//     }
+    .MuiDialogContent-root {
+      color: #cccccc;
+    }
 
-//     .MuiDialogActions-root {
-//       button {
-//         background-color: #2d2d2d;
-//         color: #ffffff;
+    .MuiDialogActions-root {
+      button {
+        background-color: #2d2d2d;
+        color: #ffffff;
 
-//         &:hover {
-//           background-color: #3a3a3a;
-//         }
-//       }
-//     }
-//   }
-// }
+        &:hover {
+          background-color: #3a3a3a;
+        }
+      }
+    }
+  }
+}

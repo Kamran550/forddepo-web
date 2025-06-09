@@ -215,7 +215,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
 
         {/* Info düyməsi */}
         <div
-          // className={cls.infoBtn}
+          className={cls.infoBtn}
           style={{
             position: "absolute",
             top: "10px",
@@ -234,7 +234,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
           open={open}
           onClose={handleClose}
           PaperProps={{
-            // className: cls.referalDialog,
+            className: cls.referalDialog,
             sx: {
               borderRadius: 3,
               padding: 2,
