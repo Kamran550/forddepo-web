@@ -7,7 +7,6 @@ import {
 import Avatar from "components/avatar";
 import dayjs from "dayjs";
 import useLocale from "hooks/useLocale";
-import { useTranslation } from "react-i18next";
 
 type Props = {
   data: IUserPushNotification;
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export default function NotificationCenterItem({ data, handleClick }: Props) {
-  const { t } = useTranslation();
+  const { t } = useLocale();
 
   const renderTitle = () => {
     switch (data.type) {
