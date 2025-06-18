@@ -2,28 +2,31 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ModalState {
   showFreeDeliveryModal: boolean;
-  freeDeliveryCount: number | null;
+  freeDelivery: {
+    count: number;
+    date: string;
+  } | null;
 }
 
 const initialState: ModalState = {
   showFreeDeliveryModal: false,
-  freeDeliveryCount: null,
+  freeDelivery: null,
 };
 
 const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    showFreeDeliveryModal(state, action: PayloadAction<number>) {
-      console.log("my actions:", action);
-
+    showFreeDeliveryModal(
+      state,
+      action: PayloadAction<{ count: number; date: string }>,
+    ) {
       state.showFreeDeliveryModal = true;
-      state.freeDeliveryCount = action.payload;
-      // state.freeDeliveryCount = 2;
+      state.freeDelivery  = action.payload;
     },
     closeFreeDeliveryModal(state) {
       state.showFreeDeliveryModal = false;
-      state.freeDeliveryCount = null;
+      state.freeDelivery  = null;
     },
   },
 });

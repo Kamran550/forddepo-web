@@ -80,9 +80,20 @@ export default function RegisterDetailsForm({ phone }: Props) {
             const token = "Bearer" + " " + data.token;
             setCookie("access_token", token);
             setUserData(data.user);
+            console.log("data useri:", data.user);
 
-            if (data?.user?.free_delivery_count > 0) {
-              dispatch(showFreeDeliveryModal(data.user.free_delivery_count));
+            const freeDelivery = data?.user?.free_delivery;
+            console.log({ freeDelivery });
+
+            if (freeDelivery) {
+              console.log("dispatch ise dusdu");
+
+              dispatch(
+                showFreeDeliveryModal({
+                  count: freeDelivery.count,
+                  date: freeDelivery.date,
+                }),
+              );
 
               setTimeout(() => {
                 push("/");
@@ -244,7 +255,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
           }}
         >
           <DialogTitle sx={{ fontWeight: 600, fontSize: "1.25rem" }}>
-            {t("referral.title")}
+            {t("referral-info.title")}
           </DialogTitle>
 
           <DialogContent dividers>

@@ -26,19 +26,15 @@ export default function Home({ uiType = "1" }: HomeProps) {
   const showPopup = useSelector(
     (state: RootState) => state.modal.showFreeDeliveryModal,
   );
-  const freeCount = useSelector(
-    (state: RootState) => state.modal.freeDeliveryCount,
-  );
-
+  const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
 
   const Ui = uiTypes[uiType];
   const Homev1 = uiTypes["1"];
   return (
     <>
-
       {showPopup && freeCount !== null && (
         <FreeDeliveryModal
-          count={freeCount}
+          freeDelivery={freeCount}
           onClose={() => dispatch(closeFreeDeliveryModal())}
         />
       )}
