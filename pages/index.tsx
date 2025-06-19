@@ -1,4 +1,5 @@
 import FreeDeliveryModal from "components/freeDeliveryModal/freeDeliveryModal";
+import { AnimatePresence } from "framer-motion";
 import SEO from "components/seo";
 import FooterMenu from "containers/footerMenu/footerMenu";
 import { GetServerSideProps } from "next";
@@ -32,12 +33,14 @@ export default function Home({ uiType = "1" }: HomeProps) {
   const Homev1 = uiTypes["1"];
   return (
     <>
-      {showPopup && freeCount !== null && (
-        <FreeDeliveryModal
-          freeDelivery={freeCount}
-          onClose={() => dispatch(closeFreeDeliveryModal())}
-        />
-      )}
+      <AnimatePresence>
+        {showPopup && freeCount !== null && (
+          <FreeDeliveryModal
+            freeDelivery={freeCount}
+            onClose={() => dispatch(closeFreeDeliveryModal())}
+          />
+        )}
+      </AnimatePresence>
 
       <SEO />
       {!!Ui ? <Ui /> : <Homev1 />}
