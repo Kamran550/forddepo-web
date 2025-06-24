@@ -57,7 +57,6 @@ export default function ProtectedCartButton({}: Props) {
       enabled: !!cartItems.length,
     },
   );
-  console.log({ cartItems });
 
   if (cartItems.length && cartIndicatorVisible) {
     return (
