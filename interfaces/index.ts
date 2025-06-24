@@ -102,6 +102,39 @@ export interface IShop {
   };
 }
 
+export interface IShop2 {
+  id: number;
+  translation: IShopTranslation;
+  logo_img?: string;
+  background_img?: string;
+  mark?: string;
+  uuid?: string;
+  products_count?: number;
+  delivery_time?: ShopDeliveryTime;
+  location?: Location;
+  shop_closed_date?: ShopClosedDate[];
+  shop_working_days?: ShopWorkingDays[];
+  bonus?: Bonus;
+  price: number;
+  price_per_km?: number;
+  phone?: string;
+  shop_payments?: ShopPayment[];
+  rating_avg?: number;
+  is_recommended?: boolean;
+  discounts_count?: number;
+  type?: "restaurant" | "shop";
+  discount?: any;
+  reviews_count?: number;
+  tags?: IShopTag[];
+  open: boolean;
+  verify: Number;
+  min_amount?: number;
+  test: {
+    order_count: number;
+  };
+}
+
+
 export interface IBookingShop {
   id: number;
   translation: IShopTranslation;

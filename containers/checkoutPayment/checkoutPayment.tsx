@@ -14,7 +14,7 @@ import { useQuery } from "react-query";
 import orderService from "services/order";
 import Price from "components/price/price";
 import Loading from "components/loader/loading";
-import { IShop, OrderFormValues, Payment } from "interfaces";
+import { IShop, IShop2, OrderFormValues, Payment } from "interfaces";
 import { FormikProps } from "formik";
 import { DoubleCheckIcon } from "components/icons";
 import Coupon from "components/coupon/coupon";
@@ -35,7 +35,7 @@ type Props = {
   loading?: boolean;
   payments: Payment[];
   onPhoneVerify: () => void;
-  shop?: IShop;
+  shop?: IShop2;
   orderCount: number; // ✅ yeni əlavə etdik
 };
 
