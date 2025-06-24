@@ -48,12 +48,12 @@ export default function Homev1() {
     useAppSelector(selectShopFilter);
   const isFilterActive = !!Object.keys(group).length;
   const location = useUserLocation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const showPopup = useSelector(
-    (state: RootState) => state.modal.showFreeDeliveryModal,
-  );
-  const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
+  // const showPopup = useSelector(
+  //   (state: RootState) => state.modal.showFreeDeliveryModal,
+  // );
+  // const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
 
   const { data: shopCategoryList, isLoading: shopCategoryLoading } = useQuery(
     ["shopcategory", locale],
@@ -184,14 +184,14 @@ export default function Homev1() {
       <AdList data={ads?.data} loading={adListLoading} />
       <BrandShopList data={brandShops?.data || []} loading={brandShopLoading} />
       <div style={{ minHeight: "60vh" }}>
-        <AnimatePresence>
+        {/* <AnimatePresence>
           {showPopup && freeCount !== null && (
             <FreeDeliveryModal
               freeDelivery={freeCount}
               onClose={() => dispatch(closeFreeDeliveryModal())}
             />
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
 
         {!category_id && !newest && !isFilterActive && isInsideZone && (
           <FeaturedShopsContainer
