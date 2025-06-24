@@ -25,6 +25,7 @@ import { selectCurrency } from "redux/slices/currency";
 import { useSettings } from "contexts/settings/settings.context";
 import TipWithoutPayment from "components/tip/tipWithoutPayment";
 import ModalContainer from "../modal/modal";
+import FaqItem from "containers/faq/faqItem";
 
 const DrawerContainer = dynamic(() => import("containers/drawer/drawer"));
 const MobileDrawer = dynamic(() => import("containers/drawer/mobileDrawer"));
@@ -35,6 +36,7 @@ type Props = {
   payments: Payment[];
   onPhoneVerify: () => void;
   shop?: IShop;
+  orderCount: number; // ✅ yeni əlavə etdik
 };
 
 type OrderType = {
@@ -54,6 +56,7 @@ export default function CheckoutPayment({
   formik,
   loading = false,
   payments = [],
+  orderCount,
   onPhoneVerify,
   shop,
 }: Props) {
@@ -284,6 +287,7 @@ export default function CheckoutPayment({
           <PaymentMethod
             value={formik.values.payment_type?.tag}
             list={payments}
+            orderCount={orderCount}
             handleClose={handleClosePaymentMethod}
             onSubmit={(tag) => {
               const payment = payments?.find((item) => item.tag === tag);
@@ -301,6 +305,7 @@ export default function CheckoutPayment({
           <PaymentMethod
             value={formik.values.payment_type?.tag}
             list={payments}
+            orderCount={orderCount}
             handleClose={handleClosePaymentMethod}
             onSubmit={(tag) => {
               const payment = payments?.find((item) => item.tag === tag);

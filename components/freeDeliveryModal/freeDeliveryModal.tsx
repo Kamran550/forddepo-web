@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import styles from "./FreeDeliveryModal.module.scss";
-import Sparkles from "./Sparkles"; // əlavə et
+import { useTranslation } from "react-i18next";
+import Sparkles from "./Sparkles"; // Əgər istifadə edəcəksənsə
 
 export default function FreeDeliveryModal({
   freeDelivery,
@@ -11,31 +12,31 @@ export default function FreeDeliveryModal({
   freeDelivery: { count: number; date: string } | null;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
+
   if (!freeDelivery) {
     return null;
   }
 
   function formatDate(dateStr: string) {
-    console.log("dataa str:", dateStr);
-
-    console.log("salam");
-
     const date = new Date(dateStr);
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
-      month: "long", // "June"
+      month: "long",
       day: "numeric",
     };
-    console.log("sonda date:", date);
-
-    return dateStr;
+    return date.toLocaleDateString("az-AZ", options); // Tarixi formatlayırıq
   }
 
   const formattedDate = formatDate(freeDelivery.date);
 
+  const description = t("free_delivery_text", {
+    count: `<strong>${freeDelivery.count}</strong>`,
+    date: `<strong>${freeDelivery.date}</strong>`,
+  });
+
   return (
     <div className={styles.modalOverlay}>
-      {/* <Sparkles /> */}
       <motion.div
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -44,16 +45,13 @@ export default function FreeDeliveryModal({
         className={styles.modalContent}
       >
         <div className={styles.emoji}>🎉</div>
-        <div className={styles.title}>Təbriklər!</div>
-        <div className={styles.description}>
-          Siz <strong>{freeDelivery.count} pulsuz çatdırılma</strong>{" "}
-          qazandınız!
-          <br />
-          Bu imkandan <strong>{formattedDate}</strong> tarixinə qədər yararlana
-          bilərsiniz.
-        </div>
+        <div className={styles.title}>{t("congratulations")}</div>
+        <div
+          className={styles.description}
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
         <button onClick={onClose} className={styles.button}>
-          Anladım
+          {t("understood")}
         </button>
       </motion.div>
     </div>

@@ -97,6 +97,9 @@ export interface IShop {
   open: boolean;
   verify: Number;
   min_amount?: number;
+  test: {
+    order_count: number;
+  };
 }
 
 export interface IBookingShop {
@@ -348,7 +351,6 @@ export type AddressFields = {
   house: string;
 };
 
-
 export interface OrderFormValues {
   coupon?: string;
   location: Location;
@@ -378,6 +380,13 @@ export interface ShopPayment {
 export interface Payment {
   id: number;
   tag: string;
+}
+
+export interface PaymentResponse {
+  data: Payment[];
+  test: {
+    order_count: number;
+  };
 }
 
 export interface Refund {

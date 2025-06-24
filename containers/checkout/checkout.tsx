@@ -51,16 +51,24 @@ export default function CheckoutContainer({
   const isUsingCustomPhoneSignIn =
     process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
 
-  const { data: payments } = useQuery("payments", () =>
-    paymentService.getPaymentsForUser(),
+  const { data: payments } = useQuery(
+    "payments",
+    () => paymentService.getPaymentsForUser2(),
+    {
+      cacheTime: 0, // cache saxlanmır
+      staleTime: 0, // hər dəfə stale olur
+    },
   );
 
-  const { paymentType, paymentTypes } = useMemo(() => {
+  const { paymentType, paymentTypes, orderCount } = useMemo(() => {
+    const list = payments?.data || [];
+    const orderCount = payments?.test?.order_count || 0;
+
     return {
       paymentType:
-        payments?.data?.find((item: Payment) => item.tag === "cash") ||
-        payments?.data?.[0],
-      paymentTypes: payments?.data || [],
+        list.find((item: Payment) => item.tag === "odero") || list[0],
+      paymentTypes: list,
+      orderCount, 
     };
   }, [payments]);
 
@@ -310,6 +318,7 @@ export default function CheckoutContainer({
                 loading={isLoading || externalPayLoading}
                 payments={paymentTypes}
                 onPhoneVerify={onPhoneVerify}
+                orderCount={orderCount}
               />
             </aside>
           </section>
