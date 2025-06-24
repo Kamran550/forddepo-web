@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import styles from "./FreeDeliveryModal.module.scss";
 import { useTranslation } from "react-i18next";

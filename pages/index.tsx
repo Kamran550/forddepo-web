@@ -33,14 +33,12 @@ export default function Home({ uiType = "1" }: HomeProps) {
   const Homev1 = uiTypes["1"];
   return (
     <>
-      <AnimatePresence>
         {showPopup && freeCount !== null && (
           <FreeDeliveryModal
             freeDelivery={freeCount}
             onClose={() => dispatch(closeFreeDeliveryModal())}
           />
         )}
-      </AnimatePresence>
 
       <SEO />
       {!!Ui ? <Ui /> : <Homev1 />}
