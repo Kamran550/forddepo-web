@@ -22,12 +22,12 @@ type HomeProps = {
 };
 
 export default function Home({ uiType = "1" }: HomeProps) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const showPopup = useSelector(
-    (state: RootState) => state.modal.showFreeDeliveryModal,
-  );
-  const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
+  // const showPopup = useSelector(
+  //   (state: RootState) => state.modal.showFreeDeliveryModal,
+  // );
+  // const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
 
   const Ui = uiTypes[uiType];
   const Homev1 = uiTypes["1"];

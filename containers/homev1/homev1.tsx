@@ -166,15 +166,6 @@ export default function Homev1() {
 
   return (
     <>
-      <AnimatePresence>
-        {showPopup && freeCount !== null && (
-          <FreeDeliveryModal
-            freeDelivery={freeCount}
-            onClose={() => dispatch(closeFreeDeliveryModal())}
-          />
-        )}
-      </AnimatePresence>
-
       <ShopCategoryList
         data={shopCategoryList?.data?.sort((a, b) => a?.input - b?.input) || []}
         loading={shopCategoryLoading}
@@ -193,6 +184,15 @@ export default function Homev1() {
       <AdList data={ads?.data} loading={adListLoading} />
       <BrandShopList data={brandShops?.data || []} loading={brandShopLoading} />
       <div style={{ minHeight: "60vh" }}>
+        <AnimatePresence>
+          {showPopup && freeCount !== null && (
+            <FreeDeliveryModal
+              freeDelivery={freeCount}
+              onClose={() => dispatch(closeFreeDeliveryModal())}
+            />
+          )}
+        </AnimatePresence>
+
         {!category_id && !newest && !isFilterActive && isInsideZone && (
           <FeaturedShopsContainer
             title={t("recommended")}
