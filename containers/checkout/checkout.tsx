@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import cls from "./checkout.module.scss";
-import { IAddress, IShop, OrderFormValues, Payment } from "interfaces";
+import { IAddress, IShop2, OrderFormValues, Payment } from "interfaces";
 import CheckoutPayment from "containers/checkoutPayment/checkoutPayment";
 import ShopLogoBackground from "components/shopLogoBackground/shopLogoBackground";
 import { FormikErrors, useFormik } from "formik";
@@ -24,7 +24,7 @@ import Script from "next/script";
 import Loading from "../../components/loader/loading";
 
 type Props = {
-  data: IShop;
+  data: IShop2;
   children: any;
   onPhoneVerify: () => void;
 };
@@ -68,7 +68,7 @@ export default function CheckoutContainer({
       paymentType:
         list.find((item: Payment) => item.tag === "odero") || list[0],
       paymentTypes: list,
-      orderCount, 
+      orderCount,
     };
   }, [payments]);
 
