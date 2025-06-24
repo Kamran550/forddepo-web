@@ -10,7 +10,7 @@ type Props = {
   handleClose: () => void;
   onSubmit: (tag?: string) => void;
   isButtonLoading?: boolean;
-  orderCount: number;
+  orderCount?: number;
 };
 
 export default function PaymentMethod({
@@ -40,7 +40,10 @@ export default function PaymentMethod({
     <div className={cls.wrapper}>
       <div className={cls.body}>
         {list.map((item) => {
-          const isDisabled = orderCount < 3 && item.tag !== "odero";
+          // const isDisabled = orderCount < 3 && item.tag !== "odero";
+          const isDisabled =
+            (orderCount ?? Infinity) < 3 && item.tag !== "odero";
+
           const control = controlProps(item.tag);
           return (
             <div
@@ -63,7 +66,7 @@ export default function PaymentMethod({
             </div>
           );
         })}
-        {orderCount < 3 && (
+        {(orderCount ?? Infinity) < 3 && (
           <div className={cls.info}>
             <p className={cls.note}>{t("only.card.allowed.until.3.orders")}</p>
           </div>
