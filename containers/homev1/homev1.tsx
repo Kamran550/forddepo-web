@@ -11,6 +11,11 @@ import storyService from "services/story";
 import bannerService from "services/banner";
 import useUserLocation from "hooks/useUserLocation";
 import qs from "qs";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { AnimatePresence } from "framer-motion";
+import FreeDeliveryModal from "components/freeDeliveryModal/freeDeliveryModal";
+import { closeFreeDeliveryModal } from "redux/slices/modal";
 
 const Empty = dynamic(() => import("components/empty/empty"));
 const Loader = dynamic(() => import("components/loader/loader"));
@@ -43,6 +48,12 @@ export default function Homev1() {
     useAppSelector(selectShopFilter);
   const isFilterActive = !!Object.keys(group).length;
   const location = useUserLocation();
+  const dispatch = useDispatch();
+
+  const showPopup = useSelector(
+    (state: RootState) => state.modal.showFreeDeliveryModal,
+  );
+  const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
 
   const { data: shopCategoryList, isLoading: shopCategoryLoading } = useQuery(
     ["shopcategory", locale],
@@ -155,6 +166,15 @@ export default function Homev1() {
 
   return (
     <>
+      <AnimatePresence>
+        {showPopup && freeCount !== null && (
+          <FreeDeliveryModal
+            freeDelivery={freeCount}
+            onClose={() => dispatch(closeFreeDeliveryModal())}
+          />
+        )}
+      </AnimatePresence>
+
       <ShopCategoryList
         data={shopCategoryList?.data?.sort((a, b) => a?.input - b?.input) || []}
         loading={shopCategoryLoading}
