@@ -1,4 +1,5 @@
 "use client";
+import ReactDOM from "react-dom";
 
 import { motion } from "framer-motion";
 import styles from "./FreeDeliveryModal.module.scss";
@@ -35,7 +36,7 @@ export default function FreeDeliveryModal({
     date: `<strong>${freeDelivery.date}</strong>`,
   });
 
-  return (
+  return ReactDOM.createPortal(
     <div className={styles.modalOverlay}>
       <motion.div
         initial={{ opacity: 0, scale: 0.7 }}
@@ -54,6 +55,7 @@ export default function FreeDeliveryModal({
           {t("understood")}
         </button>
       </motion.div>
-    </div>
+    </div>,
+    document.body,
   );
 }
