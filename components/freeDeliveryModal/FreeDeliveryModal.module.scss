@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 999999 !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +15,7 @@
   padding: 2rem;
   text-align: center;
   box-shadow: 0 0 30px rgba(50, 205, 50, 0.3); // lime glow
-  z-index: 999 !important; 
+  z-index: 9999999 !important; 
   max-width: 400px;
   width: 100%;
 }
