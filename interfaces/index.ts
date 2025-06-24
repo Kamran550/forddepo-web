@@ -97,9 +97,6 @@ export interface IShop {
   open: boolean;
   verify: Number;
   min_amount?: number;
-  test: {
-    order_count: number;
-  };
 }
 
 export interface IShop2 {
