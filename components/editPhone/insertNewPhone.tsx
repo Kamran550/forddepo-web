@@ -27,6 +27,10 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
   const isUsingCustomPhoneSignIn =
     process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
+  const isAzerbaijanNumber = (phone: string) => {
+    return phone.startsWith("+994");
+  };
+
   const formik = useFormik({
     initialValues: {
       phone: "",
@@ -34,7 +38,8 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
     onSubmit: (values: formValues, { setSubmitting }) => {
       const trimmedPhone = values.phone.replace(/[^0-9]/g, "");
 
-      if (isUsingCustomPhoneSignIn) {
+      if (isAzerbaijanNumber(values.phone)) {
+        console.log("AzerbaijanNumber");
         authService
           .resendPhone({ phone: trimmedPhone })
           .then((res) => {
@@ -45,9 +50,28 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
             });
             changeView("VERIFY");
           })
-          .catch((e) => {
-            error(t("sms not sent"));
+          // .catch((e) => {
+          //   console.log("bura dusdu", e);
+
+          //   error(t("sms not sent"));
+          // })
+          .catch((err) => {
+            const data = err?.data;
+            console.log({ data });
+
+            if (data?.params && typeof data.params === "object") {
+              Object.values(data.params)
+                .flat()
+                .forEach((msg) => {
+                  if (msg) error(t(msg));
+                });
+            } else if (data?.message) {
+              error(t(data.message));
+            } else {
+              error(t("Something went wrong"));
+            }
           })
+
           .finally(() => {
             setSubmitting(false);
           });
@@ -68,6 +92,60 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
             setSubmitting(false);
           });
       }
+
+      // if (isUsingCustomPhoneSignIn) {
+      //   authService
+      //     .resendPhone({ phone: trimmedPhone })
+      //     .then((res) => {
+      //       onSuccess({
+      //         ...res,
+      //         phone: values.phone,
+      //         verifyId: res.data?.verifyId,
+      //       });
+      //       changeView("VERIFY");
+      //     })
+      //     // .catch((e) => {
+      //     //   console.log("bura dusdu", e);
+
+      //     //   error(t("sms not sent"));
+      //     // })
+      //     .catch((err) => {
+      //       const data = err?.data;
+      //       console.log({ data });
+
+      //       if (data?.params && typeof data.params === "object") {
+      //         Object.values(data.params)
+      //           .flat()
+      //           .forEach((msg) => {
+      //             if (msg) error(t(msg));
+      //           });
+      //       } else if (data?.message) {
+      //         error(t(data.message));
+      //       } else {
+      //         error(t("Something went wrong"));
+      //       }
+      //     })
+
+      //     .finally(() => {
+      //       setSubmitting(false);
+      //     });
+      // } else {
+      //   phoneNumberSignIn(values.phone)
+      //     .then((confirmationResult) => {
+      //       onSuccess({
+      //         phone: trimmedPhone,
+      //         callback: confirmationResult,
+      //       });
+      //       changeView("VERIFY");
+      //     })
+      //     .catch((err) => {
+      //       error(t("sms.not.sent"));
+      //       console.log("err => ", err);
+      //     })
+      //     .finally(() => {
+      //       setSubmitting(false);
+      //     });
+      // }
     },
 
     validate: (values: formValues) => {
@@ -84,7 +162,7 @@ export default function InsertNewPhone({ onSuccess, changeView }: Props) {
   return (
     <form className={cls.wrapper} onSubmit={formik.handleSubmit}>
       <div className={cls.header}>
-        <h1 className={cls.title}>{t("edit.phone")}</h1>
+        <h1 className={cls.title}>{t("edit.phoneeee")}</h1>
       </div>
       <div className={cls.space} />
       {/* <TextInput

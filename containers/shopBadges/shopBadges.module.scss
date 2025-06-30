@@ -3,8 +3,12 @@
   align-items: center;
   column-gap: 8px;
   position: absolute;
-  top: 5px;
+  top: -15px;
   right: 20px;
+}
+
+.top {
+  top: 5px;
 }
 
 [dir="rtl"] {

@@ -10,6 +10,8 @@ type EditPhoneViews = "EDIT" | "VERIFY";
 export default function EditPhone({ handleClose }: Props) {
   const [currentView, setCurrentView] = useState<EditPhoneViews>("EDIT");
   const [phone, setPhone] = useState("");
+  const [verifyId, setVerifyId] = useState();
+
   const [callback, setCallback] = useState(undefined);
   const handleChangeView = (view: EditPhoneViews) => setCurrentView(view);
   const renderView = () => {
@@ -18,9 +20,10 @@ export default function EditPhone({ handleClose }: Props) {
         return (
           <InsertNewPhone
             changeView={handleChangeView}
-            onSuccess={({ phone, callback }) => {
+            onSuccess={({ phone, callback, verifyId }) => {
               setPhone(phone);
               setCallback(callback);
+              setVerifyId(verifyId);
             }}
           />
         );
@@ -29,6 +32,7 @@ export default function EditPhone({ handleClose }: Props) {
           <NewPhoneVerify
             phone={phone}
             callback={callback}
+            verifyId={verifyId}
             setCallback={setCallback}
             handleClose={handleClose}
           />

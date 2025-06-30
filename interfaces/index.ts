@@ -97,6 +97,7 @@ export interface IShop {
   open: boolean;
   verify: Number;
   min_amount?: number;
+  free_delivery_price: number;
 }
 
 export interface IShop2 {
@@ -126,11 +127,12 @@ export interface IShop2 {
   open: boolean;
   verify: Number;
   min_amount?: number;
+  free_delivery_price: number;
+
   test: {
     order_count: number;
   };
 }
-
 
 export interface IBookingShop {
   id: number;

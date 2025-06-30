@@ -102,7 +102,20 @@ export default function RegisterDetailsForm({ phone }: Props) {
             push("/");
           })
           .catch((err) => {
-            error(t(err.data.message));
+            const data = err?.data;
+            console.log({ data });
+
+            if (data?.params && typeof data.params === "object") {
+              Object.values(data.params)
+                .flat()
+                .forEach((msg) => {
+                  if (msg) error(t(msg));
+                });
+            } else if (data?.message) {
+              error(t(data.message));
+            } else {
+              error(t("Something went wrong"));
+            }
           })
           .finally(() => setSubmitting(false));
       }

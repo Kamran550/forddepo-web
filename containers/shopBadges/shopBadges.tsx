@@ -5,11 +5,12 @@ import { IShop } from "interfaces";
 
 type Props = {
   data: IShop;
+  top?: boolean;
 };
 
-export default function ShopBadges({ data }: Props) {
+export default function ShopBadges({ data, top }: Props) {
   return (
-    <div className={cls.badge}>
+    <div className={`${cls.badge} ${top && cls.top}`}>
       {data.is_recommended && (
         <Badge
           type="popular"

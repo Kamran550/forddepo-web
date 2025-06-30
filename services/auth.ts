@@ -19,6 +19,8 @@ const authService = {
   forgotPassword: (data: any) => request.post(`/auth/forgot/password`, data),
   verifyPhone: (data: any) =>
     request.post(`/auth/verify/phone`, {}, { params: data }),
+  verifyPhone2: (data: any) =>
+    request.post(`/auth/verify/phone2`, {}, { params: data }),
   verifyEmail: (data: VerifyCredentials) =>
     request.get("/auth/verify/" + data.verifyId),
   registerComplete: (data: RegisterCredentials) => {

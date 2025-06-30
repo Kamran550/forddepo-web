@@ -50,6 +50,7 @@ type OrderType = {
   total_tax?: number;
   service_fee?: number;
   tips?: number;
+  delivery_info?: string;
 };
 
 export default function CheckoutPayment({
@@ -76,6 +77,7 @@ export default function CheckoutPayment({
     (state) => state.currency.defaultCurrency,
   );
   const [order, setOrder] = useState<OrderType>({});
+  const [showDeliveryInfo, setShowDeliveryInfo] = useState(false);
   const [calculateError, setCalculateError] = useState<null | boolean>(null);
   const { coupon, location, delivery_type, payment_type, tips } = formik.values;
   const { settings } = useSettings();
@@ -144,6 +146,7 @@ export default function CheckoutPayment({
     formik.setFieldValue("tips", number);
     handleCloseTip();
   };
+  console.log({ order });
 
   return (
     <div className={cls.card}>
@@ -215,12 +218,37 @@ export default function CheckoutPayment({
               <Price number={order.price} />
             </div>
           </div>
-          <div className={cls.row}>
+          {/* <div className={cls.row}>
             <div className={cls.item}>{t("delivery.price")}</div>
             <div className={cls.item}>
               <Price number={order.delivery_fee} />
             </div>
+          </div> */}
+          <div className={cls.row}>
+            <div className={cls.item}>
+              {t("delivery.price")}
+              {order.delivery_info && (
+                <button
+                  type="button"
+                  className={cls.infoButton}
+                  onClick={() => setShowDeliveryInfo((prev) => !prev)}
+                >
+                  ℹ️
+                </button>
+              )}
+            </div>
+            <div className={cls.item}>
+              <Price number={order.delivery_fee} />
+            </div>
           </div>
+          {showDeliveryInfo && (
+            <div className={cls.infoBox}>
+              {order.delivery_info
+                ? order.delivery_info
+                : t("delivery.default.info")}
+            </div>
+          )}
+
           <div className={cls.row}>
             <div className={cls.item}>{t("total.tax")}</div>
             <div className={cls.item}>
