@@ -97,7 +97,7 @@ export interface IShop {
   open: boolean;
   verify: Number;
   min_amount?: number;
-  free_delivery_price: number;
+  free_delivery_price?: number;
 }
 
 export interface IShop2 {
