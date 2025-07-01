@@ -31,6 +31,10 @@ export default function ResetPasswordForm({ onSuccess, changeView }: Props) {
   const isUsingCustomPhoneSignIn =
     process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
 
+  const isAzerbaijanNumber = (phone: string) => {
+    return phone.startsWith("+994");
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -50,7 +54,7 @@ export default function ResetPasswordForm({ onSuccess, changeView }: Props) {
       } else {
         console.log("phone ile forgot pass");
         const trimmedPhone = values.phone?.replace(/[^0-9]/g, "");
-        if (isUsingCustomPhoneSignIn) {
+        if (isAzerbaijanNumber(values.phone || "")) {
           authService
             .forgotPasswordEmail({ phone: trimmedPhone })
             .then((res: any) => {
@@ -61,8 +65,13 @@ export default function ResetPasswordForm({ onSuccess, changeView }: Props) {
               onSuccess(res.message);
               changeView("VERIFY");
             })
-            .catch(() => {
-              error(t("sms.not.sent"));
+            .catch((err) => {
+              console.log({ err });
+              if ((err.status = 404)) {
+                error(t("user.not.found"));
+              } else {
+                error(t("sms.not.sent"));
+              }
             })
             .finally(() => {
               setSubmitting(false);
