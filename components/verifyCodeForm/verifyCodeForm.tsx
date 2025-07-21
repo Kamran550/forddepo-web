@@ -62,7 +62,6 @@ export default function VerifyCodeForm({}: Props) {
       return errors;
     },
   });
-  
 
   const handleResendCode = () => {
     resend(
@@ -105,23 +104,13 @@ export default function VerifyCodeForm({}: Props) {
       <p className={cls.text}>
         {t("verify.didntRecieveCode")}{" "}
         {time === 0 ? (
-          <>
-            <span
-              id="sign-in-button"
-              onClick={handleResendCode}
-              className={cls.resend}
-            >
-              {t("resend")}
-            </span>
-            {" | "}
-            <span
-              id="sign-in-button"
-              onClick={handleResendCodeWithWhatsapp}
-              className={cls.resend}
-            >
-              {t("resend.with.Whatsapp")}
-            </span>
-          </>
+          <span
+            id="sign-in-button"
+            onClick={handleResendCode}
+            className={cls.resend}
+          >
+            {t("resend")}
+          </span>
         ) : (
           <span className={cls.text}>{time} s</span>
         )}
