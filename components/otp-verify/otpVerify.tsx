@@ -46,8 +46,7 @@ export default function OTPVerify({
     (data: { email: string }) => authService.resendVerify(data),
   );
   const { settings } = useSettings();
-  // const waitTime = settings.otp_expire_time * 60 || 60;
-  const waitTime = 25;
+  const waitTime = settings.otp_expire_time * 60 || 60;
   const [time, timerStart, _, timerReset] = useCountDown(waitTime);
   const { phoneNumberSignIn } = useAuth();
   // const [email, setEmail] = useState(emailProp); // burada lokal saxlayırıq
