@@ -50,10 +50,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
   const referralCode: any = query.referral_code;
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  console.log({ phone });
 
   const formik = useFormik({
     initialValues: {
@@ -224,74 +221,6 @@ export default function RegisterDetailsForm({ phone }: Props) {
         </div>
       </div>
       <div className={cls.space} />
-      <div style={{ position: "relative", marginBottom: "2rem" }}>
-        {/* TextInput - normal input kimi */}
-        <TextInput
-          name="referral"
-          label={t("referral")}
-          placeholder={t("type.here")}
-          value={formik.values.referral}
-          onChange={formik.handleChange}
-          error={!!formik.errors.referral}
-          helperText={formik.errors.referral}
-          autoComplete="off"
-        />
-
-        {/* Info düyməsi */}
-        <div
-          className={cls.infoBtn}
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            cursor: "pointer",
-            color: "#888",
-          }}
-          onClick={handleOpen}
-          title="Referal kod nədir?"
-        >
-          <InfoIcon fontSize="small" />
-        </div>
-
-        {/* Modal (Dialog) */}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            className: cls.referalDialog,
-            sx: {
-              borderRadius: 3,
-              padding: 2,
-              minWidth: 300,
-              boxShadow: 6,
-            },
-          }}
-        >
-          <DialogTitle sx={{ fontWeight: 600, fontSize: "1.25rem" }}>
-            {t("referral-info.title")}
-          </DialogTitle>
-
-          <DialogContent dividers>
-            <Typography variant="body1" gutterBottom>
-              {t("referral.description")}.
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              📌 <strong>{t("referral.example_label")}:</strong>
-              <br />
-              {t("referral.example_text")}
-              <br />
-              <br />
-              {t("referral.optional_note")}
-            </Typography>
-          </DialogContent>
-
-          <DialogActions>
-            <Button onClick={handleClose} variant="contained" size="small">
-              {t("referral.ok_button")}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
 
       {/* <TextInput
         name="referral"

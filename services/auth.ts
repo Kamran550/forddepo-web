@@ -30,6 +30,8 @@ const authService = {
   },
   resendVerify: (data: any) =>
     request.post(`/auth/resend-verify`, {}, { params: data }),
+  resendWhatsapp: (data: any) =>
+    request.post(`auth/resend/whatsapp`, {}, { params: data }),
   forgotPasswordEmail: (data: any) =>
     request.post("/auth/forgot/email-password", {}, { params: data }),
   forgotPasswordVerify: (data: any) =>

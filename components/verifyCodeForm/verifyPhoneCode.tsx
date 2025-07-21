@@ -118,6 +118,22 @@ export default function VerifyPhoneCode({
     }
   };
 
+  const handleResendCodeWithWhatsapp = () => {
+    authService
+      .resendWhatsapp({ phone })
+      .then((res) => {
+        onSuccess?.({
+          ...res,
+          email: phone,
+          verifyId: res.data?.verifyId,
+        });
+        timerReset();
+        timerStart();
+        success(t("verify.send"));
+      })
+      .catch(() => error(t("sms.not.sent")));
+  };
+
   useEffect(() => {
     timerStart();
   }, []);
@@ -152,6 +168,21 @@ export default function VerifyPhoneCode({
           <span className={cls.text}>{time} s</span>
         )}
       </p>
+      <p className={cls.text}>
+        {t("verify.didntRecieveCode")}{" "}
+        {time === 0 ? (
+          <span
+            id="sign-in-button"
+            onClick={handleResendCodeWithWhatsapp}
+            className={cls.resend}
+          >
+            {t("resend.with.Whatsapp")}
+          </span>
+        ) : (
+          <span className={cls.text}>{time} s</span>
+        )}
+      </p>
+
       <div className={cls.space} />
       <div className={cls.actions}>
         <div className={cls.item}>

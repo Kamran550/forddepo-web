@@ -130,6 +130,16 @@ export default function CheckoutContainer({
           return;
         }
       }
+
+      if (!user?.email || !user?.lastname) {
+        console.log("user.details.incomplete");
+        warning(t("user.details.incomplete"));
+        setTimeout(() => {
+          router.push("/profile");
+        }, 1000);
+        return;
+      }
+
       const notes = Object.keys(values.notes).reduce((acc: any, key) => {
         const value = values.notes[key]?.trim()?.length
           ? values.notes[key]

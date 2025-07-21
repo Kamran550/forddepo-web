@@ -15,6 +15,7 @@ import { selectCurrency } from "redux/slices/currency";
 import { useAppSelector } from "hooks/useRedux";
 import { useQueryClient } from "react-query";
 import authService from "services/auth";
+import WhatsappLineIcon from "remixicon-react/WhatsappLineIcon";
 
 interface formValues {
   verifyId?: string;
@@ -210,6 +211,23 @@ export default function NewPhoneVerify({
     }
   };
 
+  const handleResendCodeWithWhatsapp = () => {
+    authService
+      .resendWhatsapp({ phone })
+      .then((confirmationResult) => {
+        timerReset();
+        timerStart();
+        success(t("verify.send"));
+        const newVerifyId = confirmationResult?.data?.verifyId;
+        setCurrentVerifyId(newVerifyId);
+
+        formik.setValues({ verifyId: "" });
+
+        if (setCallback) setCallback(confirmationResult);
+      })
+      .catch(() => error(t("sms.not.sent")));
+  };
+
   useEffect(() => {
     timerStart();
   }, []);
@@ -233,20 +251,50 @@ export default function NewPhoneVerify({
           value={formik.values.verifyId?.toString()}
           onChange={(otp: any) => formik.setFieldValue("verifyId", otp)}
         />
-        <p className={cls.text}>
+        {/* <p className={cls.text}>
           {t("verify.didntRecieveCode")}{" "}
           {time === 0 ? (
-            <span
-              id="sign-in-button"
-              onClick={handleResendCode}
-              className={cls.resend}
-            >
-              {t("resend")}
-            </span>
+            <>
+              <span
+                id="sign-in-button"
+                onClick={handleResendCode}
+                className={cls.resend}
+              >
+                {t("resend")}
+              </span>
+              {" | "}
+              <span
+                id="sign-in-button"
+                onClick={handleResendCodeWithWhatsapp}
+                className={cls.resend}
+              >
+                {t("resend.with.Whatsapp")}
+              </span>
+            </>
           ) : (
             <span className={cls.text}>{time} s</span>
           )}
-        </p>
+        </p> */}
+        <div className={cls.space} />
+
+        {time === 0 ? (
+          <div className={cls.resendContainer}>
+            <button onClick={handleResendCode} className={cls.resendButton}>
+              📩 {t("resend")} {/* SMS ilə göndər */}
+            </button>
+
+            <button
+              onClick={handleResendCodeWithWhatsapp}
+              className={`${cls.resendButton} ${cls.whatsappButton}`}
+            >
+              <WhatsappLineIcon /> {t("resend.with.Whatsapp")}
+            </button>
+          </div>
+        ) : (
+          <p className={cls.text}>
+            {t("verify.pleaseWait")} {time} s
+          </p>
+        )}
       </Stack>
       <div className={cls.space} />
       <div className={cls.action}>
