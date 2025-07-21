@@ -2,12 +2,14 @@ import React from "react";
 import cls from "./registerForm.module.scss";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import TextInput from "components/inputs/textInput";
 import PrimaryButton from "components/button/primaryButton";
 import { useFormik } from "formik";
 import authService from "services/auth";
 import { error } from "components/alert/toast";
 import { useAuth } from "contexts/auth/auth.context";
+import { FormLabel } from "@mui/material";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 type RegisterViews = "REGISTER" | "VERIFY" | "COMPLETE";
 type Props = {
@@ -16,7 +18,7 @@ type Props = {
 };
 
 interface formValues {
-  email: string;
+  phone: string;
 }
 
 export default function RegisterForm({ onSuccess, changeView }: Props) {
@@ -24,77 +26,145 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
   const { phoneNumberSignIn } = useAuth();
 
   const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
-  const isDemo = process.env.NEXT_PUBLIC_IS_DEMO_APP === "true";
+    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "false";
+
+  const formatPhoneNumber = (phone: string) => {
+    return phone.replace(/^\+994/, "994"); // +994 ilə başlayan hissəni 994 ilə əvəz edir
+  };
+
+  const isAzerbaijanNumber = (phone: string) => {
+    return phone.startsWith("+994");
+  };
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      phone: "",
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
-      if (values.email?.includes("@")) {
+      if (isAzerbaijanNumber(values.phone)) {
+        console.log("AzerbaijanNumber");
+
+        const formattedPhone = formatPhoneNumber(values.phone);
+        console.log({ formattedPhone });
+        console.log("value phone:", values.phone);
+
         authService
-          .register(values)
+          .register({ phone: formattedPhone })
           .then((res) => {
-            onSuccess({ ...res, email: values.email });
+            onSuccess({
+              ...res,
+              phone: values.phone,
+              verifyId: res.data?.verifyId,
+            });
             changeView("VERIFY");
           })
-          .catch(() => {
-            error(t("email.inuse"));
+          // .catch((e) => {
+          //   console.log({ e });
+
+          //   error(t("error occured"));
+          // })
+          .catch((err) => {
+            const data = err?.data;
+            console.log({ data });
+
+            if (data?.params && typeof data.params === "object") {
+              Object.values(data.params)
+                .flat()
+                .forEach((msg) => {
+                  if (msg) error(t(msg));
+                });
+            } else if (data?.message) {
+              error(t(data.message));
+            } else {
+              error(t("Something went wrong"));
+            }
           })
           .finally(() => {
             setSubmitting(false);
           });
       } else {
-        if (isUsingCustomPhoneSignIn) {
-          authService
-            .register({ phone: values.email })
-            .then((res) => {
-              onSuccess({
-                ...res,
-                email: values.email,
-                verifyId: res.data?.verifyId,
-              });
-              changeView("VERIFY");
-            })
-            .catch(() => {
-              error(t("phone.number.inuse"));
-            })
-            .finally(() => {
-              setSubmitting(false);
+        console.log("xarici nomre");
+
+        phoneNumberSignIn(values.phone)
+          .then((confirmationResult) => {
+            onSuccess({
+              phone: values.phone,
+              callback: confirmationResult,
             });
-        } else {
-          phoneNumberSignIn(values.email)
-            .then((confirmationResult) => {
-              onSuccess({
-                email: values.email,
-                callback: confirmationResult,
-              });
-              changeView("VERIFY");
-            })
-            .catch((err) => {
-              error(t("sms.not.sent"));
-            })
-            .finally(() => {
-              setSubmitting(false);
-            });
-        }
+            changeView("VERIFY");
+          })
+          .catch((err) => {
+            console.log("salam");
+
+            error(t("sms.not.sent"));
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       }
+      // if (isUsingCustomPhoneSignIn) {
+      //   const formattedPhone = formatPhoneNumber(values.phone);
+      //   console.log({ formattedPhone });
+      //   console.log("value phone:", values.phone);
+
+      //   authService
+      //     .register({ phone: formattedPhone })
+      //     .then((res) => {
+      //       onSuccess({
+      //         ...res,
+      //         phone: values.phone,
+      //         verifyId: res.data?.verifyId,
+      //       });
+      //       changeView("VERIFY");
+      //     })
+      //     // .catch((e) => {
+      //     //   console.log({ e });
+
+      //     //   error(t("error occured"));
+      //     // })
+      //     .catch((err) => {
+      //       const data = err?.data;
+      //       console.log({ data });
+
+      //       if (data?.params && typeof data.params === "object") {
+      //         Object.values(data.params)
+      //           .flat()
+      //           .forEach((msg) => {
+      //             if (msg) error(t(msg));
+      //           });
+      //       } else if (data?.message) {
+      //         error(t(data.message));
+      //       } else {
+      //         error(t("Something went wrong"));
+      //       }
+      //     })
+      //     .finally(() => {
+      //       setSubmitting(false);
+      //     });
+      // } else {
+      //   phoneNumberSignIn(values.phone)
+      //     .then((confirmationResult) => {
+      //       onSuccess({
+      //         phone: values.phone,
+      //         callback: confirmationResult,
+      //       });
+      //       changeView("VERIFY");
+      //     })
+      //     .catch((err) => {
+      //       console.log("salam");
+
+      //       error(t("sms.not.sent"));
+      //     })
+      //     .finally(() => {
+      //       setSubmitting(false);
+      //     });
+      // }
     },
 
     validate: (values: formValues) => {
       const errors = {} as formValues;
-      if (!values.email) {
-        errors.email = t("required");
-      }
-      if (
-        values.email.includes("@") &&
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-      ) {
-        errors.email = t("must.be.valid");
-      }
-      if (values.email?.includes(" ")) {
-        errors.email = t("should.not.includes.empty.space");
+      if (!values.phone) {
+        errors.phone = t("required");
       }
       return errors;
     },
@@ -109,14 +179,23 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
         </p>
       </div>
       <div className={cls.space} />
-      <TextInput
-        name="email"
-        label={isDemo ? t("email") : t("email.or.phone")}
-        placeholder={t("type.here")}
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        error={!!formik.errors.email}
-        helperText={formik.errors.email}
+      <FormLabel
+        id="phone"
+        sx={{
+          fontSize: "15px",
+          color: "var(--black)",
+          marginBottom: "15px",
+        }}
+      >
+        {t("phone")}
+      </FormLabel>
+      <PhoneInput
+        className={cls.phoneInputCustom}
+        name="phone"
+        international
+        defaultCountry="AZ"
+        value={formik.values.phone}
+        onChange={(value) => formik.setFieldValue("phone", value)}
       />
       <div className={cls.space} />
       <div className={cls.action}>

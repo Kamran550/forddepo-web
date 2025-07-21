@@ -30,8 +30,9 @@ export interface IUser {
 
 export interface LoginCredentials {
   email?: string;
-  phone?: number;
+  phone?: number | string;
   password: string;
+  free_delivery_count?: number | null;
 }
 
 export interface RegisterCredentials extends LoginCredentials {
@@ -41,6 +42,7 @@ export interface RegisterCredentials extends LoginCredentials {
   gender: string;
   referral?: string;
   type?: string;
+  free_delivery_count?: number | null;
 }
 
 export interface LoginResponse {

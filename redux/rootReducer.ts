@@ -7,6 +7,7 @@ import product from "./slices/product";
 import chat from "./slices/chat";
 import search from "./slices/search";
 import order from "./slices/order";
+import modal from "./slices/modal"; // Əlavə et
 
 const rootReducer = {
   liked: favoriteRestaurants,
@@ -18,6 +19,7 @@ const rootReducer = {
   chat: chat,
   search: search,
   order: order,
+  modal: modal,
 };
 
 export default rootReducer;

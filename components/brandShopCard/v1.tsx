@@ -29,6 +29,7 @@ export default function BrandShopCard({ data }: Props) {
             {data?.verify === 1 && <VerifiedComponent />}
           </strong>
           <span className={cls.deliveryTime}>
+            
             {data.delivery_time?.from} - {data.delivery_time?.to}{" "}
             {t(getShortTimeType(data.delivery_time?.type))}
           </span>

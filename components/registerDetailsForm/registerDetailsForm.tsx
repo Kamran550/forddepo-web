@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import cls from "./registerDetailsForm.module.scss";
 import { useTranslation } from "react-i18next";
 import TextInput from "components/inputs/textInput";
@@ -9,18 +9,31 @@ import { useAuth } from "contexts/auth/auth.context";
 import { useRouter } from "next/router";
 import { error } from "components/alert/toast";
 import authService from "services/auth";
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import { setCookie } from "utils/session";
 import { RegisterCredentials } from "interfaces/user.interface";
-import profileService from "../../services/profile";
+import { showFreeDeliveryModal } from "redux/slices/modal";
+import { useDispatch } from "react-redux";
+import InfoIcon from "@mui/icons-material/Info";
 
 type Props = {
-  email?: string;
+  phone?: string;
 };
 
 interface formValues {
   email?: string;
-  phone?: number;
+  phone?: string;
   firstname: string;
   lastname: string;
   password: string;
@@ -30,18 +43,19 @@ interface formValues {
   type?: string;
 }
 
-export default function RegisterDetailsForm({ email }: Props) {
+export default function RegisterDetailsForm({ phone }: Props) {
   const { t } = useTranslation();
   const { push, query } = useRouter();
   const { setUserData } = useAuth();
   const referralCode: any = query.referral_code;
+  const dispatch = useDispatch();
 
-  const isUsingCustomPhoneSignIn =
-    process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
+  console.log({ phone });
 
   const formik = useFormik({
     initialValues: {
-      email,
+      email: "",
+      phone,
       gender: "male",
       firstname: "",
       lastname: "",
@@ -50,6 +64,8 @@ export default function RegisterDetailsForm({ email }: Props) {
       referral: referralCode,
     },
     onSubmit: (values: formValues, { setSubmitting }) => {
+      console.log({ values });
+
       const body: RegisterCredentials = {
         ...values,
         referral: values.referral || undefined,
@@ -61,35 +77,44 @@ export default function RegisterDetailsForm({ email }: Props) {
             const token = "Bearer" + " " + data.token;
             setCookie("access_token", token);
             setUserData(data.user);
+            console.log("data useri:", data.user);
+
+            const freeDelivery = data?.user?.free_delivery;
+            console.log({ freeDelivery });
+
+            if (freeDelivery) {
+              console.log("dispatch ise dusdu");
+
+              dispatch(
+                showFreeDeliveryModal({
+                  count: freeDelivery.count,
+                  date: freeDelivery.date,
+                }),
+              );
+
+              setTimeout(() => {
+                push("/");
+              }, 100);
+            }
             push("/");
           })
-          .catch((err) => error(t(err.data.message)))
+          .catch((err) => {
+            const data = err?.data;
+            console.log({ data });
+
+            if (data?.params && typeof data.params === "object") {
+              Object.values(data.params)
+                .flat()
+                .forEach((msg) => {
+                  if (msg) error(t(msg));
+                });
+            } else if (data?.message) {
+              error(t(data.message));
+            } else {
+              error(t("Something went wrong"));
+            }
+          })
           .finally(() => setSubmitting(false));
-      } else {
-        const trimmedPhone = values.email?.replace(/[^0-9]/g, "");
-        body.email = undefined;
-        body.phone = Number(trimmedPhone);
-        if (isUsingCustomPhoneSignIn) {
-          profileService
-            .update(body)
-            .then(() => {
-              push("/");
-            })
-            .catch((err) => error(t(err.data.message)))
-            .finally(() => setSubmitting(false));
-        } else {
-          body.type = "firebase";
-          authService
-            .phoneRegisterComplete(body)
-            .then(({ data }) => {
-              const token = "Bearer" + " " + data.token;
-              setCookie("access_token", token);
-              setUserData(data.user);
-              push("/");
-            })
-            .catch((err) => error(t(err.data.message)))
-            .finally(() => setSubmitting(false));
-        }
       }
     },
     validate: (values: formValues) => {
@@ -99,6 +124,9 @@ export default function RegisterDetailsForm({ email }: Props) {
       }
       if (!values.lastname) {
         errors.lastname = t("required");
+      }
+      if (!values.email) {
+        errors.email = t("required");
       }
       if (!values.password) {
         errors.password = t("required");
@@ -149,32 +177,52 @@ export default function RegisterDetailsForm({ email }: Props) {
         </div>
       </div>
       <div className={cls.space} />
-      <FormLabel
-        sx={{
-          fontSize: "9px",
-          color: "var(--black)",
-          textTransform: "uppercase",
-        }}
-        id="demo-radio-buttons-group-label"
-      >
-        {t("gender")}
-      </FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        name="radio-buttons-group"
-        row
-        value={formik.values.gender}
-        onChange={(e) => formik.setFieldValue("gender", e.target.value)}
-      >
-        <FormControlLabel value="male" control={<Radio />} label={t("male")} />
-        <FormControlLabel
-          value="female"
-          control={<Radio />}
-          label={t("female")}
-        />
-      </RadioGroup>
+      <div className={cls.flex}>
+        <div className={cls.item}>
+          <TextInput
+            name="email"
+            label={t("email")}
+            placeholder={t("type.here")}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={!!formik.errors.email}
+            helperText={formik.errors.email}
+          />
+        </div>
+        <div className={cls.item}>
+          <FormLabel
+            sx={{
+              fontSize: "9px",
+              color: "var(--black)",
+              textTransform: "uppercase",
+            }}
+            id="demo-radio-buttons-group-label"
+          >
+            {t("gender")}
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            name="radio-buttons-group"
+            row
+            value={formik.values.gender}
+            onChange={(e) => formik.setFieldValue("gender", e.target.value)}
+          >
+            <FormControlLabel
+              value="male"
+              control={<Radio />}
+              label={t("male")}
+            />
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label={t("female")}
+            />
+          </RadioGroup>
+        </div>
+      </div>
       <div className={cls.space} />
-      <TextInput
+
+      {/* <TextInput
         name="referral"
         label={t("referral")}
         placeholder={t("type.here")}
@@ -183,7 +231,7 @@ export default function RegisterDetailsForm({ email }: Props) {
         error={!!formik.errors.referral}
         helperText={formik.errors.referral}
         autoComplete="off"
-      />
+      /> */}
       <div className={cls.space} />
       <PasswordInput
         name="password"

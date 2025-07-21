@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import cls from "./checkout.module.scss";
-import { IShop, OrderFormValues, Payment } from "interfaces";
+import { IAddress, IShop2, OrderFormValues, Payment } from "interfaces";
 import CheckoutPayment from "containers/checkoutPayment/checkoutPayment";
 import ShopLogoBackground from "components/shopLogoBackground/shopLogoBackground";
-import { useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import { useSettings } from "contexts/settings/settings.context";
 import orderService from "services/order";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -24,7 +24,7 @@ import Script from "next/script";
 import Loading from "../../components/loader/loading";
 
 type Props = {
-  data: IShop;
+  data: IShop2;
   children: any;
   onPhoneVerify: () => void;
 };
@@ -51,16 +51,24 @@ export default function CheckoutContainer({
   const isUsingCustomPhoneSignIn =
     process.env.NEXT_PUBLIC_CUSTOM_PHONE_SINGUP === "true";
 
-  const { data: payments } = useQuery("payments", () =>
-    paymentService.getAll(),
+  const { data: payments } = useQuery(
+    "payments",
+    () => paymentService.getPaymentsForUser2(),
+    {
+      cacheTime: 0, // cache saxlanmır
+      staleTime: 0, // hər dəfə stale olur
+    },
   );
 
-  const { paymentType, paymentTypes } = useMemo(() => {
+  const { paymentType, paymentTypes, orderCount } = useMemo(() => {
+    const list = payments?.data || [];
+    const orderCount = payments?.test?.order_count || 0;
+
     return {
       paymentType:
-        payments?.data?.find((item: Payment) => item.tag === "cash") ||
-        payments?.data?.[0],
-      paymentTypes: payments?.data || [],
+        list.find((item: Payment) => item.tag === "odero") || list[0],
+      paymentTypes: list,
+      orderCount,
     };
   }, [payments]);
 
@@ -97,6 +105,8 @@ export default function CheckoutContainer({
     },
     // enableReinitialize: true,
     onSubmit: (values: OrderFormValues) => {
+      console.log({ values });
+
       const trimmedPhone = values.phone?.replace(/[^0-9]/g, "");
       if (!values.payment_type) {
         warning(t("choose.payment.method"));
@@ -120,6 +130,16 @@ export default function CheckoutContainer({
           return;
         }
       }
+
+      if (!user?.email || !user?.lastname) {
+        console.log("user.details.incomplete");
+        warning(t("user.details.incomplete"));
+        setTimeout(() => {
+          router.push("/profile");
+        }, 1000);
+        return;
+      }
+
       const notes = Object.keys(values.notes).reduce((acc: any, key) => {
         const value = values.notes[key]?.trim()?.length
           ? values.notes[key]
@@ -153,17 +173,35 @@ export default function CheckoutContainer({
         tips: values?.tips,
       };
       if (EXTERNAL_PAYMENTS.includes(formik.values.payment_type?.tag || "")) {
+        console.log("metod:", formik.values.payment_type);
+
+        console.log("ife dusdu");
+
         externalPay({
           name: formik.values.payment_type?.tag,
           data: payload,
         });
       } else {
+        console.log("else dusdu odero olanda");
+
         payload.payment_id = values.payment_type?.id;
         createOrder(payload);
       }
     },
-    validate: () => {
-      return {} as OrderFormValues;
+    validate: (values) => {
+      console.log("validate yoxlanilir");
+      const errors: any = {};
+
+      if (
+        (!values.address?.office || values.address.office.trim() === "") &&
+        (!values.address?.house || values.address.house.trim() === "")
+      ) {
+        errors.address = {
+          office: t("validation.required"),
+          house: t("validation.required"),
+        };
+      }
+      return errors;
     },
   });
 
@@ -183,17 +221,26 @@ export default function CheckoutContainer({
     mutationFn: (payload: any) =>
       paymentService.payExternal(payload.name, payload.data),
     onSuccess: (data, payload) => {
+      console.log({ payload });
+      console.log({ data });
+
       if (payload.name === "pay-fast") {
         if (data?.data?.data?.sandbox) {
+          console.log("if one");
+
           setPayFastUrl(
             `https://sandbox.payfast.co.za/onsite/engine.js/?uuid=${data?.data?.data?.uuid}`,
           );
         } else {
+          console.log("else two");
+
           setPayFastUrl(
             `https://www.payfast.co.za/onsite/engine.js/?uuid=${data?.data?.data?.uuid}`,
           );
         }
       } else {
+        console.log("else three");
+
         window.location.replace(data.data.data.url);
       }
     },
@@ -281,6 +328,7 @@ export default function CheckoutContainer({
                 loading={isLoading || externalPayLoading}
                 payments={paymentTypes}
                 onPhoneVerify={onPhoneVerify}
+                orderCount={orderCount}
               />
             </aside>
           </section>

@@ -67,4 +67,72 @@
   .action {
     width: 100%;
   }
+  .phoneInputCustom {
+    border-bottom: 2px solid rgb(239, 236, 236);
+    padding-bottom: 2px;
+    width: 100%;
+    transition: all 0.1s;
+    position: relative;
+    &:hover {
+      border-color: black;
+      border-width: 2px;
+    }
+
+    &:focus-within::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      right: 50%;
+      height: 2px;
+      background-color: #79d703;
+      animation: focusBottomEffect 0.2s ease-out forwards;
+    }
+
+    &:not(:focus-within)::after {
+      animation: reverseFocusBottomEffect 0.2s ease-out forwards;
+    }
+
+    @keyframes focusBottomEffect {
+      0% {
+        left: 50%;
+        right: 50%;
+      }
+      100% {
+        left: 0;
+        right: 0;
+      }
+    }
+
+    @keyframes reverseFocusBottomEffect {
+      0% {
+        left: 0;
+        right: 0;
+      }
+      100% {
+        left: 50%;
+        right: 50%;
+      }
+    }
+
+    input {
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .phoneInputCustom {
+    --primary-bg: rgba(24, 25, 29, 1);
+    --secondary-bg: rgba(40, 46, 51, 1);
+    --card-bg: rgba(53, 60, 67, 1);
+    --ingrediend-text: rgba(200, 200, 200, 1);
+    input {
+      background-color: #282e33;
+    }
+    select option {
+      background-color: #282e33;
+    }
+  }
 }

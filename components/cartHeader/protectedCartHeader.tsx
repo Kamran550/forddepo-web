@@ -35,6 +35,7 @@ export default function ProtectedCartHeader({ data, isOwner }: Props) {
 
   return (
     <div className={cls.header}>
+
       <h2 className={cls.title}>{isOwner ? t("your.orders") : data.name}</h2>
       {data.cartDetails.length > 0 && !!data.user_id && (
         <button type="button" className={cls.trashBtn} onClick={handleOpen}>

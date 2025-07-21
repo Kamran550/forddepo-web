@@ -67,7 +67,7 @@ export default function CartItem({ data }: Props) {
 
   return (
     <>
-      <div className={cls.wrapper}>
+      <div className={cls.wrapper}>        
         <div className={cls.block}>
           <h6 className={cls.title}>
             {data.translation?.title}{" "}

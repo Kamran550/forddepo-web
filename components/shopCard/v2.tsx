@@ -36,7 +36,7 @@ export default function ShopCard({ data }: Props) {
           alt={data.translation?.title}
           sizes="400px"
         />
-        <ShopBadges data={data} />
+        <ShopBadges data={data} top={true} />
       </div>
       <div className={cls.body}>
         <div className={cls.main}>

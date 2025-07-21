@@ -1,3 +1,4 @@
+import { Address } from "cluster";
 import { IUser } from "./user.interface";
 
 export interface Product {
@@ -96,6 +97,41 @@ export interface IShop {
   open: boolean;
   verify: Number;
   min_amount?: number;
+  free_delivery_price?: number;
+}
+
+export interface IShop2 {
+  id: number;
+  translation: IShopTranslation;
+  logo_img?: string;
+  background_img?: string;
+  mark?: string;
+  uuid?: string;
+  products_count?: number;
+  delivery_time?: ShopDeliveryTime;
+  location?: Location;
+  shop_closed_date?: ShopClosedDate[];
+  shop_working_days?: ShopWorkingDays[];
+  bonus?: Bonus;
+  price: number;
+  price_per_km?: number;
+  phone?: string;
+  shop_payments?: ShopPayment[];
+  rating_avg?: number;
+  is_recommended?: boolean;
+  discounts_count?: number;
+  type?: "restaurant" | "shop";
+  discount?: any;
+  reviews_count?: number;
+  tags?: IShopTag[];
+  open: boolean;
+  verify: Number;
+  min_amount?: number;
+  free_delivery_price: number;
+
+  test: {
+    order_count: number;
+  };
 }
 
 export interface IBookingShop {
@@ -342,6 +378,11 @@ export interface Currency {
   position: "after" | "before";
 }
 
+export type AddressFields = {
+  office: string;
+  house: string;
+};
+
 export interface OrderFormValues {
   coupon?: string;
   location: Location;
@@ -371,6 +412,13 @@ export interface ShopPayment {
 export interface Payment {
   id: number;
   tag: string;
+}
+
+export interface PaymentResponse {
+  data: Payment[];
+  test: {
+    order_count: number;
+  };
 }
 
 export interface Refund {

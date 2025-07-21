@@ -8,7 +8,7 @@ import PencilFillIcon from "remixicon-react/PencilFillIcon";
 import { useTranslation } from "react-i18next";
 import usePopover from "hooks/usePopover";
 import dayjs from "dayjs";
-import { FormikProps } from "formik";
+import { FormikProps, getIn } from "formik";
 import { OrderFormValues, IShop } from "interfaces";
 import useModal from "hooks/useModal";
 import {
@@ -126,13 +126,24 @@ export default function CheckoutDeliveryForm({
             label={t("office")}
             value={formik.values.address?.office}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              getIn(formik.touched, "address.office") &&
+              getIn(formik.errors, "address.office")
+            }
             placeholder={t("type.here")}
           />
+
           <TextInput
             name="address.house"
             label={t("house")}
             value={formik.values.address?.house}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              getIn(formik.touched, "address.house") &&
+              getIn(formik.errors, "address.house")
+            }
             placeholder={t("type.here")}
           />
           <TextInput

@@ -46,7 +46,11 @@ export default function VerifyCodeForm({}: Props) {
           setUserData(data.user);
           push("/update-password");
         })
-        .catch((err) => error(t(err.statusCode)))
+        .catch((err) => {
+          console.log("error geldi:", err);
+
+          error(err?.data?.message || t("unknown.error"));
+        })
         .finally(() => setSubmitting(false));
       console.log("values => ", values);
     },
@@ -71,7 +75,7 @@ export default function VerifyCodeForm({}: Props) {
         onError: (err: any) => {
           error(err.message);
         },
-      }
+      },
     );
   };
 
@@ -100,15 +104,13 @@ export default function VerifyCodeForm({}: Props) {
       <p className={cls.text}>
         {t("verify.didntRecieveCode")}{" "}
         {time === 0 ? (
-          isResending ? (
-            <span className={cls.text} style={{ opacity: 0.5 }}>
-              Sending...
-            </span>
-          ) : (
-            <span onClick={handleResendCode} className={cls.resend}>
-              {t("resend")}
-            </span>
-          )
+          <span
+            id="sign-in-button"
+            onClick={handleResendCode}
+            className={cls.resend}
+          >
+            {t("resend")}
+          </span>
         ) : (
           <span className={cls.text}>{time} s</span>
         )}

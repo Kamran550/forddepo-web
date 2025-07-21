@@ -4,6 +4,8 @@ import { IShop } from "interfaces";
 import TimeLineIcon from "remixicon-react/TimeLineIcon";
 import RunFillIcon from "remixicon-react/RunFillIcon";
 import StarSmileFillIcon from "remixicon-react/StarSmileFillIcon";
+import GiftLineIcon from "remixicon-react/GiftLineIcon";
+
 import CouponLineIcon from "remixicon-react/CouponLineIcon";
 import ShopLogoBackground from "components/shopLogoBackground/shopLogoBackground";
 import { useMediaQuery } from "@mui/material";
@@ -60,6 +62,8 @@ export default function ShopHeader({ data }: Props) {
   );
 
   function toggleLike() {
+    console.log("menim shop dtaam:", data);
+
     if (data) {
       if (isLiked) {
         dispatch(removeFromLiked(data));
@@ -161,6 +165,20 @@ export default function ShopHeader({ data }: Props) {
                 </span>
               </p>
             </div>
+
+            {data?.free_delivery_price != null && (
+            <><div className={cls.dot} /><div className={`${cls.item} ${cls.delivery}`}>
+                <GiftLineIcon />
+                <p className={cls.text}>
+                  <span></span>
+                  <span className={cls.semiBold}>
+                    <Price
+                      number={Number(data?.free_delivery_price) *
+                        Number(currency?.rate)} />
+                  </span>
+                </p>
+              </div></>
+            )}
           </div>
           {isGroupOrderActive && (
             <div className={cls.actions}>

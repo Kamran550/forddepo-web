@@ -19,12 +19,19 @@ const authService = {
   forgotPassword: (data: any) => request.post(`/auth/forgot/password`, data),
   verifyPhone: (data: any) =>
     request.post(`/auth/verify/phone`, {}, { params: data }),
+  verifyPhone2: (data: any) =>
+    request.post(`/auth/verify/phone2`, {}, { params: data }),
   verifyEmail: (data: VerifyCredentials) =>
     request.get("/auth/verify/" + data.verifyId),
-  registerComplete: (data: RegisterCredentials) =>
-    request.post("/auth/after-verify", data),
+  registerComplete: (data: RegisterCredentials) => {
+    const myData = request.post("/auth/after-verify", data);
+
+    return myData;
+  },
   resendVerify: (data: any) =>
     request.post(`/auth/resend-verify`, {}, { params: data }),
+  resendWhatsapp: (data: any) =>
+    request.post(`auth/resend/whatsapp`, {}, { params: data }),
   forgotPasswordEmail: (data: any) =>
     request.post("/auth/forgot/email-password", {}, { params: data }),
   forgotPasswordVerify: (data: any) =>
@@ -37,6 +44,7 @@ const authService = {
     request.post("/auth/verify/phone", data),
   forgotPasswordPhone: (data: any) =>
     request.post(`auth/forgot/password/confirm`, data),
+  resendPhone: (data: any) => request.post("/auth/resend-phone", data),
 };
 
 export default authService;

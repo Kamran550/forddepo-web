@@ -34,6 +34,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'imageproxy.wolt.com',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.getqo.az',
+        pathname: '/**'
       }
     ],
     minimumCacheTTL: 3600,

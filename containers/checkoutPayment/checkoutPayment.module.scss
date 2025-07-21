@@ -118,4 +118,21 @@
       }
     }
   }
+
+  .infoButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 8px;
+  }
+
+  .infoBox {
+    background-color: #f1f1f1;
+    padding: 8px 12px;
+    margin-top: 4px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+  }
 }

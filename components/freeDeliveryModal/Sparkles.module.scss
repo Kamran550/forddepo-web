@@ -1,0 +1,12 @@
+.sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #ffe066, #ffcc00);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+    box-shadow: 0 0 6px rgba(255, 230, 102, 0.7);
+  }
+  

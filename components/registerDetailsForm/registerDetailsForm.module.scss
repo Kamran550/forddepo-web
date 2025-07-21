@@ -45,3 +45,37 @@
     width: 100%;
   }
 }
+
+[data-theme="dark"] {
+  .infoBtn {
+    color: #bbb;
+
+    &:hover {
+      color: #ddd;
+    }
+  }
+
+  .referalDialog {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+
+    .MuiDialogTitle-root {
+      color: #ffffff;
+    }
+
+    .MuiDialogContent-root {
+      color: #cccccc;
+    }
+
+    .MuiDialogActions-root {
+      button {
+        background-color: #2d2d2d;
+        color: #ffffff;
+
+        &:hover {
+          background-color: #3a3a3a;
+        }
+      }
+    }
+  }
+}
