@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Order } from "interfaces";
 import cls from "./orderInfo.module.scss";
 import { useTranslation } from "react-i18next";
@@ -67,6 +67,8 @@ export default function OrderInfo({ data }: Props) {
   ] = useModal();
   const [openChat, handleOpenChat, handleCloseChat] = useModal();
   const [openTip, handleOpenTip, handleCloseTip] = useModal();
+  const [showDeliveryInfo, setShowDeliveryInfo] = useState(false);
+  const [showServiceFeeInfo, setShowServiceFeeInfo] = useState(false);
   const [
     openAutoRepeatModal,
     handleOpenAutoRepeatModal,
@@ -155,6 +157,9 @@ export default function OrderInfo({ data }: Props) {
     return cart.shop_id === 0 || cart.shop_id === data?.shop.id;
   }
 
+  const deliveryInfoObj = data?.info?.find((item: any) => item.delivery_info);
+  const serviceInfoObj = data?.info?.find((item: any) => item.service_info);
+
   return (
     <div className={cls.wrapper}>
       <div className={cls.header}>
@@ -210,7 +215,7 @@ export default function OrderInfo({ data }: Props) {
             <Price number={subTotal} symbol={data?.currency?.symbol} />
           </span>
         </div>
-        <div className={cls.flex}>
+        {/* <div className={cls.flex}>
           <label>{t("delivery.price")}</label>
           <span className={cls.price}>
             <Price
@@ -218,7 +223,33 @@ export default function OrderInfo({ data }: Props) {
               symbol={data?.currency?.symbol}
             />
           </span>
+        </div> */}
+        <div className={cls.flex}>
+          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <label>{t("delivery.price")}</label>
+            {deliveryInfoObj && (
+              <button
+                type="button"
+                className={cls.infoButton}
+                onClick={() => setShowDeliveryInfo((prev) => !prev)}
+              >
+                ℹ️
+              </button>
+            )}
+          </div>
+          <span className={cls.price}>
+            <Price
+              number={data?.delivery_fee}
+              symbol={data?.currency?.symbol}
+            />
+          </span>
         </div>
+        {showDeliveryInfo && (
+          <div className={cls.infoBox}>
+            {deliveryInfoObj?.delivery_info ?? t("delivery.default.info")}
+          </div>
+        )}
+
         <div className={cls.flex}>
           <label>{t("shop.tax")}</label>
           <span className={cls.price}>
@@ -247,12 +278,37 @@ export default function OrderInfo({ data }: Props) {
             </span>
           </div>
         )}
-        <div className={cls.flex}>
+        {/* <div className={cls.flex}>
           <label>{t("service.fee")}</label>
           <span className={cls.price}>
             <Price number={data?.service_fee} symbol={data?.currency?.symbol} />
           </span>
+        </div> */}
+
+        <div className={cls.flex}>
+          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <label>{t("service.fee")}</label>
+            {serviceInfoObj && (
+              <button
+                type="button"
+                className={cls.infoButton}
+                onClick={() => setShowServiceFeeInfo((prev) => !prev)}
+              >
+                ℹ️
+              </button>
+            )}
+          </div>
+          <span className={cls.price}>
+            <Price number={data?.service_fee} symbol={data?.currency?.symbol} />
+          </span>
         </div>
+
+        {showServiceFeeInfo && (
+          <div className={cls.infoBox}>
+            {serviceInfoObj?.service_info ?? t("service.fee.default.info")}
+          </div>
+        )}
+
         <div className={cls.flex}>
           <label>{t("tips")}</label>
           <span className={cls.price}>

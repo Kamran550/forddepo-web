@@ -51,6 +51,7 @@ type OrderType = {
   service_fee?: number;
   tips?: number;
   delivery_info?: string;
+  service_fee_info?: string;
 };
 
 export default function CheckoutPayment({
@@ -78,6 +79,7 @@ export default function CheckoutPayment({
   );
   const [order, setOrder] = useState<OrderType>({});
   const [showDeliveryInfo, setShowDeliveryInfo] = useState(false);
+  const [showServiceFeeInfo, setShowServiceFeeInfo] = useState(false);
   const [calculateError, setCalculateError] = useState<null | boolean>(null);
   const { coupon, location, delivery_type, payment_type, tips } = formik.values;
   const { settings } = useSettings();
@@ -124,21 +126,21 @@ export default function CheckoutPayment({
         return;
       }
     }
-    if (
-      shop &&
-      shop?.min_amount &&
-      defaultCurrency &&
-      currency &&
-      localShopMinPrice >= Number(order.price)
-    ) {
-      warning(
-        <span>
-          {t("your.order.did.not.reach.min.amount.min.amount.is")}{" "}
-          <Price number={localShopMinPrice} />
-        </span>,
-      );
-      return;
-    }
+    // if (
+    //   shop &&
+    //   shop?.min_amount &&
+    //   defaultCurrency &&
+    //   currency &&
+    //   localShopMinPrice >= Number(order.price)
+    // ) {
+    //   warning(
+    //     <span>
+    //       {t("your.order.did.not.reach.min.amount.min.amount.is")}{" "}
+    //       <Price number={localShopMinPrice} />
+    //     </span>,
+    //   );
+    //   return;
+    // }
     formik.handleSubmit();
   }
 
@@ -271,12 +273,36 @@ export default function CheckoutPayment({
           ) : (
             ""
           )}
+          {/* <div className={cls.row}>
+            <div className={cls.item}>{t("service.feeee")}</div>
+            <div className={cls.item}>
+              <Price number={order.service_fee} />
+            </div>
+          </div> */}
           <div className={cls.row}>
-            <div className={cls.item}>{t("service.fee")}</div>
+            <div className={cls.item}>
+              {t("service.fee")}
+              {order.service_fee_info && (
+                <button
+                  type="button"
+                  className={cls.infoButton}
+                  onClick={() => setShowServiceFeeInfo((prev) => !prev)}
+                >
+                  ℹ️
+                </button>
+              )}
+            </div>
             <div className={cls.item}>
               <Price number={order.service_fee} />
             </div>
           </div>
+          {showServiceFeeInfo && (
+            <div className={cls.infoBox}>
+              {order.service_fee_info
+                ? order.service_fee_info
+                : t("service.fee.default.info")}
+            </div>
+          )}
           <div className={cls.row}>
             <div className={cls.item}>{t("tips")}</div>
             <div className={cls.item}>

@@ -299,6 +299,11 @@ export enum OrderStatus {
   CANCELED = "canceled",
 }
 
+export interface OrderInfo {
+  delivery_info?: string;
+  service_info?: string;
+}
+
 export interface Order {
   repeat?: {
     id: number;
@@ -333,6 +338,7 @@ export interface Order {
   service_fee?: number;
   image_after_delivered?: string;
   otp?: number;
+  info?: OrderInfo[];
 }
 
 export interface OrderReview {
