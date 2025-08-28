@@ -70,7 +70,6 @@ export default function RegisterDetailsForm({ phone }: Props) {
         ...values,
         referral: values.referral || undefined,
       };
-      if (values.email?.includes("@")) {
         authService
           .registerComplete(body)
           .then(({ data }) => {
@@ -115,7 +114,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
             }
           })
           .finally(() => setSubmitting(false));
-      }
+      
     },
     validate: (values: formValues) => {
       const errors: formValues = {} as formValues;
@@ -124,9 +123,6 @@ export default function RegisterDetailsForm({ phone }: Props) {
       }
       if (!values.lastname) {
         errors.lastname = t("required");
-      }
-      if (!values.email) {
-        errors.email = t("required");
       }
       if (!values.password) {
         errors.password = t("required");
@@ -186,7 +182,7 @@ export default function RegisterDetailsForm({ phone }: Props) {
             value={formik.values.email}
             onChange={formik.handleChange}
             error={!!formik.errors.email}
-            helperText={formik.errors.email}
+            helperText={"Bu sahəni doldurmaq məcburi deyil"}
           />
         </div>
         <div className={cls.item}>

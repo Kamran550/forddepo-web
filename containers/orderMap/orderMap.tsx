@@ -27,6 +27,7 @@ export default function OrderMap({
 
   return (
     <div className={`${cls.wrapper} ${fullHeight ? cls.fullHeight : ""}`}>
+      test
       {!loading ? (
         <Map
           location={location}
