@@ -131,7 +131,7 @@ export default function CheckoutContainer({
         }
       }
 
-      if (!user?.email || !user?.lastname) {
+      if (!user?.lastname) {
         console.log("user.details.incomplete");
         warning(t("user.details.incomplete"));
         setTimeout(() => {

@@ -16,6 +16,7 @@ import { Order, Payment } from "interfaces";
 import PaymentMethod from "components/paymentMethod/paymentMethod";
 import { useTranslation } from "react-i18next";
 import { error } from "components/alert/toast";
+import PaymentMethod2 from "components/paymentMethod2/paymentMethod2";
 
 const DrawerContainer = dynamic(() => import("containers/drawer/drawer"));
 const MobileDrawer = dynamic(() => import("containers/drawer/mobileDrawer"));
@@ -38,34 +39,51 @@ export default function PayToUnpaidOrders({ data }: Props) {
 
   const { data: payments } = useQuery(
     "payments",
-    () => paymentService.getAll(),
+    () => paymentService.getPaymentsForUser2(),
     {
       enabled:
         UNPAID_STATUSES.includes(data?.transaction?.status || "paid") &&
         data?.transaction?.payment_system.tag !== "cash",
-    }
+    },
   );
 
-  const { paymentTypes } = useMemo(() => {
-    let defaultPaymentType: Payment | undefined;
-    let paymentTypesList: Payment[];
-    if (settings?.payment_type === "admin") {
-      defaultPaymentType = payments?.data.find(
-        (item: Payment) => item.tag === "cash"
-      );
-      paymentTypesList = payments?.data || [];
-    } else {
-      defaultPaymentType = data?.shop?.shop_payments?.find(
-        (item) => item.payment.tag === "cash"
-      )?.payment;
-      paymentTypesList =
-        data?.shop?.shop_payments?.map((item) => item.payment) || [];
-    }
+  console.log({ payments });
+
+  // const { paymentTypes } = useMemo(() => {
+  //   let defaultPaymentType: Payment | undefined;
+  //   let paymentTypesList: Payment[];
+  //   console.log("isAdmin:", settings?.payment_type);
+  //   console.log("shop pay:", data?.shop?.shop_payments);
+
+  //   if (settings?.payment_type === "admin") {
+  //     defaultPaymentType = payments?.data.find(
+  //       (item: Payment) => item.tag === "cash",
+  //     );
+  //     paymentTypesList = payments?.data || [];
+  //   } else {
+  //     defaultPaymentType = payments?.find(
+  //       (item) => item.payment.tag === "cash",
+  //     )?.payment;
+  //     paymentTypesList =
+  //       data?.shop?.shop_payments?.map((item) => item.payment) || [];
+  //   }
+  //   return {
+  //     paymentType: defaultPaymentType,
+  //     paymentTypes: paymentTypesList,
+  //   };
+  // }, [settings, data, payments]);
+
+  const { paymentType, paymentTypes, orderCount } = useMemo(() => {
+    const list = payments?.data || [];
+    const orderCount = payments?.test?.order_count || 0;
+
     return {
-      paymentType: defaultPaymentType,
-      paymentTypes: paymentTypesList,
+      paymentType:
+        list.find((item: Payment) => item.tag === "odero") || list[0],
+      paymentTypes: list,
+      orderCount,
     };
-  }, [settings, data, payments]);
+  }, [payments]);
 
   const { isLoading: isLoadingTransaction, mutate: transactionCreate } =
     useMutation({
@@ -95,7 +113,14 @@ export default function PayToUnpaidOrders({ data }: Props) {
   });
 
   const payAgain = (tag: string) => {
-    const payment = paymentTypes.find((paymentType) => paymentType.tag === tag);
+    // const payment = paymentTypes.find((paymentType) => paymentType.tag === tag);
+    // console.log("1111111111");
+    const payment = paymentTypes.find((p) => p.tag === tag);
+    if (!payment) {
+      console.error("Payment not found! tag:", tag, paymentTypes);
+      return;
+    }
+
     const payload = {
       id: data?.id,
       payment: {
@@ -103,11 +128,16 @@ export default function PayToUnpaidOrders({ data }: Props) {
       },
     };
     if (EXTERNAL_PAYMENTS.includes(tag)) {
-      externalPay({name: tag, data: { order_id: payload.id }});
+      console.log("ilk if");
+
+      externalPay({ name: tag, data: { order_id: payload.id } });
     }
+    console.log("menim pay again tagim:", tag);
+    console.log("menim pay again payload:", payload);
+
     if (tag === "alipay") {
       window.location.replace(
-        `${BASE_URL}/api/alipay-prepay?order_id=${payload.id}`
+        `${BASE_URL}/api/alipay-prepay?order_id=${payload.id}`,
       );
     }
     transactionCreate(payload);
@@ -124,15 +154,17 @@ export default function PayToUnpaidOrders({ data }: Props) {
         <DrawerContainer
           open={paymentMethodDrawer}
           onClose={handleClosePaymentMethod}
-          title={t("payment.method")}
+          title={t("payment.methodgg")}
         >
-          <PaymentMethod
+          <PaymentMethod2
             value={data?.transaction?.payment_system.tag}
             list={paymentTypes}
             handleClose={handleClosePaymentMethod}
             isButtonLoading={isLoadingTransaction || externalPayLoading}
             onSubmit={(tag) => {
               if (tag) {
+                console.log("ife girdi tag");
+
                 payAgain(tag);
               }
             }}
@@ -142,12 +174,13 @@ export default function PayToUnpaidOrders({ data }: Props) {
         <MobileDrawer
           open={paymentMethodDrawer}
           onClose={handleClosePaymentMethod}
-          title={t("payment.method")}
+          title={t("payment.methodss")}
         >
-          <PaymentMethod
+          <PaymentMethod2
             value={data?.transaction?.payment_system.tag}
             list={paymentTypes}
             handleClose={handleClosePaymentMethod}
+            isButtonLoading={isLoadingTransaction || externalPayLoading}
             onSubmit={(tag) => {
               if (tag) {
                 payAgain(tag);

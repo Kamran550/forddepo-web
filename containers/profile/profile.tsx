@@ -153,14 +153,6 @@ export default function ProfileContainer({ data }: Props) {
         errors.lastname = t("required");
       }
 
-      if (!values.email || values.email.trim() === "") {
-        console.log("3");
-
-        errors.email = t("required");
-      }
-
-      console.log("iflere gormedi", errors);
-
       return errors;
     },
   });
@@ -344,7 +336,7 @@ export default function ProfileContainer({ data }: Props) {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     error={!!formik.errors.email}
-                    helperText={formik.errors.email}
+                    helperText={"Bu sahəni doldurmaq məcburi deyil"}
                     // disabled
                   />
                 </Grid>
