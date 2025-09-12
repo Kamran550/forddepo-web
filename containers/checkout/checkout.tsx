@@ -79,9 +79,10 @@ export default function CheckoutContainer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [payments]);
 
-  const formik = useFormik({
+  const formik = useFormik<OrderFormValues>({
     initialValues: {
       coupon: undefined,
+      partial_payment: null, // Qismən ödəmə sahəsi əlavə edildi
       location: {
         latitude: latlng?.split(",")[0],
         longitude: latlng?.split(",")[1],
@@ -94,7 +95,7 @@ export default function CheckoutContainer({
       },
       delivery_date: order.delivery_date || getFirstValidDate(data).date,
       delivery_time: order.delivery_time || getFirstValidDate(data).time,
-      delivery_type: "delivery",
+      delivery_type: "pickup",
       note: undefined,
       payment_type: paymentType,
       for_someone: false,
@@ -102,6 +103,7 @@ export default function CheckoutContainer({
       phone: isUsingCustomPhoneSignIn ? user.phone : undefined,
       notes: {},
       tips: undefined,
+      partial_amount: 0,
     },
     // enableReinitialize: true,
     onSubmit: (values: OrderFormValues) => {
@@ -140,6 +142,15 @@ export default function CheckoutContainer({
         return;
       }
 
+      // Qismən ödəmə yoxlanışı
+      if (
+        values.partial_payment?.is_partial &&
+        values.payment_type?.tag !== "cash"
+      ) {
+        warning(t("partial.payment.requires.cash"));
+        return;
+      }
+
       const notes = Object.keys(values.notes).reduce((acc: any, key) => {
         const value = values.notes[key]?.trim()?.length
           ? values.notes[key]
@@ -149,6 +160,7 @@ export default function CheckoutContainer({
         }
         return acc;
       }, {});
+
       const payload: any = {
         ...values,
         currency_id: currency?.id,
@@ -171,22 +183,37 @@ export default function CheckoutContainer({
         note: values?.note && values?.note?.length ? values?.note : undefined,
         notes,
         tips: values?.tips,
+        // Qismən ödəmə məlumatlarını payload-a əlavə et
+        partial_payment: values.partial_payment,
       };
-      if (EXTERNAL_PAYMENTS.includes(formik.values.payment_type?.tag || "")) {
-        console.log("metod:", formik.values.payment_type);
 
+      // Qismən ödəmə üçün xüsusi işləmə
+      if (values.partial_payment?.is_partial) {
+        console.log("Partial payment detected:", values.partial_payment);
+        // Qismən ödəmə halında payment_id cash payment-in id-si olmalıdır
+        const cashPayment = paymentTypes?.find(
+          (p: Payment) => p.tag === "cash",
+        );
+        if (cashPayment) {
+          payload.payment_id = cashPayment.id;
+        }
+      } else if (
+        EXTERNAL_PAYMENTS.includes(formik.values.payment_type?.tag || "")
+      ) {
+        console.log("metod:", formik.values.payment_type);
         console.log("ife dusdu");
 
         externalPay({
           name: formik.values.payment_type?.tag,
           data: payload,
         });
+        return; // External payment halında return et
       } else {
         console.log("else dusdu odero olanda");
-
         payload.payment_id = values.payment_type?.id;
-        createOrder(payload);
       }
+
+      createOrder(payload);
     },
     validate: (values) => {
       console.log("validate yoxlanilir");
@@ -201,6 +228,17 @@ export default function CheckoutContainer({
           house: t("validation.required"),
         };
       }
+
+      // Qismən ödəmə yoxlanışları
+      if (values.partial_payment?.is_partial) {
+        if (
+          !values.partial_payment.paid_amount ||
+          values.partial_payment.paid_amount <= 0
+        ) {
+          errors.partial_payment = t("please.enter.valid.amount");
+        }
+      }
+
       return errors;
     },
   });
@@ -210,6 +248,12 @@ export default function CheckoutContainer({
     onSuccess: (data) => {
       queryClient.invalidateQueries(["profile"], { exact: false });
       queryClient.invalidateQueries(["cart"], { exact: false });
+
+      // Qismən ödəmə uğurlu mesajı
+      if (formik.values.partial_payment?.is_partial) {
+        success(t("partial.payment.order.created"));
+      }
+
       replace(`/orders/${data.data.id}`);
     },
     onError: (err: any) => {

@@ -1,0 +1,120 @@
+.container {
+  padding: 20px;
+  max-width: 400px;
+}
+
+.header {
+  margin-bottom: 20px;
+  
+  h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .totalInfo {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+  }
+}
+
+.paymentOptions {
+  margin-bottom: 20px;
+  
+  .option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &.selected {
+      border-color: #007bff;
+      background-color: #f8f9ff;
+    }
+    
+    .radioButton {
+      margin-right: 15px;
+      
+      input[type="radio"] {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    
+    .optionContent {
+      flex: 1;
+      
+      h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      
+      p {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+      }
+      
+      .amount {
+        margin-top: 8px;
+        font-weight: 600;
+        color: #007bff;
+      }
+    }
+  }
+}
+
+.partialSection {
+  margin-bottom: 20px;
+  
+  .quickAmounts {
+    margin-bottom: 20px;
+    
+    p {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .percentageButtons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      
+      .percentageBtn {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: white;
+        cursor: pointer;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &:hover:not(.disabled) {
+          border-color: #007bff;
+          background-color: #f8f9ff;
+        }
+        
+        &.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        
+        .percentageAmount {
+          display: block;
+          font-size: 12px;
+          color: #666;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}

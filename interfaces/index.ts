@@ -339,6 +339,9 @@ export interface Order {
   image_after_delivered?: string;
   otp?: number;
   info?: OrderInfo[];
+  paid_amount?: number;
+  remaining_amount: number;
+  is_partial_payment?: boolean;
 }
 
 export interface OrderReview {
@@ -389,10 +392,17 @@ export type AddressFields = {
   house: string;
 };
 
+export interface PartialPayment {
+  is_partial: boolean;
+  paid_amount: number;
+  due_amount: number;
+}
+
 export interface OrderFormValues {
   coupon?: string;
   location: Location;
   address?: IAddress;
+  partial_payment?: PartialPayment | null;
   delivery_date?: string;
   delivery_time?: string;
   delivery_type?: "delivery" | "pickup";
@@ -407,6 +417,7 @@ export interface OrderFormValues {
   for_someone?: boolean;
   notes: any;
   tips?: number;
+  partial_amount: number;
 }
 
 export interface ShopPayment {

@@ -141,7 +141,7 @@ export default function SearchContainer({ searchContainerRef }: Props) {
         placeholder={
           isRestaurantRoute
             ? t("search.products.in", { shop: data?.data?.translation?.title })
-            : t("search.restaurants.products")
+            : t("search.products.oem")
         }
         autoComplete="off"
         value={searchTerm}

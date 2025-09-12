@@ -3,6 +3,7 @@ import cls from "./orderList.module.scss";
 import { Order } from "interfaces";
 import { Skeleton } from "@mui/material";
 import OrderListItem from "components/orderListItem/orderListItem";
+import Price from "components/price/price";
 
 type Props = {
   data: Order[];
@@ -15,8 +16,26 @@ export default function OrderList({
   loading = false,
   active = false,
 }: Props) {
+  console.log("ordersssssssss");
+
+  const totalDebt = data.reduce((acc, order) => {
+    const debt = (order.total_price ?? 0) - (order.paid_amount ?? 0);
+    return acc + (debt > 0 ? debt : 0); // mənfi olmasın
+  }, 0);
+
+  console.log({ data });
+
   return (
     <div className={cls.root}>
+      {!loading && (
+        <div className={cls.totalDebt}>
+          Ümumi borc:{" "}
+          <strong>
+            <Price number={totalDebt} symbol={data[0]?.currency?.symbol} />
+          </strong>
+        </div>
+      )}
+
       {!loading
         ? data.map((item) => (
             <OrderListItem key={item.id} data={item} active={active} />
