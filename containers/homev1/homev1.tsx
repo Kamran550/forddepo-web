@@ -16,6 +16,7 @@ import { RootState } from "redux/store";
 import { AnimatePresence } from "framer-motion";
 import FreeDeliveryModal from "components/freeDeliveryModal/freeDeliveryModal";
 import { closeFreeDeliveryModal } from "redux/slices/modal";
+import { useAuth } from "contexts/auth/auth.context";
 
 const Empty = dynamic(() => import("components/empty/empty"));
 const Loader = dynamic(() => import("components/loader/loader"));
@@ -44,6 +45,9 @@ export default function Homev1() {
   const locale = i18n.language;
   const isDesktop = useMediaQuery("(min-width:1140px)");
   const loader = useRef(null);
+  const { user } = useAuth();
+  const isWholeCustomer = user?.role === "wholesale_customer";
+
   const { category_id, newest, order_by, group } =
     useAppSelector(selectShopFilter);
   const isFilterActive = !!Object.keys(group).length;
@@ -182,16 +186,15 @@ export default function Homev1() {
         loading={isShopLoading}
       />
       <AdList data={ads?.data} loading={adListLoading} />
-      <BrandShopList data={brandShops?.data || []} loading={brandShopLoading} />
+      {!isWholeCustomer && (
+        <BrandShopList
+          data={brandShops?.data || []}
+          loading={brandShopLoading}
+        />
+      )}
+
+      {/* <BrandShopList data={brandShops?.data || []} loading={brandShopLoading} /> */}
       <div style={{ minHeight: "60vh" }}>
-        {/* <AnimatePresence>
-          {showPopup && freeCount !== null && (
-            <FreeDeliveryModal
-              freeDelivery={freeCount}
-              onClose={() => dispatch(closeFreeDeliveryModal())}
-            />
-          )}
-        </AnimatePresence> */}
 
         {!category_id && !newest && !isFilterActive && isInsideZone && (
           <FeaturedShopsContainer
@@ -200,11 +203,14 @@ export default function Homev1() {
             loading={recommendedLoading}
           />
         )}
-        <ShopList
-          title={newest ? t("news.week") : t("all.restaurants")}
-          shops={restaurants}
-          loading={isLoading && !isFetchingNextPage}
-        />
+        {!isWholeCustomer && (
+          <ShopList
+            title={newest ? t("news.week") : t("all.shops")}
+            shops={restaurants}
+            loading={isLoading && !isFetchingNextPage}
+          />
+        )}
+
         {isFetchingNextPage && <Loader />}
         <div ref={loader} />
 
