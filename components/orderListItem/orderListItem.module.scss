@@ -127,13 +127,15 @@
   }
   .debt {
     color: #e53935; // yumuşaq qırmızı
-    font-size: 12px;
+    margin: 0;
+    font-size: 0.9rem;
     font-weight: 500;
   }
 
   .paid {
+    margin: 0;
+    font-size: 0.9rem;
     color: #43a047; // yumuşaq yaşıl
-    font-size: 12px;
     font-weight: 500;
   }
 }
