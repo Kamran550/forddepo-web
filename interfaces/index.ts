@@ -17,6 +17,7 @@ export interface Product {
   shop?: IShop;
   interval: number;
   unit: Unit;
+  oem_code?: any;
 }
 
 export interface ShopReview {

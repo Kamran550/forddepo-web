@@ -60,6 +60,9 @@ export default function ProductCard({ data, handleOpen }: Props) {
       <div className={cls.body}>
         <h3 className={cls.title}>{data.translation?.title}</h3>
         <p className={cls.text}>{data.translation?.description}</p>
+        {data.oem_code?.length > 0 && (
+          <p className={cls.text}>oem: {data.oem_code}</p>
+        )}
         <span className={cls.price}>
           <Price number={data.stock?.total_price} />
         </span>{" "}
