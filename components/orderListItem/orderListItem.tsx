@@ -47,20 +47,13 @@ export default function OrderListItem({ data, active }: Props) {
           </p>
         </div>
         {data.remaining_amount > 0 ? (
-          <>
-            <p className={cls.paid}>
-              Ödənilib:{" "}
-              <Price number={data.paid_amount} symbol={data.currency?.symbol} />
-            </p>
-
-            <p className={cls.debt}>
-              Qalan borc:{" "}
-              <Price
-                number={data.remaining_amount}
-                symbol={data.currency?.symbol}
-              />
-            </p>
-          </>
+          <p className={cls.debt}>
+            Qalan borc:{" "}
+            <Price
+              number={data.remaining_amount}
+              symbol={data.currency?.symbol}
+            />
+          </p>
         ) : (
           <p className={cls.paid}>Tam ödənilib</p>
         )}
