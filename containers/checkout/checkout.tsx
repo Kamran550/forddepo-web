@@ -219,15 +219,15 @@ export default function CheckoutContainer({
       console.log("validate yoxlanilir");
       const errors: any = {};
 
-      if (
-        (!values.address?.office || values.address.office.trim() === "") &&
-        (!values.address?.house || values.address.house.trim() === "")
-      ) {
-        errors.address = {
-          office: t("validation.required"),
-          house: t("validation.required"),
-        };
-      }
+      // if (
+      //   (!values.address?.office || values.address.office.trim() === "") &&
+      //   (!values.address?.house || values.address.house.trim() === "")
+      // ) {
+      //   errors.address = {
+      //     office: t("validation.required"),
+      //     house: t("validation.required"),
+      //   };
+      // }
 
       // Qismən ödəmə yoxlanışları
       if (values.partial_payment?.is_partial) {
