@@ -46,7 +46,7 @@ export default function OrderListItem({ data, active }: Props) {
             {dayjs(data.created_at).format("DD.MM.YY — HH:mm")}
           </p>
         </div>
-        {data.remaining_amount > 0 ? (
+        {data.remaining_amount > 0 && data.is_partial_payment ? (
           <p className={cls.debt}>
             Qalan borc:{" "}
             <Price
