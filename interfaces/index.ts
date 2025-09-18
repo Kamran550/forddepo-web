@@ -10,7 +10,7 @@ export interface Product {
   shop_id?: number;
   galleries?: Gallery[];
   translation: Translation;
-  stocks?: Stock[];
+  stocks?: Stock[] | undefined;
   stock?: Stock;
   min_qty?: number;
   max_qty?: number;
@@ -52,6 +52,12 @@ export interface Stock {
   total_price?: number;
   product?: Product;
   tax?: number;
+  warehouse: string;
+}
+
+export interface Warehouse {
+  id: number;
+  name: string;
 }
 
 export interface ProductExtra {

@@ -47,7 +47,6 @@ export default function PartialPayment({
   return (
     <div className={cls.container}>
       <div className={cls.header}>
-        <h1>Partial</h1>
         <h3>{t("payment.options")}</h3>
         <p className={cls.totalInfo}>
           {t("order.total")}: <Price number={totalAmount} />

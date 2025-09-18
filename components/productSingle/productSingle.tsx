@@ -38,6 +38,7 @@ export default function ProductSingle({ handleClose, uuid }: Props) {
       id: 0,
       quantity: 1,
       price: 0,
+      warehouse: "test",
     },
   });
   const [extrasIds, setExtrasIds] = useState<any[]>([]);
@@ -71,6 +72,9 @@ export default function ProductSingle({ handleClose, uuid }: Props) {
     }
   }, [data]);
 
+  console.log("my product data:", data);
+  console.log("wareh:", data?.stocks?.[0]?.warehouse);
+  console.log("wareh2:", showExtras.stock?.warehouse);
   const handleExtrasClick = (e: any) => {
     setSelectedAddons([]);
     const index = extrasIds.findIndex(
@@ -121,6 +125,8 @@ export default function ProductSingle({ handleClose, uuid }: Props) {
   }
 
   function storeCart() {
+    console.log({ addons });
+
     const products = addons.map((item) => ({
       id: item.id,
       img: item.img,
@@ -194,6 +200,8 @@ export default function ProductSingle({ handleClose, uuid }: Props) {
         handleAddToCart={handleAddToCart}
         totalPrice={calculateTotalPrice()}
         extrasIds={extrasIds}
+        warehouseName={data?.stocks?.[0]?.warehouse} // Birbaşa warehouse string-i
+        oemCode={data?.oem_code}
       >
         <AddonsForm
           data={showExtras.stock.addons || []}

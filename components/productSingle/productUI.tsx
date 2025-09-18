@@ -27,6 +27,8 @@ type Props = {
   handleAddToCart: () => void;
   totalPrice: number;
   extrasIds: ProductExtra[];
+  warehouseName?: string;
+  oemCode?: string;
 };
 
 export default function ProductUI({
@@ -43,8 +45,11 @@ export default function ProductUI({
   handleAddToCart,
   totalPrice,
   extrasIds,
+  warehouseName,
+  oemCode,
 }: Props) {
   const { t } = useTranslation();
+  console.log({ warehouseName });
 
   return (
     <div className={cls.wrapper}>
@@ -60,6 +65,19 @@ export default function ProductUI({
               <div className={cls.header}>
                 <h1 className={cls.title}>{data.translation?.title}</h1>
                 <p className={cls.text}>{data.translation?.description}</p>
+                {warehouseName && (
+                  <div className={cls.warehouse}>
+                    <span className={cls.text}>{t("stock")}: </span>
+                    <span className={cls.text}>{warehouseName}</span>
+                  </div>
+                )}
+                {oemCode && (
+                  <div className={cls.text}>
+                    <span className={cls.text}>{t("oemCode")}: </span>
+                    <span className={cls.text}>{oemCode}</span>
+                  </div>
+                )}
+
                 {!!stock.bonus && (
                   <div className={cls.bonus}>
                     <Badge type="bonus" variant="circle" />
