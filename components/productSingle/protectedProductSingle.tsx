@@ -44,6 +44,7 @@ export default function ProtectedProductSingle({ handleClose, uuid }: Props) {
       id: 0,
       quantity: 1,
       price: 0,
+      warehouse: "test",
     },
   });
   const [extrasIds, setExtrasIds] = useState<any[]>([]);
