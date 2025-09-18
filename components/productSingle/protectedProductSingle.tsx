@@ -236,6 +236,8 @@ export default function ProtectedProductSingle({ handleClose, uuid }: Props) {
         loadingBtn={isLoading}
         totalPrice={calculateTotalPrice()}
         extrasIds={extrasIds}
+        warehouseName={data?.stocks?.[0]?.warehouse}
+        oemCode={data?.oem_code}
       >
         <AddonsForm
           data={showExtras.stock.addons || []}

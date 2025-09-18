@@ -200,7 +200,7 @@ export default function ProductSingle({ handleClose, uuid }: Props) {
         handleAddToCart={handleAddToCart}
         totalPrice={calculateTotalPrice()}
         extrasIds={extrasIds}
-        warehouseName={data?.stocks?.[0]?.warehouse} // Birbaşa warehouse string-i
+        warehouseName={data?.stocks?.[0]?.warehouse} 
         oemCode={data?.oem_code}
       >
         <AddonsForm

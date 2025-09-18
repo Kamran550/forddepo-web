@@ -17,10 +17,16 @@ export default function ProductContainer({ data, uuid, handleClose }: Props) {
   const { isMember } = useShop();
 
   if (isMember) {
+    console.log("if1");
+
     return <MemberProductSingle handleClose={handleClose} uuid={uuid} />;
   } else if (isAuthenticated) {
+    console.log("if2");
+
     return <ProtectedProductSingle handleClose={handleClose} uuid={uuid} />;
   } else {
+    console.log("if3");
+
     return <ProductSingle handleClose={handleClose} uuid={uuid} />;
   }
 }
