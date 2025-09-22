@@ -41,7 +41,7 @@ export default function WholesaleHeader({
     if (isAuthenticated) {
       return (
         userCart.cartProducts?.reduce(
-          (total, item) => total + item.quantity,
+          (total: any, item: { quantity: any; }) => total + item.quantity,
           0,
         ) || 0
       );

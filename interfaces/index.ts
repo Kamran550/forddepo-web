@@ -221,6 +221,7 @@ export interface Gallery {
 }
 
 export interface CartType {
+  cartProducts: any;
   currency_id?: number;
   id: number;
   owner_id?: number;
