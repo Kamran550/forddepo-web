@@ -64,7 +64,15 @@ export default function LoginForm({}: Props) {
           const token = data.token_type + " " + data.access_token;
           setCookie("access_token", token);
           setUserData(data.user);
-          push("/");
+          console.log("role:", data.user.role);
+
+          if (data.user.role === "wholesale_customer") {
+            console.log("ife girdi");
+
+            push("/wholesale");
+          } else {
+            push("/");
+          }
         })
         .catch((e) => {
           console.log("error bash verdi:", e);

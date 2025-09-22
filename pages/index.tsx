@@ -9,6 +9,9 @@ import createSettings from "utils/createSettings";
 import { closeFreeDeliveryModal } from "redux/slices/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/store";
+import { useAuth } from "contexts/auth/auth.context";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const uiTypes = {
   "1": dynamic(() => import("containers/homev1/homev1")),
@@ -22,18 +25,20 @@ type HomeProps = {
 };
 
 export default function Home({ uiType = "1" }: HomeProps) {
-  // const dispatch = useDispatch();
+  const { user } = useAuth();
+  const router = useRouter();
 
-  // const showPopup = useSelector(
-  //   (state: RootState) => state.modal.showFreeDeliveryModal,
-  // );
-  // const freeCount = useSelector((state: RootState) => state.modal.freeDelivery);
+  // Wholesale müştərilər üçün avtomatik yönləndirmə
+  useEffect(() => {
+    if (user && user.role === "wholesale_customer") {
+      router.push("/wholesale");
+    }
+  }, [user, router]);
 
   const Ui = uiTypes[uiType];
   const Homev1 = uiTypes["1"];
   return (
     <>
-
       <SEO />
       {!!Ui ? <Ui /> : <Homev1 />}
       <FooterMenu />

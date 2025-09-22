@@ -26,6 +26,7 @@ import { useAppSelector } from "hooks/useRedux";
 import { selectCurrency } from "redux/slices/currency";
 import { useSettings } from "contexts/settings/settings.context";
 import MapPin2LineIcon from "remixicon-react/MapPin2LineIcon";
+import Store3LineIcon from "remixicon-react/Store3LineIcon";
 
 type Props = {
   data: IUser;
@@ -129,6 +130,18 @@ export default function ProfileDropdown({ data }: Props) {
                 <div className={cls.item}>
                   <FileList3LineIcon />
                   <span className={cls.text}>{t("reservations")}</span>
+                </div>
+              </Link>
+            )}
+            {data.role === "wholesale_customer" && (
+              <Link
+                href={"/wholesale"}
+                className={cls.flex}
+                onClick={handleClose}
+              >
+                <div className={cls.item}>
+                  <Store3LineIcon />
+                  <span className={cls.text}>{t("wholesale.shop")}</span>
                 </div>
               </Link>
             )}

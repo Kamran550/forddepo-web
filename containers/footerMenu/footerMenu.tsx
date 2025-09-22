@@ -10,6 +10,7 @@ import { useScrollDirection } from "hooks/useScrollDirection";
 import { useAuth } from "contexts/auth/auth.context";
 import ProtectedCartButton from "components/cartButton/protectedCartButton";
 import CartButton from "components/cartButton/cartButton";
+import WholesaleCartButton from "components/cartButton/wholesaleCartButton";
 import ReservedLineIcon from "remixicon-react/ReservedLineIcon";
 import useModal from "hooks/useModal";
 import ModalContainer from "containers/modal/modal";
@@ -22,12 +23,15 @@ export default function FooterMenu({}: Props) {
   const { t } = useTranslation();
   const { pathname } = useRouter();
   const scrollDirection = useScrollDirection();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [openReservation, handleOpenReservation, handleCloseReservation] =
     useModal();
   const { settings } = useSettings();
   const reservationEnableForUser =
     settings?.reservation_enable_for_user === "1";
+
+  const isWholesalePage = pathname === "/wholesale";
+  const isWholesaleUser = user?.role === "wholesale_customer";
 
   return (
     <div className={cls.root}>
@@ -84,7 +88,15 @@ export default function FooterMenu({}: Props) {
               )}
             </ul>
           </div>
-          {isAuthenticated ? <ProtectedCartButton /> : <CartButton />}
+          {isAuthenticated ? (
+            isWholesaleUser && isWholesalePage ? (
+              <WholesaleCartButton />
+            ) : (
+              <ProtectedCartButton />
+            )
+          ) : (
+            <CartButton />
+          )}
         </div>
       </div>
       <ModalContainer open={openReservation} onClose={handleCloseReservation}>

@@ -233,10 +233,10 @@ export default function CheckoutDeliveryForm({
         anchorEl={anchorEl}
         onClose={handleCloseTimePopover}
         weekDay={isToday ? t("today") : isTomorrow ? t("tomorrow") : day}
-        time={data.delivery_time?.to || "0"}
+        time={data?.delivery_time?.to || "0"}
         handleOpenDrawer={handleOpenTimeDrawer}
         formik={formik}
-        timeType={data.delivery_time?.type || "minute"}
+        timeType={data?.delivery_time?.type || "minute"}
       />
       {isDesktop ? (
         <ModalContainer open={timeDrawer} onClose={handleCloseTimeDrawer}>
