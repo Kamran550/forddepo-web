@@ -3,8 +3,10 @@ import cls from "./wholesaleCart.module.scss";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "hooks/useRedux";
 import { selectCart, clearCart } from "redux/slices/cart";
-import { selectUserCart } from "redux/slices/userCart";
+import { selectUserCart, clearUserCart } from "redux/slices/userCart";
 import { useAuth } from "contexts/auth/auth.context";
+import { useMutation } from "react-query";
+import cartService from "services/cart";
 import Price from "components/price/price";
 import ShoppingCart2LineIcon from "remixicon-react/ShoppingCart2LineIcon";
 import DeleteBinLineIcon from "remixicon-react/DeleteBinLineIcon";
@@ -23,6 +25,14 @@ export default function WholesaleCart({ isOpen, onClose }: Props) {
   const router = useRouter();
   const cart = useAppSelector(selectCart);
   const userCart = useAppSelector(selectUserCart);
+
+  // Clear cart mutation
+  const { mutate: deleteCart, isLoading: isClearLoading } = useMutation({
+    mutationFn: (data: any) => cartService.delete(data),
+    onSuccess: () => {
+      dispatch(clearUserCart());
+    },
+  });
 
   const cartData = useMemo(() => {
     if (isAuthenticated) {
@@ -46,7 +56,20 @@ export default function WholesaleCart({ isOpen, onClose }: Props) {
 
   const handleClearCart = () => {
     if (window.confirm(t("clear.cart.confirm"))) {
-      dispatch(clearCart());
+      if (isAuthenticated) {
+        // Authenticated user üçün API çağırışı
+        const cartIds =
+          userCart?.user_carts?.map((item) => item.cart_id).filter(Boolean) ||
+          [];
+        if (cartIds.length > 0) {
+          deleteCart({ ids: cartIds });
+        } else {
+          dispatch(clearUserCart());
+        }
+      } else {
+        // Guest user üçün local cart təmizlə
+        dispatch(clearCart());
+      }
     }
   };
 
@@ -117,9 +140,13 @@ export default function WholesaleCart({ isOpen, onClose }: Props) {
 
         {cartData.items.length > 0 && (
           <div className={cls.actions}>
-            <button className={cls.clearBtn} onClick={handleClearCart}>
+            <button
+              className={cls.clearBtn}
+              onClick={handleClearCart}
+              disabled={isClearLoading}
+            >
               <DeleteBinLineIcon />
-              {t("clear.cart")}
+              {isClearLoading ? t("loading") : t("clear.cart")}
             </button>
             <button className={cls.checkoutBtn} onClick={handleCheckout}>
               <CheckLineIcon />
