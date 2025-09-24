@@ -135,13 +135,63 @@ export default function WholesalePage({ memberState }: Props) {
       });
     });
 
+    // Debug: Bütün məhsulların OEM kodlarını göstər
+    if (debounceSearchValue) {
+      console.log(
+        "All products with OEM codes:",
+        allProducts
+          .filter((p) => p.oem_code)
+          .map((p) => ({
+            title: p.translation?.title,
+            oem_code: p.oem_code,
+            oem_type: typeof p.oem_code,
+            is_array: Array.isArray(p.oem_code),
+          })),
+      );
+    }
+
     // Axtarışa görə filtrle
     if (debounceSearchValue) {
       allProducts = allProducts.filter((product) => {
         const title = product.translation?.title?.toLowerCase() || "";
         const sku = (product as any).sku?.toLowerCase() || "";
+
+        // OEM kodunu düzgün şəkildə işlə
+        let oemCode = "";
+        console.log({ product });
+
+        console.log("oemcode:", product.oem_code);
+
+        if (product.oem_code) {
+          if (Array.isArray(product.oem_code)) {
+            oemCode = product.oem_code.join(" ").toLowerCase();
+          } else {
+            oemCode = String(product.oem_code).toLowerCase();
+          }
+        }
+
         const search = debounceSearchValue.toLowerCase();
-        return title.includes(search) || sku.includes(search);
+
+        // Debug üçün konsola çıxış
+        if (
+          search &&
+          (title.includes(search) ||
+            sku.includes(search) ||
+            oemCode.includes(search))
+        ) {
+          console.log("Found product:", {
+            title: product.translation?.title,
+            sku: (product as any).sku,
+            oem_code: product.oem_code,
+            search: search,
+          });
+        }
+
+        return (
+          title.includes(search) ||
+          sku.includes(search) ||
+          oemCode.includes(search)
+        );
       });
     }
 
