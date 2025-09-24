@@ -36,6 +36,7 @@ export default function ProductSingle({ handleClose, uuid }: Props) {
     extras: [],
     stock: {
       id: 0,
+      maxQuantity: 0,
       quantity: 1,
       price: 0,
       warehouse: "test",
