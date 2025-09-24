@@ -26,14 +26,14 @@ export default function WholesaleProductCard({ data, handleOpen }: Props) {
   // Stock status-unu müəyyən et
   const getStockStatus = () => {
     const quantity = data.stock?.quantity || 0;
-    
+
     // Backend-dən gələn maxQuantity sahəsini istifadə et
-    const maxStock =  data.stock?.maxQuantity || 100;
-    console.log({maxStock});
-    
+    const maxStock = data.stock?.maxQuantity || 100;
+    console.log({ maxStock });
+
     // Stock status məntiqi: maxQuantity-ə görə faiz hesablanır
     const stockPercentage = (quantity / maxStock) * 100;
-    console.log({stockPercentage});
+    console.log({ stockPercentage });
     if (stockPercentage < 30) {
       return {
         status: "low",

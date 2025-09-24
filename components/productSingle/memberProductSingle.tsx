@@ -40,6 +40,7 @@ export default function MemberProductSingle({ handleClose, uuid }: Props) {
   const [showExtras, setShowExtras] = useState<ShowExtrasType>({
     extras: [],
     stock: {
+      maxQuantity: 0,
       id: 0,
       quantity: 1,
       price: 0,
