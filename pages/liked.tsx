@@ -45,7 +45,7 @@ export default function Liked({}: Props) {
         <ShopList title={t("liked.restaurants")} shops={favoriteRestaurants} />
         {favoriteRestaurants.length < 1 && (
           <Empty
-            text={t("no.liked.restaurants")}
+            text={t("no.liked.shops")}
             buttonText={t("go.to.menu")}
           />
         )}

@@ -105,5 +105,79 @@
       right: 24px;
       z-index: 1;
     }
+
+    .stockStatus {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 8px 0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      @media (max-width: 576px) {
+        font-size: 11px;
+        padding: 3px 6px;
+        gap: 4px;
+      }
+
+      .stockIndicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        transition: all 0.2s ease;
+
+        @media (max-width: 576px) {
+          width: 6px;
+          height: 6px;
+        }
+      }
+
+      .stockText {
+        color: var(--black);
+
+        .warehouse {
+          color: var(--secondary-text);
+          font-weight: 400;
+        }
+      }
+
+      // Stock status rəngləri
+      &.low {
+        background-color: rgba(239, 68, 68, 0.1);
+        .stockIndicator {
+          background-color: #ef4444; // qırmızı
+        }
+
+        &:hover {
+          background-color: rgba(239, 68, 68, 0.15);
+        }
+      }
+
+      &.medium {
+        background-color: rgba(234, 179, 8, 0.1);
+        .stockIndicator {
+          background-color: #eab308; // sarı
+        }
+
+        &:hover {
+          background-color: rgba(234, 179, 8, 0.15);
+        }
+      }
+
+      &.good {
+        background-color: rgba(34, 197, 94, 0.1);
+        .stockIndicator {
+          background-color: #22c55e; // yaşıl
+        }
+
+        &:hover {
+          background-color: rgba(34, 197, 94, 0.15);
+        }
+      }
+    }
   }
 }

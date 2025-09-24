@@ -14,6 +14,7 @@ export interface Product {
   stock?: Stock;
   min_qty?: number;
   max_qty?: number;
+  maxQuantity?: number;
   shop?: IShop;
   interval: number;
   unit: Unit;
@@ -45,6 +46,7 @@ export interface Stock {
   id: number;
   price: number;
   quantity: number;
+  maxQuantity: number;
   extras?: ProductExtra[];
   bonus?: Bonus;
   addons?: Addon[];
