@@ -81,7 +81,7 @@ export default function WholesaleHeader({
           <SearchLineIcon className={cls.searchIcon} />
           <input
             type="text"
-            placeholder={t("search.products.oem")}
+            placeholder={t("search.product.oem")}
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}

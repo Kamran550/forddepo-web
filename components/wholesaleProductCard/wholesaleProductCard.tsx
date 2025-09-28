@@ -5,6 +5,7 @@ import getImage from "utils/getImage";
 import Price from "components/price/price";
 import Badge from "components/badge/badge";
 import FallbackImage from "components/fallbackImage/fallbackImage";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   data: Product;
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export default function WholesaleProductCard({ data, handleOpen }: Props) {
+  const { t } = useTranslation();
+
   const oldPrice = data.stock?.tax
     ? data.stock?.price + data.stock?.tax
     : data.stock?.price;
@@ -38,22 +41,22 @@ export default function WholesaleProductCard({ data, handleOpen }: Props) {
       return {
         status: "low",
         color: "red",
-        text: `Az stok`,
-        displayText: "Az stok",
+        text: t("stock.low"),
+        displayText: t("stock.low"),
       };
     } else if (stockPercentage >= 30 && stockPercentage <= 70) {
       return {
         status: "medium",
         color: "yellow",
-        text: `Orta stok`,
-        displayText: "Orta stok",
+        text: t("stock.medium"),
+        displayText: t("stock.medium"),
       };
     } else {
       return {
         status: "good",
         color: "green",
-        text: `Kifayət qədər stok`,
-        displayText: "Kifayət qədər stok",
+        text: t("stock.good"),
+        displayText: t("stock.good"),
       };
     }
   };

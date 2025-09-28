@@ -87,7 +87,7 @@ export default function WholesaleCart({ isOpen, onClose }: Props) {
         <div className={cls.header}>
           <div className={cls.title}>
             <ShoppingCart2LineIcon />
-            <span>{t("shopping.cart")}</span>
+            <span>{t("cart")}</span>
             {cartData.count > 0 && (
               <span className={cls.badge}>{cartData.count}</span>
             )}

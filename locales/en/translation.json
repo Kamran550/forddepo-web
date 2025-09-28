@@ -356,5 +356,8 @@
   "delivery.with.in": "Delivery with in",
   "shop.banner.title": "Something hot. Something tasty.",
   "shop.banner.desc": "Top ratings and consistently great service",
-  "order.now": "Order now"
+  "order.now": "Order now",
+  "stock.low": "Low stock",
+  "stock.medium": "Medium stock",
+  "stock.good": "Sufficient stock"
 }

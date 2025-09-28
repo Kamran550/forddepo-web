@@ -39,7 +39,7 @@ export default function FooterMenu({}: Props) {
         <div className={cls.flex}>
           <div className={cls.wrapper}>
             <ul className={cls.list}>
-              <li className={cls.item}>
+              {/* <li className={cls.item}>
                 <Link
                   href={"/"}
                   className={`${cls.link} ${
@@ -49,7 +49,7 @@ export default function FooterMenu({}: Props) {
                   <RestaurantFillIcon />
                   <span className={cls.text}>{t("foods")}</span>
                 </Link>
-              </li>
+              </li> */}
               {isAuthenticated && (
                 <li className={cls.item}>
                   <Link

@@ -178,7 +178,7 @@ export default function OTPVerify({
     <form className={cls.wrapper} onSubmit={formik.handleSubmit}>
       <div className={cls.header}>
         <h1 className={cls.title}>
-          {email?.includes("@") ? t("verify.email") : t("verify.phonnne")}
+          {email?.includes("@") ? t("verify.email") : t("verify.phone")}
         </h1>
         <p className={cls.text}>
           {t("verify.text")} <i>{email}</i>

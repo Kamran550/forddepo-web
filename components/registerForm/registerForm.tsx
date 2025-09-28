@@ -94,7 +94,6 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
             changeView("VERIFY");
           })
           .catch((err) => {
-            console.log("salam");
 
             error(t("sms.not.sent"));
           })
