@@ -89,7 +89,7 @@ export default function SearchResult({
           {isVisibleShops && (
             <div className={`${cls.block} ${cls.line}`}>
               <div className={cls.header}>
-                <h3 className={cls.title}>{t("restaurant")}</h3>
+                <h3 className={cls.title}>{t("shop")}</h3>
                 <p className={cls.text}>
                   {t("found.number.results", { count: shopTotal })}
                 </p>

@@ -83,26 +83,26 @@ export default function Footer({}: Props) {
           </Grid>
           <Grid item xs={12} md={3}>
             <ul className={cls.column}>
-              <li className={cls.columnItem}>
+              {/* <li className={cls.columnItem}>
                 <Link href="/recipes" className={cls.listItem}>
                   {t("recipes")}
                 </Link>
-              </li>
+              </li> */}
               <li className={cls.columnItem}>
                 <Link href="/help" className={cls.listItem}>
                   {t("get.helps")}
                 </Link>
               </li>
-              <li className={cls.columnItem}>
+              {/* <li className={cls.columnItem}>
                 <Link href="/be-seller" className={cls.listItem}>
                   {t("add.your.restaurant")}
                 </Link>
-              </li>
-              <li className={cls.columnItem}>
+              </li> */}
+              {/* <li className={cls.columnItem}>
                 <Link href="/deliver" className={cls.listItem}>
                   {t("sign.up.to.deliver")}
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </Grid>
         </Grid>

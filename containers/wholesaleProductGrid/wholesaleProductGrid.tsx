@@ -28,7 +28,7 @@ export default function WholesaleProductGrid({
 
   // Məhsulları kateqoriyalara görə qruplaşdır
   const groupedProducts: GroupedProducts = products.reduce((acc, product) => {
-    const categoryName = product.category?.translation?.title || t("other");
+    const categoryName = product.category?.translation?.title || t("products");
     if (!acc[categoryName]) {
       acc[categoryName] = [];
     }

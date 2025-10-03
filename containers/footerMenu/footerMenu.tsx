@@ -63,7 +63,7 @@ export default function FooterMenu({}: Props) {
                   </Link>
                 </li>
               )}
-              <li className={cls.item}>
+              {/* <li className={cls.item}>
                 <Link
                   href={"/liked"}
                   className={`${cls.link} ${
@@ -73,7 +73,7 @@ export default function FooterMenu({}: Props) {
                   <HeartLineIcon />
                   <span className={cls.text}>{t("liked")}</span>
                 </Link>
-              </li>
+              </li> */}
               {reservationEnableForUser && (
                 <li className={cls.item}>
                   <Link

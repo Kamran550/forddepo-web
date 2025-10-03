@@ -133,7 +133,7 @@ export default function ProfileDropdown({ data }: Props) {
                 </div>
               </Link>
             )}
-            {data.role === "wholesale_customer" && (
+            {/* {data.role === "wholesale_customer" && (
               <Link
                 href={"/wholesale"}
                 className={cls.flex}
@@ -144,7 +144,7 @@ export default function ProfileDropdown({ data }: Props) {
                   <span className={cls.text}>{t("wholesale.shop")}</span>
                 </div>
               </Link>
-            )}
+            )} */}
             <Link
               href={"/be-seller"}
               className={cls.flex}
@@ -167,12 +167,12 @@ export default function ProfileDropdown({ data }: Props) {
                 </div>
               </Link>
             )}
-            <Link href={"/liked"} className={cls.flex} onClick={handleClose}>
+            {/* <Link href={"/liked"} className={cls.flex} onClick={handleClose}>
               <div className={cls.item}>
                 <HeartLineIcon />
                 <span className={cls.text}>{t("liked")}</span>
               </div>
-            </Link>
+            </Link> */}
             <Link
               href={"/settings/notification"}
               className={cls.flex}

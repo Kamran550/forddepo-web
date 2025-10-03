@@ -1,5 +1,8 @@
 .container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url("/images/forddepo-back.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: white;
   padding: 2rem 0;
   margin-bottom: 2rem;
@@ -152,8 +155,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -162,12 +165,13 @@
   font-weight: 600;
   transition: all 0.3s ease;
   position: relative;
+  backdrop-filter: blur(10px);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.6);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   @media (max-width: 768px) {
@@ -234,8 +238,8 @@
 }
 
 .categoryBtn {
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -246,18 +250,19 @@
   white-space: nowrap;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  backdrop-filter: blur(8px);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
   }
 
   &.active {
-    background: white;
-    color: #667eea;
-    border-color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
   @media (max-width: 768px) {
@@ -294,8 +299,8 @@
 }
 
 .subCategoryBtn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: rgba(255, 255, 255, 0.9);
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -304,17 +309,18 @@
   font-weight: 500;
   transition: all 0.3s ease;
   white-space: nowrap;
+  backdrop-filter: blur(6px);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.4);
     color: white;
   }
 
   &.active {
-    background: rgba(255, 255, 255, 0.9);
-    color: #667eea;
-    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.85);
+    color: #333;
+    border-color: rgba(255, 255, 255, 0.85);
   }
 
   @media (max-width: 768px) {
@@ -334,7 +340,10 @@
 // Dark mode support
 [data-theme="dark"] {
   .container {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: url("/images/forddepo-back.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .searchInput {

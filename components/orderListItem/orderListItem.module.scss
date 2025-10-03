@@ -137,3 +137,26 @@
     font-weight: 500;
   }
 }
+
+// Dark mode support
+[data-theme="dark"] {
+  .debt {
+    color: #ff6b6b; // dark mode üçün daha parlaq qırmızı
+  }
+
+  .paid {
+    color: #51cf66; // dark mode üçün daha parlaq yaşıl
+  }
+
+  .price {
+    color: #ffffff !important; // dark mode üçün ağ rəng
+  }
+
+  .text {
+    color: #e0e0e0 !important; // dark mode üçün açıq boz
+  }
+
+  .title {
+    color: #ffffff !important; // dark mode üçün ağ rəng
+  }
+}

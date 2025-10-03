@@ -115,7 +115,7 @@ export default function RcShopSelect({ label, value, onChange, error, hasSection
           <div className={cls.shopWrapper}>
             <div className={`${cls.block} ${cls.line}`}>
               <div className={cls.header}>
-                <h3 className={cls.title}>{t("restaurant")}</h3>
+                <h3 className={cls.title}>{t("shop")}</h3>
                 <p className={cls.text}>
                   {t("found.number.results", {
                     count: shops?.pages ? shops.pages[0].meta.total : 0,
