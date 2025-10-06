@@ -6,11 +6,11 @@ import {
 
 /* eslint-disable @next/next/no-img-element */
 export const BrandLogo = () => (
-  <img src={BRAND_LOGO} width="129" height="28" alt="Brand logo" />
+  <img src="https://forddepo.az/images/logo-ford.png" width="129" height="28" alt="Brand logo" />
 );
 
 export const BrandLogoDark = () => (
-  <img src={BRAND_LOGO_DARK} width="129" height="28" alt="Brand logo dark" />
+  <img src="https://forddepo.az/images/logo-ford.png" width="129" height="28" alt="Brand logo dark" />
 );
 
 export const DoubleCheckIcon = () => (

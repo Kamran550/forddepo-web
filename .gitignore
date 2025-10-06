@@ -43,3 +43,6 @@ next-env.d.ts
 .github
 _next
 .package-lock.json
+
+# Images
+public/images/

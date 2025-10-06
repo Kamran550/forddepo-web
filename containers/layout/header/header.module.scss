@@ -26,6 +26,15 @@
     .brandLogo {
       display: block;
       margin-right: 10px;
+
+      img {
+        height: 60px;
+        width: auto;
+        max-width: 250px;
+        object-fit: contain;
+        display: block;
+      }
+
       svg {
         fill: var(--dark-blue);
       }
