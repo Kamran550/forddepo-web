@@ -47,7 +47,9 @@ export default function SEO({
       <meta name="twitter:site" content={currentURL} />
       <meta name="twitter:creator" content={currentURL} />
       <meta name="twitter:image" content={image} />
-      <link rel="icon" href="/favicon.png" />
+      <link rel="icon" href="/images/logo-ford.png" />
+      <link rel="apple-touch-icon" href="/images/logo-ford.png" />
+      <meta name="theme-color" content="#3333FF" />
     </Head>
   );
 }
