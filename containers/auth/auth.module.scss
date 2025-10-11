@@ -26,6 +26,15 @@
       }
       .header {
         margin-top: 3px;
+
+        img {
+          height: 50px;
+          width: auto;
+          max-width: 180px;
+          object-fit: contain;
+          display: block;
+        }
+
         svg {
           width: 192px;
           height: 40px;
