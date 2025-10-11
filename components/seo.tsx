@@ -47,9 +47,7 @@ export default function SEO({
       <meta name="twitter:site" content={currentURL} />
       <meta name="twitter:creator" content={currentURL} />
       <meta name="twitter:image" content={image} />
-      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-      <link rel="apple-touch-icon" href="/favicon.svg" />
-      <meta name="theme-color" content="#3333FF" />
+      <link rel="icon" href="/favicon.png" />
     </Head>
   );
 }

@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import DrawerContainer from "containers/drawer/drawer";
 import cls from "./appDrawer.module.scss";
 import { useTranslation } from "react-i18next";
-import { BrandLogoRounded } from "components/icons";
+import { BrandLogo, BrandLogoRounded } from "components/icons";
 import SecondaryButton from "components/button/secondaryButton";
 import DarkButton from "components/button/darkButton";
 import { useRouter } from "next/router";
@@ -63,8 +63,9 @@ export default function AppDrawer({ open, handleClose }: Props) {
         )}
         <div className={cls.footer}>
           <div className={cls.flex}>
-            <BrandLogoRounded />
-            <p className={cls.text}>{t("app.text")}</p>
+            {/* <BrandLogoRounded /> */}
+            <BrandLogo />
+            {/* <p className={cls.text}>{t("app.text")}</p> */}
           </div>
           <div className={cls.flex}>
             <a
