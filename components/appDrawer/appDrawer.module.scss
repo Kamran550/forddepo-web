@@ -81,6 +81,15 @@
       align-items: center;
       margin-top: 26px;
       column-gap: 20px;
+
+      img {
+        height: 60px;
+        width: auto;
+        max-width: 220px;
+        object-fit: contain;
+        display: block;
+      }
+
       @media (max-width: 1139px) {
         margin-top: 22px;
         column-gap: 12px;
