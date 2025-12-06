@@ -129,10 +129,10 @@ export default function CheckoutPayment({
     const amount = parseFloat(partialAmount);
     const totalPrice = Number(order.total_price) || 0;
 
-    if (!amount || amount <= 0) {
-      warning(t("please.enter.valid.amount"));
-      return;
-    }
+    // if (!amount || amount <= 0) {
+    //   warning(t("please.enter.valid.amount"));
+    //   return;
+    // }
 
     if (amount >= totalPrice) {
       warning(t("partial.amount.must.be.less.than.total"));
