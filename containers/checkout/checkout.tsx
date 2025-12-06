@@ -230,14 +230,14 @@ export default function CheckoutContainer({
       // }
 
       // Qismən ödəmə yoxlanışları
-      if (values.partial_payment?.is_partial) {
-        if (
-          !values.partial_payment.paid_amount ||
-          values.partial_payment.paid_amount <= 0
-        ) {
-          errors.partial_payment = t("please.enter.valid.amount");
-        }
-      }
+      // if (values.partial_payment?.is_partial) {
+      //   if (
+      //     !values.partial_payment.paid_amount ||
+      //     values.partial_payment.paid_amount <= 0
+      //   ) {
+      //     errors.partial_payment = t("please.enter.valid.amount");
+      //   }
+      // }
 
       return errors;
     },
