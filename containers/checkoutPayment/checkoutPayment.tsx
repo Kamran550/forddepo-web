@@ -126,7 +126,7 @@ export default function CheckoutPayment({
 
   // Qismən ödəmə modal handlers
   const handlePartialPaymentSubmit = () => {
-    const amount = parseFloat(partialAmount);
+    const amount = parseFloat(partialAmount) || 0; // NaN və ya undefined olduqda 0
     const totalPrice = Number(order.total_price) || 0;
 
     // if (!amount || amount <= 0) {
@@ -134,15 +134,17 @@ export default function CheckoutPayment({
     //   return;
     // }
 
-    if (amount >= totalPrice) {
+    // Amount 0 olduqda da partial payment edə bilər, yalnız amount > 0 və amount >= totalPrice olduqda xəta ver
+    if (amount > 0 && amount >= totalPrice) {
       warning(t("partial.amount.must.be.less.than.total"));
       return;
     }
 
     // DÜZƏLIŞ: Formik-ə qismən ödəmə məlumatlarını düzgün formatda əlavə et
+    // Amount 0 olduqda da is_partial: true, paid_amount: 0 göndərilir
     formik.setFieldValue("partial_payment", {
       is_partial: true,
-      paid_amount: amount,
+      paid_amount: amount, // 0 ola bilər
       // due_amount: totalPrice - amount, // Bu frontend üçün göstərimdir
       // total_price: totalPrice,
     });
@@ -566,7 +568,10 @@ export default function CheckoutPayment({
             <button onClick={handleClosePartialPayment} className={cls.cancel}>
               {t("cancel")}
             </button>
-            <button onClick={handlePartialPaymentSubmit} className={cls.confirm}>
+            <button
+              onClick={handlePartialPaymentSubmit}
+              className={cls.confirm}
+            >
               {t("confirm")}
             </button>
           </div>
