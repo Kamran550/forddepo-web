@@ -40,7 +40,7 @@ export default function CheckoutProductItem({ data, disabled, formik }: Props) {
   const { query } = useRouter();
   const shopId = Number(query.id);
   const min_qty = data?.stock?.product?.min_qty || 1;
-  const isReduceDisabled = quantity <= min_qty || data.bonus || disabled;
+  const isReduceDisabled = quantity === 0 || data.bonus || disabled;
   const isAddDisabled =
     !(data.stock.quantity > quantity) ||
     data.bonus ||
@@ -74,7 +74,7 @@ export default function CheckoutProductItem({ data, disabled, formik }: Props) {
   }
 
   function reduceProduct() {
-    if (quantity === 1) {
+    if (quantity === 0) {
       setQuantity(0);
     } else {
       setQuantity((count) => count - 1);

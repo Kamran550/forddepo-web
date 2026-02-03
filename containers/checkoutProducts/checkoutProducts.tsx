@@ -2,13 +2,18 @@ import React from "react";
 import { IShop, OrderFormValues, UserCart } from "interfaces";
 import cls from "./checkoutProducts.module.scss";
 import AddCircleLineIcon from "remixicon-react/AddCircleLineIcon";
+import DeleteBinLineIcon from "remixicon-react/DeleteBinLineIcon";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "hooks/useRedux";
-import { selectUserCart } from "redux/slices/userCart";
+import { useAppDispatch, useAppSelector } from "hooks/useRedux";
+import { selectUserCart, clearUserCart } from "redux/slices/userCart";
+import { clearCart } from "redux/slices/cart";
 import Loading from "components/loader/loading";
 import CheckoutProductItem from "components/checkoutProductItem/checkoutProductItem";
 import { useRouter } from "next/router";
 import { FormikProps } from "formik";
+import { useAuth } from "contexts/auth/auth.context";
+import { useMutation } from "react-query";
+import cartService from "services/cart";
 
 type Props = {
   data: IShop;
@@ -22,11 +27,46 @@ export default function CheckoutProducts({
   formik,
 }: Props) {
   const { t } = useTranslation();
-  const { push } = useRouter();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAuth();
   const cart = useAppSelector(selectUserCart);
 
+  // Clear cart mutation
+  const { mutate: deleteCart, isLoading: isClearLoading } = useMutation({
+    mutationFn: (data: any) => cartService.delete(data),
+    onSuccess: () => {
+      dispatch(clearUserCart());
+      // Səbət təmizləndikdən sonra əvvəlki səhifəyə yönləndir
+      router.back();
+    },
+  });
+
   const goToCart = () => {
-    push(`/shop/${data.id}`);
+    router.push(`/shop/${data.id}`);
+  };
+
+  const handleClearCart = () => {
+    if (window.confirm(t("clear.cart.confirm") || "Səbəti təmizləmək istədiyinizə əminsiniz?")) {
+      if (isAuthenticated) {
+        // Authenticated user üçün API çağırışı
+        const cartIds =
+          cart?.user_carts?.map((item) => item.cart_id).filter(Boolean) ||
+          [];
+        if (cartIds.length > 0) {
+          deleteCart({ ids: cartIds });
+        } else {
+          dispatch(clearUserCart());
+          // Səbət təmizləndikdən sonra əvvəlki səhifəyə yönləndir
+          router.back();
+        }
+      } else {
+        // Guest user üçün local cart təmizlə
+        dispatch(clearCart());
+        // Səbət təmizləndikdən sonra əvvəlki səhifəyə yönləndir
+        router.back();
+      }
+    }
   };
 
   return (
@@ -34,10 +74,17 @@ export default function CheckoutProducts({
       <div className={cls.main}>
         <div className={cls.header}>
           <h3 className={cls.title}>{data?.translation?.title}</h3>
-          <button type="button" className={cls.cartBtn} onClick={goToCart}>
-            <AddCircleLineIcon />
-            <span className={cls.text}>{t("add.to.bag")}</span>
-          </button>
+          <div className={cls.actions}>
+            <button
+              type="button"
+              className={cls.clearBtn}
+              onClick={handleClearCart}
+              disabled={isClearLoading}
+            >
+              <DeleteBinLineIcon />
+              <span className={cls.text}>{t("clear.cart") || "Səbəti təmizlə"}</span>
+            </button>
+          </div>
         </div>
         <div className={cls.body}>
           {cart.user_carts.map((item: UserCart) => (
