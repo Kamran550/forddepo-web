@@ -72,11 +72,6 @@ export default function CheckoutPayment({
   ] = useModal();
   const [promoDrawer, handleOpenPromo, handleClosePromo] = useModal();
   const [openTip, handleOpenTip, handleCloseTip] = useModal();
-  const [
-    partialPaymentModal,
-    handleOpenPartialPayment,
-    handleClosePartialPayment,
-  ] = useModal();
 
   const cart = useAppSelector(selectUserCart);
   const currency = useAppSelector(selectCurrency);
@@ -87,14 +82,9 @@ export default function CheckoutPayment({
   const [showDeliveryInfo, setShowDeliveryInfo] = useState(false);
   const [showServiceFeeInfo, setShowServiceFeeInfo] = useState(false);
   const [calculateError, setCalculateError] = useState<null | boolean>(null);
-  const [partialAmount, setPartialAmount] = useState<string>("");
-  const [isPartialPayment, setIsPartialPayment] = useState(false);
 
   const { coupon, location, delivery_type, payment_type, tips } = formik.values;
   const { settings } = useSettings();
-
-  // Wholesale müştəri yoxlanışı
-  const isWholesaleCustomer = user?.role === "wholesale_customer";
 
   const payload = useMemo(
     () => ({
@@ -124,47 +114,6 @@ export default function CheckoutPayment({
     },
   );
 
-  // Qismən ödəmə modal handlers
-  const handlePartialPaymentSubmit = () => {
-    const amount = parseFloat(partialAmount) || 0; // NaN və ya undefined olduqda 0
-    const totalPrice = Number(order.total_price) || 0;
-
-    // if (!amount || amount <= 0) {
-    //   warning(t("please.enter.valid.amount"));
-    //   return;
-    // }
-
-    // Amount 0 olduqda da partial payment edə bilər, yalnız amount > 0 və amount >= totalPrice olduqda xəta ver
-    if (amount > 0 && amount >= totalPrice) {
-      warning(t("partial.amount.must.be.less.than.total"));
-      return;
-    }
-
-    // DÜZƏLIŞ: Formik-ə qismən ödəmə məlumatlarını düzgün formatda əlavə et
-    // Amount 0 olduqda da is_partial: true, paid_amount: 0 göndərilir
-    formik.setFieldValue("partial_payment", {
-      is_partial: true,
-      paid_amount: amount, // 0 ola bilər
-      // due_amount: totalPrice - amount, // Bu frontend üçün göstərimdir
-      // total_price: totalPrice,
-    });
-
-    // Payment method-u cash olaraq təyin et
-    const cashPayment = payments?.find((item) => item.tag === "cash");
-    if (cashPayment) {
-      formik.setFieldValue("payment_type", cashPayment);
-    }
-
-    setIsPartialPayment(true);
-    handleClosePartialPayment();
-  };
-
-  const handleResetPartialPayment = () => {
-    setIsPartialPayment(false);
-    setPartialAmount("");
-    formik.setFieldValue("partial_payment", null);
-  };
-
   function handleOrderCreate() {
     const localShopMinPrice =
       ((currency?.rate || 1) * (shop?.min_amount || 1)) /
@@ -180,12 +129,6 @@ export default function CheckoutPayment({
       }
     }
 
-    // Qismən ödəmə yoxlanışı
-    if (isPartialPayment && payment_type?.tag !== "cash") {
-      warning(t("partial.payment.requires.cash"));
-      return;
-    }
-
     formik.handleSubmit();
   }
 
@@ -193,15 +136,6 @@ export default function CheckoutPayment({
     formik.setFieldValue("tips", number);
     handleCloseTip();
   };
-
-  // Ödəniləcək məbləği hesabla
-  const paymentAmount = isPartialPayment
-    ? parseFloat(partialAmount)
-    : Number(order.total_price);
-
-  const dueAmount = isPartialPayment
-    ? Number(order.total_price) - parseFloat(partialAmount)
-    : 0;
 
   console.log({ order });
 
@@ -231,39 +165,10 @@ export default function CheckoutPayment({
           <button
             className={cls.action}
             onClick={handleOpenPaymentMethod}
-            disabled={isPartialPayment}
           >
             {t("edit")}
           </button>
         </div>
-
-        {/* Qismən ödəmə seçimi - yalnız wholesale müştərilər üçün */}
-        {isWholesaleCustomer && (
-          <div className={cls.flex}>
-            <div className={cls.flexItem}>
-              <HandCoinLineIcon />
-              <span className={cls.text}>
-                {isPartialPayment ? (
-                  <span style={{ color: "#28a745" }}>
-                    {t("partial.payment.active")}
-                  </span>
-                ) : (
-                  t("partial.payment")
-                )}
-              </span>
-            </div>
-            <button
-              className={cls.action}
-              onClick={
-                isPartialPayment
-                  ? handleResetPartialPayment
-                  : handleOpenPartialPayment
-              }
-            >
-              {isPartialPayment ? t("reset") : t("setup")}
-            </button>
-          </div>
-        )}
 
         <div className={cls.flex}>
           <div className={cls.flexItem}>
@@ -385,42 +290,6 @@ export default function CheckoutPayment({
               <Price number={order?.tips} />
             </div>
           </div>
-
-          {/* Qismən ödəmə məlumatları */}
-          {isPartialPayment && (
-            <>
-              <div
-                className={cls.row}
-                style={{
-                  borderTop: "1px solid #eee",
-                  paddingTop: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <div className={cls.item} style={{ fontWeight: "600" }}>
-                  {t("payment.breakdown")}:
-                </div>
-              </div>
-              <div className={cls.row}>
-                <div className={cls.item}>{t("paying.now")}</div>
-                <div
-                  className={cls.item}
-                  style={{ color: "#28a745", fontWeight: "600" }}
-                >
-                  <Price number={paymentAmount} />
-                </div>
-              </div>
-              <div className={cls.row}>
-                <div className={cls.item}>{t("remaining.due")}</div>
-                <div
-                  className={cls.item}
-                  style={{ color: "#dc3545", fontWeight: "600" }}
-                >
-                  <Price number={dueAmount} />
-                </div>
-              </div>
-            </>
-          )}
         </div>
         <div className={cls.cardFooter}>
           <div className={cls.btnWrapper}>
@@ -430,159 +299,19 @@ export default function CheckoutPayment({
               loading={loading}
               disabled={isLoading || !!calculateError}
             >
-              {isPartialPayment
-                ? t("continue.partial.payment")
-                : t("continue.payment")}
+              {t("continue.payment")}
             </PrimaryButton>
           </div>
           <div className={cls.priceBlock}>
             <p className={cls.text}>
-              {isPartialPayment ? t("paying.now") : t("total")}
+              {t("total")}
             </p>
             <div className={cls.price}>
-              <Price number={paymentAmount} />
+              <Price number={order.total_price} />
             </div>
           </div>
         </div>
       </div>
-
-      {/* Qismən ödəmə modal */}
-      <ModalContainer
-        open={partialPaymentModal}
-        onClose={handleClosePartialPayment}
-      >
-        {/* <div style={{ padding: "20px", minWidth: "300px" }}>
-          <h3 style={{ marginBottom: "20px" }}>{t("setup.partial.payment")}</h3>
-          <div style={{ marginBottom: "15px" }}>
-            <p
-              style={{ fontSize: "14px", color: "#666", marginBottom: "10px" }}
-            >
-              {t("total.amount")}: <Price number={order.total_price} />
-            </p>
-            <label style={{ display: "block", marginBottom: "5px" }}>
-              {t("amount.to.pay.now")}:
-            </label>
-            <input
-              type="number"
-              value={partialAmount}
-              onChange={(e) => setPartialAmount(e.target.value)}
-              placeholder="0.00"
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                fontSize: "16px",
-              }}
-              max={Number(order.total_price) - 0.01}
-              min={0.01}
-              step={0.01}
-            />
-            {partialAmount && (
-              <p style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
-                {t("remaining.amount")}:{" "}
-                <Price
-                  number={
-                    (Number(order.total_price) || 0) -
-                    (parseFloat(partialAmount) || 0)
-                  }
-                />
-              </p>
-            )}
-          </div>
-          <div
-            style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}
-          >
-            <button
-              onClick={handleClosePartialPayment}
-              style={{
-                padding: "8px 16px",
-                border: "1px solid #ddd",
-                background: "#fff",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              {t("cancel")}
-            </button>
-            <button
-              onClick={handlePartialPaymentSubmit}
-              style={{
-                padding: "8px 16px",
-                border: "none",
-                background: "#007bff",
-                color: "white",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              {t("confirm")}
-            </button>
-          </div>
-          <div
-            style={{
-              marginTop: "15px",
-              padding: "10px",
-              background: "#f8f9fa",
-              borderRadius: "4px",
-              fontSize: "12px",
-            }}
-          >
-            <p>
-              <strong>{t("note")}:</strong> {t("partial.payment.cash.only")}
-            </p>
-          </div>
-        </div> */}
-        <div className={cls.partialPayment}>
-          <h3>{t("setup.partial.payment")}</h3>
-          <div>
-            <p
-              style={{ fontSize: "14px", color: "#666", marginBottom: "10px" }}
-            >
-              {t("total.amount")}: <Price number={order.total_price} />
-            </p>
-            <label>{t("amount.to.pay.now")}:</label>
-            <input
-              type="number"
-              value={partialAmount}
-              onChange={(e) => setPartialAmount(e.target.value)}
-              placeholder="0.00"
-              max={Number(order.total_price) - 0.01}
-              min={0.01}
-              step={0.01}
-            />
-            {partialAmount && (
-              <p style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
-                {t("remaining.amount")}:{" "}
-                <Price
-                  number={
-                    (Number(order.total_price) || 0) -
-                    (parseFloat(partialAmount) || 0)
-                  }
-                />
-              </p>
-            )}
-          </div>
-
-          <div className={cls.actions}>
-            <button onClick={handleClosePartialPayment} className={cls.cancel}>
-              {t("cancel")}
-            </button>
-            <button
-              onClick={handlePartialPaymentSubmit}
-              className={cls.confirm}
-            >
-              {t("confirm")}
-            </button>
-          </div>
-
-          <div className={cls.note}>
-            <p>
-              <strong>{t("note")}:</strong> {t("partial.payment.cash.only")}
-            </p>
-          </div>
-        </div>
-      </ModalContainer>
 
       {isLoading && <Loading />}
 
@@ -594,11 +323,7 @@ export default function CheckoutPayment({
         >
           <PaymentMethod
             value={formik.values.payment_type?.tag}
-            list={
-              isPartialPayment
-                ? payments.filter((p) => p.tag === "cash")
-                : payments
-            }
+            list={payments}
             handleClose={handleClosePaymentMethod}
             onSubmit={(tag) => {
               const payment = payments?.find((item) => item.tag === tag);
@@ -615,11 +340,7 @@ export default function CheckoutPayment({
         >
           <PaymentMethod
             value={formik.values.payment_type?.tag}
-            list={
-              isPartialPayment
-                ? payments.filter((p) => p.tag === "cash")
-                : payments
-            }
+            list={payments}
             handleClose={handleClosePaymentMethod}
             onSubmit={(tag) => {
               const payment = payments?.find((item) => item.tag === tag);

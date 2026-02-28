@@ -142,14 +142,6 @@ export default function CheckoutContainer({
         return;
       }
 
-      // Qismən ödəmə yoxlanışı
-      if (
-        values.partial_payment?.is_partial &&
-        values.payment_type?.tag !== "cash"
-      ) {
-        warning(t("partial.payment.requires.cash"));
-        return;
-      }
 
       const notes = Object.keys(values.notes).reduce((acc: any, key) => {
         const value = values.notes[key]?.trim()?.length
@@ -183,21 +175,14 @@ export default function CheckoutContainer({
         note: values?.note && values?.note?.length ? values?.note : undefined,
         notes,
         tips: values?.tips,
-        // Qismən ödəmə məlumatlarını payload-a əlavə et
-        partial_payment: values.partial_payment,
+        // Həmişə qismən ödəmə: is_partial: true, amount: 0
+        partial_payment: {
+          is_partial: true,
+          paid_amount: 0,
+        },
       };
 
-      // Qismən ödəmə üçün xüsusi işləmə
-      if (values.partial_payment?.is_partial) {
-        console.log("Partial payment detected:", values.partial_payment);
-        // Qismən ödəmə halında payment_id cash payment-in id-si olmalıdır
-        const cashPayment = paymentTypes?.find(
-          (p: Payment) => p.tag === "cash",
-        );
-        if (cashPayment) {
-          payload.payment_id = cashPayment.id;
-        }
-      } else if (
+      if (
         EXTERNAL_PAYMENTS.includes(formik.values.payment_type?.tag || "")
       ) {
         console.log("metod:", formik.values.payment_type);
@@ -248,11 +233,6 @@ export default function CheckoutContainer({
     onSuccess: (data) => {
       queryClient.invalidateQueries(["profile"], { exact: false });
       queryClient.invalidateQueries(["cart"], { exact: false });
-
-      // Qismən ödəmə uğurlu mesajı
-      if (formik.values.partial_payment?.is_partial) {
-        success(t("partial.payment.order.created"));
-      }
 
       replace(`/orders/${data.data.id}`);
     },
