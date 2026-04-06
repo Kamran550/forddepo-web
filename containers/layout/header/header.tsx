@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import cls from "./header.module.scss";
 import { BrandLogo, BrandLogoDark } from "components/icons";
@@ -8,7 +8,6 @@ import GlobalLineIcon from "remixicon-react/GlobalLineIcon";
 import BankCardLineIcon from "remixicon-react/BankCardLineIcon";
 import { ThemeContext } from "contexts/theme/theme.context";
 import dynamic from "next/dynamic";
-import SearchContainer from "containers/searchContainer/searchContainer";
 import LanguagePopover from "components/languagePopover/languagePopover";
 import CurrencyList from "components/currencyList/currencyList";
 import { useAuth } from "contexts/auth/auth.context";
@@ -32,7 +31,6 @@ export default function Header() {
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
   const [appDrawer, handleOpenAppDrawer, handleCloseAppDrawer] = useModal();
   const [openLang, anchorLang, handleOpenLang, handleCloseLang] = usePopover();
-  const searchContainerRef = useRef(null);
   const [
     openCurrency,
     anchorCurrency,
@@ -54,14 +52,6 @@ export default function Header() {
             <Link href="/" className={cls.brandLogo}>
               {isDarkMode ? <BrandLogoDark /> : <BrandLogo />}
             </Link>
-          </div>
-          <div
-            className={`${cls.navItem} ${cls.searchBar}`}
-            ref={searchContainerRef}
-          >
-            <div className={cls.search}>
-              <SearchContainer searchContainerRef={searchContainerRef} />
-            </div>
           </div>
           <div className={cls.navItem}>
             <AddressContainer />
