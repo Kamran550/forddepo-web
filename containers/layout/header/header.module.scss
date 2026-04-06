@@ -9,6 +9,7 @@
   display: flex;
   align-items: center;
   height: 70px;
+  width: 100%;
   .navItem {
     display: flex;
     align-items: center;
@@ -91,20 +92,31 @@
       }
     }
   }
+  > .navItem:first-child {
+    flex: 0 0 auto;
+  }
+  > .navItem:nth-child(2) {
+    flex: 1;
+    justify-content: center;
+  }
+  > .navItem:last-child {
+    flex: 1;
+    justify-content: space-between;
+  }
   .searchBar {
     flex-grow: 1;
   }
   .actions {
     display: flex;
     align-items: center;
-    column-gap: 8px;
+    column-gap: 14px;
     .iconBtn {
       display: flex;
       align-items: center;
       justify-content: center;
       svg {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         transition: all 0.2s;
       }
       &:hover {
