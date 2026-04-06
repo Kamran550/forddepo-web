@@ -129,7 +129,7 @@ export default function NotificationCenter({ onClose }: Props) {
         push(`/reservations`);
         break;
       case NotificationStatus.NEWS_PUBLISH:
-        push(`/?news=${item.blog?.uuid}`);
+        push(item.blog?.uuid ? `/blog/${item.blog.uuid}` : "/blog");
         break;
       case NotificationStatus.DELIVERY_REFUNDED:
         push(`/wallet`);
